@@ -1,0 +1,229 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:orientation="vertical"
+    android:background="@drawable/carbon_fibre">
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+            <RelativeLayout
+                android:id="@+id/RelativeLayout02"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/lista_gradient"
+                android:padding="20dp" >
+                <TextView
+                    android:id="@+id/TextView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    
+                    android:text="@string/show_autopause"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    android:id="@+id/TextView17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/TextView13"
+                    android:layout_below="@+id/TextView13"
+                    
+                    android:text="@string/show_autopause_desc"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <Spinner
+                    android:id="@+id/spinnerAutoPause"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/TextView17"
+                    android:background="@drawable/glm_title"
+                    android:spinnerMode="dialog"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/RelativeLayout03"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/lista_gradient"
+                android:padding="20dp" >
+                <TextView
+                    android:id="@+id/TextView12a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignRight="@+id/spinnerUnit"
+                    android:text="@string/show_units"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <Spinner
+                    android:id="@+id/spinnerUnit"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/TextView01"
+                    android:background="@drawable/glm_title"
+                    android:spinnerMode="dialog" />
+                <TextView
+                    android:id="@+id/TextView01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/TextView12a"
+                    android:layout_below="@+id/TextView12a"
+                    android:text="@string/show_units_desc"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/RelativeLayout04"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/lista_gradient"
+                android:padding="20dp" >
+                <TextView
+                    android:id="@+id/TextView12b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/track_weight"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    android:id="@+id/TextView11b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/TextView12b"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/track_weight_desc"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <CheckBox
+                    android:id="@+id/checkWeightTrack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/RelativeLayout05"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/lista_gradient"
+                android:padding="20dp" >
+                <TextView
+                    android:id="@+id/TextView12c"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/target"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    android:id="@+id/TextView11c"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/TextView12c"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/target_desc"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <CheckBox
+                    android:id="@+id/checkTarget"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/RelativeLayout06"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/lista_gradient"
+                android:padding="20dp" >
+                <TextView
+                    android:id="@+id/TextView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cardio"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    android:id="@+id/TextView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/TextView12"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/cardio_desc"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <CheckBox
+                    android:id="@+id/checkCardio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/RelativeLayout07"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/lista_gradient"
+                android:padding="20dp" >
+                <TextView
+                    android:id="@+id/TextView05"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/virtualrace"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    android:id="@+id/TextView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/TextView05"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/virtualrace_desc"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <CheckBox
+                    android:id="@+id/checkVirtualRace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/RelativeLayout01"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/lista_gradient"
+                android:padding="20dp" >
+                <TextView
+                    android:id="@+id/TextView03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/interactive_trainer"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    android:id="@+id/TextView02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/TextView03"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/interactive_trainer_desc"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <CheckBox
+                    android:id="@+id/checkInteractive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

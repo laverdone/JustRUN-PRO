@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/main_gradient"
+        android:padding="1dip" >
+	<RelativeLayout
+	        
+	        android:orientation="vertical"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:background="@drawable/glm_main_popup">
+
+		<RelativeLayout
+		    android:id="@+id/TopLinear"
+		    android:layout_width="match_parent"
+		    android:layout_height="50dp"
+		    android:background="@drawable/glm_popup" >
+
+		   
+
+		        <ImageButton
+		            android:background="@drawable/circle_gradient"
+		            android:padding="2dip"		            
+		            android:layout_marginLeft="10dp"
+		            android:id="@+id/btn_back"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_alignParentLeft="true"
+		            android:layout_centerVertical="true"
+		            android:src="@drawable/left" />	
+
+		        <ImageButton
+		            android:padding="2dip" 
+		            android:layout_alignParentRight="true"
+		        	android:layout_centerVertical="true"
+		        	android:layout_marginRight="10dp"
+		        	android:background="@drawable/circle_gradient"
+		            android:id="@+id/btn_forward"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:src="@drawable/right" />
+
+
+		    <TextView
+		        android:id="@+id/text_title"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_centerVertical="true"
+		        android:text="@string/tabHistory_label"
+		        android:textColor="#FFFFFFFF"
+		        android:textSize="14sp"
+		        android:textStyle="bold" />
+		</RelativeLayout>
+		
+		
+		<ScrollView android:id="@+id/scrollView" 
+			android:layout_width="match_parent" 
+			android:layout_height="match_parent"
+			android:layout_marginTop="50dp">
+			<LinearLayout 				
+				android:id="@+id/objMainLayout" 
+				android:layout_height="match_parent" 
+				android:orientation="vertical" 
+				android:layout_width="match_parent">																		 											
+			</LinearLayout>
+		</ScrollView>
+		
+		<ImageView
+		    android:id="@+id/imageView2"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginLeft="24dp"
+		    android:layout_marginTop="47dp"
+		    android:src="@drawable/glm_arrow_down" />
+	</RelativeLayout>
+
+	
+
+</FrameLayout>

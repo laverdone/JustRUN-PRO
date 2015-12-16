@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="app_name_pro">Just Run</string>
+    <string name="app_name_buy">Just Run PRO</string>
+    <string name="app_description">Just Ran!</string>
+    <string name="about">About</string>
+    <string name="please_wait" translatable="false">Please Wait</string>
+    <string name="rate" translatable="false">Rate</string>
+    <string name="time">Time</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
+    <string name="exercise">Exercise</string>
+    <string name="pre">Preferences</string>
+    <string name="tabAbout_label">About</string>
+    <string name="tabHistory_label">History</string>
+    <string name="tabExercise_label">Exercise</string>
+    <string name="tabPref_label">Settings</string>
+    <string name="text_about">Developed By GLM-Labs</string>
+    <string name="prova_prompt">Select an criteria</string>
+    <string name="bike">bike</string>
+    <string name="ride">ride</string>
+    <string name="run">run</string>
+    <string name="sci">sci</string>
+    <string name="walk">walk</string>
+    <string name="about_1">This is an Personal Trainer.</string>
+    <string name="about_2" />
+    <string name="about_3" />
+    <string name="about_4">You can be able to share your exercise</string>
+    <string name="about_5">with your friends.</string>
+    <string name="about_6" />
+    <string name="about_7">Increase your performance with Android - Trainer</string>
+    <string name="author">GLM-Labs</string>
+    <string name="version">Version</string>
+    <string name="version_n">1.4.2</string>
+    <string name="email">glmlabs2011@gmail.com</string>
+    <string name="send">Send an Issue</string>
+    <string name="share_ok">Share Exercise Ok</string>
+    <string name="share_ko">Error Share Exercise</string>
+    <string name="tp_exercise">Type</string>
+    <string name="dett">Details</string>
+    <string name="click_dett" translatable="false">Click for Details</string>
+    <string name="maps">Map</string>
+    <string name="messagegpsnoenabled">GPS is disabled are you enabled?</string>
+    <string name="titlegps">GPS Status</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="pref_title">Preferences</string>
+    <string name="titleendapp">Close Trainer</string>
+    <string name="messageendapp">Are you sure you want to switch off the Trainer?</string>
+    <string name="btnstart">Start</string>
+    <string name="btnstop">Stop</string>
+    <string name="btnpause">Pause</string>
+    <string name="btnresume">Resume</string>
+    <string name="show_map">Display Map</string>
+    <string name="show_map_desc">Display map when you start the exercise.</string>
+    <string name="show_notification">Show Notification</string>
+    <string name="show_notification_desc">Display notification when you start the exercise.</string>
+    <string name="show_music">Play Music</string>
+    <string name="show_music_desc">Play a music during your Exercise</string>
+    <string name="use_external_player" translatable="false">Use System Player</string>
+    <string name="use_external_player_desc" translatable="false">Use the system player instead of internal</string>
+    <string name="show_motivator">Motivator</string>
+    <string name="show_motivator_desc_conf">Modify the parameter for the Motivator such as Voice, Time to Speech.</string>
+    <string name="show_motivator_desc">Enable/Disable the motivator during your Exercise</string>
+    <string name="motovatorvoice">Motivator Voice</string>
+    <string name="motovatortime">Motivator Time</string>
+    <string name="say_distance">Enable notification of distance during training.</string>
+    <string name="say_time">Enable notification of travel time during training.</string>
+    <string name="say_kalories">Enable notification of consuming calories during exercise.</string>
+    <string name="say_pace">Enable notification of running pace during training.</string>
+    <string name="say_inclination">Enable notification of inclination during training.</string>
+    <string name="general_pref">General</string>
+    <string name="general_pref_desc">General Options</string>
+    <string name="show_autopause">Autopause</string>
+    <string name="show_autopause_desc">Enable/Disable the autopause during your Exercise</string>
+    <string name="show_units">Units</string>
+    <string name="show_units_desc" translatable="false">Chose the unit to use</string>
+    <string name="interactive_trainer">Interactive Exercise</string>
+    <string name="interactive_trainer_desc">Automatically share yours exercise</string>
+    <string name="start_exercise">Start Exercise</string>
+    <string name="save_user">Save</string>
+    <string name="cancel_user">Cancel</string>
+    <string name="new_user">New User</string>
+    <string name="titledeleteexercise">Delete Exercise</string>
+    <string name="messagedeleteexercise">Are you sure you want to delete this exercise?</string>
+    <string name="back">prev.</string>
+    <string name="forward">next</string>
+    <string name="exercise_dett">Exercise</string>
+    <string name="exercise_graph">Graph</string>
+    <string name="user">User</string>
+    <string name="user_desc">Modify the User details such as weight, nick and share settings</string>
+    <string name="fb">facebook</string>
+    <string name="gbuzz">Google+</string>
+    <string name="tw">Twitter</string>
+    <string name="weight">Weight</string>
+    <string name="age">Age</string>
+    <string name="height">Height</string>
+    <string name="bmi">BMI</string>
+    <string name="plus" translatable="false">+</string>
+    <string name="minus">-</string>
+    <string name="startexercise">Start new Training</string>
+    <string name="startexercise_dett1">Click here if you want to \nstart new trainer.</string>
+    <string name="stopexercise">Stop Training</string>
+    <string name="pauseexercise">Pause Training</string>
+    <string name="resumexercise">Resume Training</string>
+    <string name="saveexercise">Save Training</string>
+    <string name="currentdistance">Current Distance</string>
+    <string name="miles">Miles</string>
+    <string name="kilometer">Kilometer</string>
+    <string name="nick">Nick</string>
+    <string name="name">Name</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="usersaved">User Saved</string>
+    <string name="step">Step</string>
+    <string name="distance">Distance</string>
+    <string name="kalories">Kalories</string>
+    <string name="kaloriesspeech">Kalories</string>
+    <string name="speed">Speed</string>
+    <string name="speed_avg">Average Speed</string>
+    <string name="speed_max">Maximum Speed</string>
+    <string name="pace">Pace</string>
+    <string name="pace_avg">Average Pace</string>
+    <string name="pace_max">Maximum Pace</string>
+    <string name="insertdata">Insert All Data</string>
+    <string name="track_weight">Track Weight</string>
+    <string name="track_weight_desc">Track your weight every exercise.</string>
+    <string name="weight_error">Insert correct number</string>
+    <string name="age_error">Insert correct number</string>
+    <string name="save_share">Save/Share</string>
+    <string name="edit_note">Modify Note</string>
+    <string name="save_note">Save Note</string>
+    <string name="start_new_exercise">is start running now!</string>
+    <string name="history_run">History - ran</string>
+    <string name="history_bike">History - bike</string>
+    <string name="history_walk">History - Walk</string>
+    <string name="listening_song">Listening</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="alt">Altitude</string>
+    <string name="exercise_export_ok">Export Exercise to</string>
+    <string name="exercise_export_ko">Unable to Export</string>
+    <string name="speach_measure_min_km">Minutes per kilometer</string>
+    <string name="min_km">Min/km</string>
+    <string name="speach_measure_min_miles">Minutes per mile</string>
+    <string name="min_miles">Min/Mi</string>
+    <string name="km_hours">Km/h</string>
+    <string name="miles_hours">Mi/h</string>
+    <string name="message_subject">This is my workout</string>
+    <string name="message_text">Hello Friend this is my workout I want to share with you.</string>
+    <string name="licenceok">Cheking licence ok</string>
+    <string name="licenceko">Cheking licence fail</string>
+    <string name="messagesaveworkout">Save workout?</string>
+    <string name="week" translatable="false">Week</string>
+    <string name="month" translatable="false">Month</string>
+    <string name="month1" translatable="false">Jan</string>
+    <string name="month2" translatable="false">Feb</string>
+    <string name="month3" translatable="false">Mar</string>
+    <string name="month4" translatable="false">Apr</string>
+    <string name="month5" translatable="false">May</string>
+    <string name="month6" translatable="false">Jun</string>
+    <string name="month7" translatable="false">Jul</string>
+    <string name="month8" translatable="false">Aug</string>
+    <string name="month9" translatable="false">Sep</string>
+    <string name="month10" translatable="false">Oct</string>
+    <string name="month11" translatable="false">Nov</string>
+    <string name="month12" translatable="false">Dec</string>
+    <string name="autopause_time">Autopause Time</string>
+    <string name="manual">Manual Workout</string>
+    <string name="note">Notes</string>
+    <string name="generic_error">Generic Error</string>
+    <string name="not_avail_manual">not available for manual workout</string>
+    <string name="only_in_full" />
+    <string name="manual_workout">Manual Exercise</string>
+    <string name="inclination">Inclination</string>
+    <string name="tabStore_label">Store</string>
+    <string name="donate">Donate</string>
+    <string name="store_title">Trainer Store</string>
+    <string name="restore" translatable="false">Restore Backup</string>
+    <string name="share">Share</string>
+    <string name="share_long">Share</string>
+    <string name="donate_desc">If you like this app make a Donation.</string>
+    <string name="target">Goal</string>
+    <string name="target_desc">Run with a goal</string>
+    <string name="changelog">ChangeLog</string>
+    <string name="not_show_goal">Don\'t show the goal in the next run. (Find under preferences)</string>
+    <string name="distancetogoal">to achieve the goal, come on!</string>
+    <string name="speedup">Increase the Speed</string>
+    <string name="speedok">Well, keep it up.</string>
+    <string name="cardio_polar">POLAR WEARLINK+ BLUETOOTH</string>
+    <string name="cardio_polar_desc">Enable the compatibility with</string>
+    <string name="cardio_polar_desc1">POLAR WEARLINK+ BLUETOOTH, so you record your BPM during workout.</string>
+    <string name="cardio">Cardio</string>
+    <string name="cardio_desc">Enable the compatibility with Cardio</string>
+    <string name="heart_rate">heart rate</string>
+    <string name="vote">Vote</string>
+    <string name="purchased" translatable="false">Purchased</string>
+    <string name="max_heart_rate" translatable="false">Maximum Heart Rate </string>
+    <string name="avg_heart_rate" translatable="false">Average Heart Rate</string>
+    <string name="full" translatable="false">Get Full Version</string>
+    <string name="gpsfix">Waiting for GPS data</string>
+    <string name="app_id" translatable="false">145289522214142</string>
+    <string name="virtualrace" translatable="false">Virtual Race</string>
+    <string name="virtualrace_desc" translatable="false">Enable Virtual Race Support</string>
+    <string name="listening" translatable="false">Listening</string>
+    <string name="erase" translatable="false">Remove</string>
+    <string name="title_activity_new_main" translatable="false">NewMainActivity</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="title_section1" translatable="false">Workout</string>
+    <string name="title_section2" translatable="false">Summary</string>
+    <string name="title_section3" translatable="false">Preferences</string>
+    <string name="title_section4" translatable="false">Store</string>
+    <string name="title_section5" translatable="false">About</string>
+    <string name="title_activity_history_list" translatable="false">HistoryList</string>
+
+    <string name="title_activity_chart_summary">Chart Summary</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>

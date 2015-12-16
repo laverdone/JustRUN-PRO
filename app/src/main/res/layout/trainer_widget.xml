@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/glm_popup" 
+    android:padding="5dp">
+
+   <TextView
+        android:id="@+id/lblTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:layout_marginTop="20dp"
+		android:layout_marginLeft="70dp"
+        android:text="@string/step"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="10dip"
+        android:textColor="#000000"/>
+    
+    <TextView
+        android:id="@+id/txtSteps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:layout_marginTop="20dp"
+		android:layout_marginLeft="130dp"
+        android:text="-"
+        android:textColor="#000000" 
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="10dip"
+        android:textStyle="bold"/>
+    
+    <TextView
+        android:id="@+id/lblDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/lblTime"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/distance"
+        android:textColor="#000000" 
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="10dip"/>    
+
+    <TextView
+        android:id="@+id/txtDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtSteps"
+		android:layout_marginTop="10dp"
+		android:layout_marginLeft="130dp"
+        android:text="-"
+        android:textColor="#000000" 
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="10sp"/>
+    
+    
+    <TextView
+        android:id="@+id/lblKalories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+    	android:layout_below="@+id/lblDistance"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/kalories"
+        android:textColor="#000000" 
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="10sp"/>
+
+     <TextView
+        android:id="@+id/txtKalories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+    	android:layout_below="@+id/txtDistance"
+        android:layout_marginLeft="130dp"
+        android:layout_marginTop="10dp"
+        android:gravity="right"
+        android:text="-"
+        android:textColor="#000000" 
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="10sp"
+        />
+
+    <ImageView
+        android:id="@+id/imgTrainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/icon_pro" 
+        android:clickable="true"/>
+
+</RelativeLayout> 

@@ -1,0 +1,29 @@
+<html>
+ <head>       
+    <script language="javascript" type="text/javascript" src="./js/jquery.js"></script>
+    <script language="javascript" type="text/javascript" src="./js/jquery.flot.js"></script>     
+    <style type="text/css"> 
+    html, body {
+        height: 100%; /* make the percentage height on placeholder work */
+    }
+    .message {
+        padding-left: 50px;
+        font-size: smaller;
+    }
+    </style> 
+ </head>
+    <body leftmargin="0" rightmargin="0" topmargin="0" bottommargin="0" bgcolor="#000000" style="scrolling:no;">   
+    <div id="placeholder" style="width:104%;height:100%;"></div>		
+<script type="text/javascript">
+var plot;
+var updateInterval = 30;
+function loadRealTimeHTML(){	
+	//var plot = $.plot(placeholder, data, options);
+	plot = $.plot(placeholder, data, options);
+	
+}
+
+window.jshandler.loadRealTimeExercise();
+</script>
+</body>
+</html>

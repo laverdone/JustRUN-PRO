@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="app_name">Android - Trainer</string>
+    <string name="about">About</string>
+    <string name="history">History</string>
+    <string name="exercise">Exercise</string>
+    <string name="pre">Preferences</string>
+    <string name="tabAbout_label"/>
+    <string name="tabHistory_label"/>
+    <string name="tabExercise_label"/>
+    <string name="tabPref_label"/>
+    <string name="text_about">Sviluppato da GLM</string>
+    <string name="prova_prompt">Scegli un criterio</string>
+	<string name="bike">bike</string>
+	<string name="ride">ride</string>
+	<string name="run">run</string>
+	<string name="sci">sci</string>
+	<string name="walk">walk</string>
+	<string name="about_1">This is an Personal Trainer for your Exercise.</string>
+	<string name="about_2"/>
+	<string name="about_3"/>
+	<string name="about_4">You can be able to share your exercise</string>
+	<string name="about_5">with your friend.</string>
+	<string name="about_6"/>
+	<string name="about_7">Increase your performance with motivator</string>
+	<string name="author">Gianluca Masci</string>
+	<string name="version">1.0</string>
+	<string name="email">glmlabs2011@gmail.com</string>
+	<string name="send">Send an Issue</string>
+	<string name="new_exercise">Start New Exercise</string>
+	<string name="tp_exercise">Type</string>
+	<string name="dett">Details</string>
+	<string name="maps">Maps</string>
+	<string name="messagegpsnoenabled">GPS is Disabled</string>
+	<string name="titlegps">GPS Status</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+	<string name="pref_title">Preferences</string>
+	<string name="titleendapp">Close Trainer</string>
+    <string name="messageendapp">Are you sure do you want to close Trainer?</string>
+    <string name="btnstart">Start</string>
+    <string name="btnpause">Pause</string>
+    <string name="btnresume">Resume</string>
+</resources>

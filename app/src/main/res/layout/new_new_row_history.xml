@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 	
+	android:layout_height="wrap_content" 
+	android:layout_width="match_parent" 
+	android:orientation="vertical"
+	android:layout_margin="2dip"	
+	android:id="@+id/objMainLayout" 	
+	android:gravity="right">
+
+    <LinearLayout
+        android:id="@+id/internal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"        
+        android:orientation="vertical"
+        android:padding="0dp">
+        <RelativeLayout
+            android:id="@+id/InternalRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="0dip" >
+            <RelativeLayout
+                android:id="@+id/titleBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/lista_gradient" >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:orientation="vertical" >
+                    <TextView
+                        android:id="@+id/txtDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="10 Lug 2012"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="14sp"
+                        android:textStyle="bold" android:layout_marginBottom="10dp" android:gravity="center"
+                        android:background="@drawable/glm_container"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+                        <ImageView
+                            android:id="@+id/imgTime"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/time" />
+                        <ImageButton
+                            android:id="@+id/btnDett"
+                            android:layout_width="50dp"
+                            android:layout_height="70dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
+                            android:background="@drawable/lista_gradient"
+                            android:src="@drawable/expand_right"
+                            android:text="Button" />
+                        <ImageView
+                            android:id="@+id/imgBurn"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignLeft="@+id/imgMetric"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="68dp"
+                            android:src="@drawable/burn" />
+                        <ImageView
+                            android:id="@+id/imgTypeExercise"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true" />
+                        <TextView
+                            android:id="@+id/txtTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/imgTime"
+                            android:layout_toRightOf="@+id/imgTime"
+                            android:text="75 Min"
+                            android:textColor="#FFFFFF" />
+                        <TextView
+                            android:id="@+id/txtKm"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_toRightOf="@+id/imgTypeExercise"
+                            android:text="10,5 Km/h"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12dip" />
+                        <TextView
+                            android:id="@+id/txtKal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_toRightOf="@+id/imgBurn"
+                            android:text="368 Kal"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12dip" />
+                        <TextView
+                            android:id="@+id/txtDistance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/imgMetric"
+                            android:layout_alignLeft="@+id/txtKal"
+                            android:editable="false"
+                            android:text="30Km"
+                            android:textColor="#FFFFFF" />
+                        <ImageView
+                            android:id="@+id/imgMetric"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/metrics" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+		
+</LinearLayout>

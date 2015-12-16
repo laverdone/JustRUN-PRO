@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 	
+	android:layout_height="wrap_content" 
+	android:layout_width="match_parent" 
+	android:layout_margin="0dip"
+	android:background="@drawable/lista_gradient"
+	android:id="@+id/objMainLayout" 
+	android:clickable="true" android:orientation="vertical">
+		
+    <LinearLayout 
+    	android:layout_height="match_parent" 
+    	android:id="@+id/internal" 
+    	android:layout_weight="1" 
+    	android:gravity="center" 
+    	android:orientation="horizontal" 
+    	android:layout_width="match_parent"
+    	android:layout_marginTop="20dip"
+    	android:layout_marginBottom="20dip">
+        <Button 
+        	android:layout_height="wrap_content" 
+        	android:layout_width="wrap_content" 
+        	android:background="@drawable/lista_gradient" 
+        	android:id="@+id/btn_plus"
+        	android:text="+"
+	        android:textSize="30sp"
+	        android:padding="8dip"
+	        android:layout_marginRight="5dip"></Button>
+        <EditText 
+	        android:numeric="integer" 	       
+	        android:layout_height="wrap_content" 
+	        android:background="@drawable/back_button_shape" 
+	        android:layout_width="90dip" 
+	        android:text="0"
+	        android:id="@+id/txtWeight"
+	        android:gravity="center_horizontal"
+	        android:textColor="#FFFFFF" 
+	        android:textStyle="bold" ></EditText>
+        <Button 
+       		android:layout_marginLeft="5dip"
+	        android:layout_height="wrap_content"         
+	        android:id="@+id/btn_minus" 
+	        android:background="@drawable/lista_gradient" 
+	        android:layout_width="wrap_content" 
+	        android:text="-"
+	        android:textSize="30sp"
+	        android:padding="8dip"></Button>
+    </LinearLayout>    
+</LinearLayout>

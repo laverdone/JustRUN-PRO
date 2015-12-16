@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:state_checkable="true">
+		<layer-list>
+			<item>
+				<shape xmlns:android="http://schemas.android.com/apk/res/android"
+					android:shape="rectangle">
+					<gradient android:startColor="#00BBBBBB" android:endColor="#00777777"
+						android:angle="0" />
+					<padding android:left="12dp" android:top="7dp"
+						android:right="12dp" android:bottom="7dp" />
+					<corners android:radius="6dp" />
+					<stroke android:width="2dp" android:color="#00AAAAAA" />
+				</shape>
+			</item>
+			<item android:drawable="@drawable/left" />
+			<item>
+				<shape xmlns:android="http://schemas.android.com/apk/res/android"
+					android:shape="rectangle">
+					<gradient android:startColor="#55BBBBBB" android:endColor="#55777777"
+						android:angle="0" />
+					<corners android:radius="6dp" />
+					<stroke android:width="2dp" android:color="#55AAAAAA" />
+				</shape>
+			</item>
+		</layer-list>
+	</item>
+	<item android:state_pressed="true">
+		<layer-list>
+			<item>
+				<shape xmlns:android="http://schemas.android.com/apk/res/android"
+					android:shape="rectangle">
+					<gradient android:startColor="#55FFFFFF" android:endColor="#55BBBBBB"
+						android:angle="0" />
+					<padding android:left="12dp" android:top="7dp"
+						android:right="12dp" android:bottom="7dp" />
+					<corners android:radius="6dp" />
+					<stroke android:width="2dp" android:color="#55AAAAAA" />
+				</shape>
+			</item>
+			<item android:drawable="@drawable/left" />
+		</layer-list>
+	</item>
+	<item>
+		<layer-list>
+			<item>
+				<shape xmlns:android="http://schemas.android.com/apk/res/android"
+					android:shape="rectangle">
+					<gradient android:startColor="#33FFFFFF" android:endColor="#33BBBBBB"
+						android:angle="180" />
+					<padding android:left="12dp" android:top="7dp"
+						android:right="12dp" android:bottom="7dp" />
+					<corners android:radius="6dp" />
+					<stroke android:width="2dp" android:color="#44444444" />
+				</shape>
+			</item>
+			<item android:drawable="@drawable/left" />
+		</layer-list>
+	</item>
+</selector>

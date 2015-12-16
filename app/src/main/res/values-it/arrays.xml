@@ -1,0 +1,30 @@
+<resources>
+    <string-array name="motivators">
+        <item>Voce Naturale</item>
+        <item>Voce TTS</item>        
+    </string-array> 
+    <string-array name="motivator_time">
+        <item>Breve (1 Min)</item>
+        <item>Medio (3 Min)</item>
+        <item>Lungo (5 Min)</item>     
+    </string-array>  
+    <string-array name="units">
+        <item>Kg/Km/Ore</item>
+        <item>Lbs/Miglie/Ore</item>           
+    </string-array>
+    <string-array name="autopausetime">
+        <item>- nessuna -</item>
+        <item>Breve (1 Min)</item>
+        <item>Medio (3 Min)</item>
+        <item>Lungo (5 Min)</item>     
+    </string-array>      
+    <string-array name="goal_distance_km">
+        <item>-</item>
+        <item>5Km</item>
+        <item>10Km</item>
+        <item>15Km</item> 
+        <item>Mezza Maratona</item> 
+        <item>Allenamento Lungo (31Km)</item>  
+        <item>Maratona</item>     
+    </string-array>     
+</resources>

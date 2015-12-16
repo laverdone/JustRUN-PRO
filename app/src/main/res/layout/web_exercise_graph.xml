@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 	
+	android:layout_height="match_parent" 
+	android:layout_width="match_parent" 
+	android:orientation="vertical"
+	android:paddingTop="@dimen/activity_vertical_margin"
+	    		android:paddingBottom="@dimen/activity_vertical_margin"
+	    		android:paddingLeft="@dimen/activity_horizontal_margin"
+	    		android:paddingRight="@dimen/activity_horizontal_margin"
+	android:id="@+id/objMainLayout" 	
+	android:background="@drawable/carbon_fibre" android:gravity="right"
+	android:keepScreenOn="true" >
+			<ScrollView
+			    android:id="@+id/scrollView1"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="1" >
+				<LinearLayout
+				    android:id="@+id/internal"
+				    android:layout_width="match_parent"
+				    android:layout_height="wrap_content"
+				    android:layout_weight="1"
+				    android:orientation="vertical" >
+				    <RelativeLayout
+				        android:id="@+id/graphLayoutPACE"
+				        android:layout_width="match_parent"
+				        android:layout_height="200dp"
+				        android:background="@drawable/lista_gradient"
+				        android:orientation="vertical" >
+				        <ProgressBar
+				            android:id="@+id/waitForGraphPACE"
+				            style="?android:attr/progressBarStyleLarge"
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:layout_centerHorizontal="true"
+				            android:layout_centerVertical="true" />
+						<view class="com.glm.chart.NewLineChart"
+							android:id="@+id/chartPACE"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"/>
+				    </RelativeLayout>
+				    <RelativeLayout
+				        android:id="@+id/graphLayoutALT"
+				        android:layout_width="match_parent"
+				        android:layout_height="200dp"
+				        android:background="@drawable/lista_gradient"
+				        android:orientation="vertical" >
+				        <ProgressBar
+				            android:id="@+id/waitForGraphALT"
+				            style="?android:attr/progressBarStyleLarge"
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:layout_centerHorizontal="true"
+				            android:layout_centerVertical="true" />
+						<view class="com.glm.chart.NewLineChart"
+							android:id="@+id/chartALT"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"/>
+				    </RelativeLayout>
+				    <RelativeLayout
+				        android:id="@+id/graphLayoutHEART"
+				        android:layout_width="match_parent"
+				        android:layout_height="200dp"
+				        android:background="@drawable/lista_gradient"
+				        android:orientation="vertical" >
+				        <ProgressBar
+				            android:id="@+id/waitForGraphHEART"
+				            style="?android:attr/progressBarStyleLarge"
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:layout_centerHorizontal="true"
+				            android:layout_centerVertical="true" />
+						<view class="com.glm.chart.NewLineChart"
+							android:id="@+id/chartHEART"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"/>
+				    </RelativeLayout>
+				</LinearLayout>
+			</ScrollView>
+</LinearLayout> 

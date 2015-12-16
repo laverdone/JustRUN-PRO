@@ -1,0 +1,16 @@
+<html><head>
+	<link rel="stylesheet" href="./css/style.mobile.css" type="text/css" />
+    
+ 	<script language="javascript" type="text/javascript" src="./js/OpenLayers.js?mobile"></script>
+  	<script type="text/javascript" src="./js/mobile-navigation.js"></script>
+</head>
+<body onload="init()" leftmargin="0" rightmargin="0" topmargin="0" bottommargin="0" bgcolor="#FFFFFF">
+  <div style="width:104%" id="map"></div>
+  <script>        
+  	//map = new OpenLayers.Map("mapdiv");
+	//map.addLayer(new OpenLayers.Layer.OSM());
+	var zoom=10;
+	
+	setInterval("movepoint();",5000);
+  </script>
+</body></html>

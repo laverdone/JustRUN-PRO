@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 	
+	android:layout_height="match_parent" 
+	android:layout_width="match_parent" 
+	android:orientation="vertical"
+	android:paddingTop="@dimen/activity_vertical_margin"
+	    		android:paddingBottom="@dimen/activity_vertical_margin"
+	    		android:paddingLeft="@dimen/activity_horizontal_margin"
+	    		android:paddingRight="@dimen/activity_horizontal_margin"
+
+	android:background="@drawable/carbon_fibre" 
+	android:gravity="right">
+	<RelativeLayout 
+		android:layout_height="match_parent" 
+		android:layout_width="match_parent" 
+		android:orientation="vertical"
+		android:layout_margin="0dip"
+		android:clickable="true" android:gravity="right">
+		<ScrollView 
+	        	android:id="@+id/scrollView" 
+	        	android:layout_width="match_parent" 
+	        	android:layout_height="match_parent"
+	        	android:layout_marginTop="0dp">
+				<LinearLayout
+				    android:id="@+id/internal"
+				    android:layout_width="match_parent"
+				    android:layout_height="match_parent"
+				    android:orientation="vertical"
+				    android:padding="5dip" >
+					<!-- Run Workout -->
+					<LinearLayout
+					    android:layout_width="match_parent"
+					    android:layout_height="100dp"
+					    android:layout_marginBottom="20dp"
+					    android:layout_marginTop="0dip"
+					    android:background="@drawable/glm_title"
+					    android:orientation="vertical"
+					    android:padding="0dip" >
+					    <RelativeLayout
+					        android:layout_width="match_parent"
+					        android:layout_height="match_parent"				     
+					        android:layout_marginTop="5dip"
+					        android:orientation="horizontal"
+					        android:padding="5dip" >
+					        <TextView
+					            android:id="@+id/textView1"
+					            android:layout_width="wrap_content"
+					            android:layout_height="wrap_content"
+					            android:layout_alignBottom="@+id/txtBMI"
+					            android:layout_alignParentLeft="true"
+					            android:text="@string/about_1"
+					            android:textAppearance="?android:attr/textAppearanceSmall" />
+					        <TextView
+					            android:id="@+id/txtBMI"
+					            android:layout_width="wrap_content"
+					            android:layout_height="wrap_content"
+					            android:layout_alignParentBottom="true"
+					            android:layout_alignParentRight="true"
+					            android:text="BMI"
+					            android:textAppearance="?android:attr/textAppearanceLarge" />
+					        <ImageButton
+					            android:id="@+id/imgBtnPreferences"
+					            android:layout_width="40dp"
+					            android:layout_height="40dp"
+					            android:layout_alignParentLeft="true"
+					            android:layout_alignParentTop="true"
+					            android:background="@drawable/lista_gradient"
+					            android:src="@android:drawable/ic_menu_preferences" />
+					        <TextView
+					            android:id="@+id/TextView03"
+					            android:layout_width="wrap_content"
+					            android:layout_height="wrap_content"
+					            android:layout_alignBaseline="@+id/txtBMI"
+					            android:layout_alignBottom="@+id/txtBMI"
+					            android:layout_toLeftOf="@+id/txtBMI"
+					            android:text="BMI"
+					            android:layout_marginRight="5dp"
+					            android:textAppearance="?android:attr/textAppearanceLarge" />
+					        <ImageButton
+					            android:id="@+id/imgBtnMore"
+					            android:layout_width="40dp"
+					            android:layout_height="40dp"
+					            android:layout_alignParentTop="true"
+					            android:layout_alignRight="@+id/txtBMI"
+					            android:background="@drawable/lista_gradient"
+					            android:src="@android:drawable/ic_menu_more" />
+					    </RelativeLayout>
+					</LinearLayout>
+					<LinearLayout
+					    android:layout_width="match_parent"
+					    android:layout_height="match_parent"
+					    android:layout_marginTop="0dip"
+					    android:orientation="vertical"
+					    android:padding="0dip"
+					    android:layout_marginBottom="5dp" >
+						<RelativeLayout
+						    android:id="@+id/btn_start_running"
+						    android:layout_width="match_parent"
+						    android:layout_height="wrap_content"
+						    android:layout_marginTop="10dip"
+						    android:background="@drawable/lista_gradient"
+						    android:clickable="true"
+						    android:orientation="horizontal"
+						    android:padding="10dip" >
+						    <ImageView
+						        android:id="@+id/imageView1"
+						        android:layout_width="wrap_content"
+						        android:layout_height="wrap_content"
+						        android:background="@android:color/transparent"
+						        android:src="@drawable/running" />
+						    <TextView
+						        android:id="@+id/textView2"
+						        android:layout_width="wrap_content"
+						        android:layout_height="wrap_content"
+						        android:layout_alignBottom="@+id/imageView1"
+						        android:layout_alignParentRight="true"
+						        android:text="@string/startexercise_dett1"
+						        android:textAppearance="?android:attr/textAppearanceSmall" />
+						</RelativeLayout>
+					</LinearLayout>
+					<LinearLayout
+					    android:layout_width="match_parent"
+					    android:layout_height="match_parent"
+					    android:layout_marginTop="0dip"
+					    android:orientation="vertical"
+					    android:padding="0dip"
+					    android:layout_marginBottom="5dp" >
+					    <RelativeLayout
+					        android:id="@+id/btn_start_walking"
+					        android:layout_width="match_parent"
+					        android:layout_height="wrap_content"
+					        android:layout_marginTop="10dip"
+					        android:background="@drawable/lista_gradient"
+					        android:orientation="horizontal"
+					        android:padding="10dip" >
+					        <ImageButton
+					            android:id="@+id/imageButton1"
+					            android:layout_width="wrap_content"
+					            android:layout_height="wrap_content"
+					            android:background="@android:color/transparent"
+					            android:src="@drawable/walking" />
+					        <TextView
+					            android:id="@+id/TextView01"
+					            android:layout_width="wrap_content"
+					            android:layout_height="wrap_content"
+					            android:layout_alignBottom="@+id/imageButton1"
+					            android:layout_alignParentRight="true"
+					            android:text="@string/startexercise_dett1"
+					            android:textAppearance="?android:attr/textAppearanceSmall" />
+					    </RelativeLayout>
+					</LinearLayout>
+					<LinearLayout
+					    android:layout_width="match_parent"
+					    android:layout_height="match_parent"
+					    android:layout_marginTop="0dip"
+					    android:orientation="vertical"
+					    android:padding="0dip">
+						<RelativeLayout
+						    android:id="@+id/btn_start_biking"
+						    android:layout_width="match_parent"
+						    android:layout_height="wrap_content"
+						    android:layout_marginTop="10dip"
+						    android:background="@drawable/lista_gradient"
+						    android:orientation="horizontal"
+						    android:padding="10dip" >
+						    <ImageButton
+						        android:id="@+id/imageButton2"
+						        android:layout_width="wrap_content"
+						        android:layout_height="wrap_content"
+						        android:background="@android:color/transparent"
+						        android:src="@drawable/biking" />
+						    <TextView
+						        android:id="@+id/TextView02"
+						        android:layout_width="wrap_content"
+						        android:layout_height="wrap_content"
+						        android:layout_alignBottom="@+id/imageButton2"
+						        android:layout_alignParentRight="true"
+						        android:text="@string/startexercise_dett1"
+						        android:textAppearance="?android:attr/textAppearanceSmall" />
+						</RelativeLayout>
+					</LinearLayout>
+					<!-- Run Workout -->
+					
+					<!-- Walk Workout -->
+					<!-- Walk Workout -->
+					
+					<!-- Bike Workout -->
+					<!-- Bike Workout -->
+					
+					<!-- Function Trainer -->
+					<!-- Function Trainer -->				
+				</LinearLayout>		
+			</ScrollView>
+	</RelativeLayout>
+</LinearLayout>	

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:id="@+id/bg_about"
+	android:gravity="top" android:layout_height="match_parent">
+    <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout3" android:gravity="top" android:orientation="vertical" android:layout_height="wrap_content">
+        <RelativeLayout android:padding="6dip" android:background="@drawable/lista_title" android:layout_width="fill_parent" android:layout_height="match_parent" android:id="@+id/relativeLayout1">
+            <LinearLayout android:layout_width="match_parent" android:id="@+id/linearLayout1" android:layout_height="wrap_content"></LinearLayout>
+            <TextView android:text="@string/exercise_graph" android:textColor="#FFFFFFFF" android:id="@+id/text_title" android:textSize="14sp" android:layout_centerHorizontal="true" android:layout_width="wrap_content" android:textStyle="bold" android:layout_centerVertical="true" android:layout_height="wrap_content"></TextView>
+        </RelativeLayout>
+        <LinearLayout android:orientation="vertical" android:background="@drawable/gradient_trainer_row" android:id="@+id/graphContainer" android:layout_width="match_parent" android:layout_height="match_parent"></LinearLayout>
+        <ScrollView android:id="@+id/scrollView" android:layout_width="match_parent" android:layout_height="match_parent">
+	  </ScrollView>
+    </LinearLayout>
+    
+</RelativeLayout>

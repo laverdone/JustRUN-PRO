@@ -1,0 +1,79 @@
+div.olControlZoomPanel {
+    height: 108px
+    width: 36px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: none;
+}
+div.olControlZoomPanel div {
+    width: 36px;
+    height: 36px;
+    background-image: url(img/mobile-zoombar.png);
+    left: 0;
+    display: none;
+}
+div.olControlZoomPanel .olControlZoomInItemInactive {
+    top: 0;
+    background-position: 0 0;
+    display: none;
+}
+div.olControlZoomPanel .olControlZoomToMaxExtentItemInactive {
+    top: 36px;
+    background-position: 0 -36px;
+    display: none;
+}
+div.olControlZoomPanel .olControlZoomOutItemInactive {
+    top: 72px;
+    background-position: 0 -72px;
+    display: none;
+}
+.olControlAttribution {
+                position      : absolute;
+                font-size     : 10px;
+                bottom        : 0 !important;
+                right         : 0 !important;
+                background    : rgba(0,0,0,0.1);
+                font-family   : Arial;
+                padding       : 2px 4px;
+                border-radius : 5px 0 0 0;
+                display: none;
+            }
+            div.olControlZoomPanel .olControlZoomInItemInactive,
+            div.olControlZoomPanel .olControlZoomOutItemInactive {
+                background: rgba(0,0,0,0.2);
+                position: absolute;
+                display: none;
+            }
+            div.olControlZoomPanel .olControlZoomInItemInactive {
+                border-radius: 5px 5px 0 0;
+                display: none;
+            }
+            div.olControlZoomPanel .olControlZoomOutItemInactive {
+                border-radius: 0 0 5px 5px ;
+                top: 37px;
+                display: none;
+            }
+            div.olControlZoomPanel .olControlZoomOutItemInactive:after ,
+            div.olControlZoomPanel .olControlZoomInItemInactive:after{
+                font-weight: bold;
+                content   : '+';
+                font-size : 36px;
+                padding:  7px;
+                z-index: 2000;
+                color     : #fff;
+                line-height: 1em;
+                display: none;
+            }
+            div.olControlZoomPanel .olControlZoomOutItemInactive:after{
+                content: '-';
+                line-height: 0.9em;
+                padding: 0 8px;
+                display: none;
+            }
+            div.olControlZoomPanel .olControlZoomToMaxExtentItemInactive {
+                display: none;
+            }
+            #title, #tags, #shortdesc {
+                display: none;
+            }

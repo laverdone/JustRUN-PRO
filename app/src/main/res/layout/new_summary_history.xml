@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 	
+	android:layout_height="match_parent" 
+	android:layout_width="match_parent" 
+	android:orientation="vertical"
+	android:paddingTop="@dimen/activity_vertical_margin"
+	    		android:paddingBottom="@dimen/activity_vertical_margin"
+	    		android:paddingLeft="@dimen/activity_horizontal_margin"
+	    		android:paddingRight="@dimen/activity_horizontal_margin"
+
+	android:background="@drawable/carbon_fibre" 
+	android:gravity="right">	
+<RelativeLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    
+    android:padding="0dip" >
+    <ScrollView
+        android:id="@+id/scrollViewSummary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dip"
+        android:visibility="visible" >
+        <LinearLayout
+            android:id="@+id/internal"
+            android:layout_width="match_parent"
+            android:layout_height="508dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+            <!-- Dettaglio Graph Inizio -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+                <ImageButton
+                    android:id="@+id/imgBtnMore"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/lista_gradient"
+                    android:src="@android:drawable/ic_menu_more" />
+                <TextView
+                    android:id="@+id/textDistance_tot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="right"
+                    android:text="30,9Km"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="18dip"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="1dp" >
+                <!-- 1 Row -->
+                <!-- 1 Row -->
+                <!-- 2 Row -->
+                <!-- 2 Row -->
+                <RelativeLayout
+                    android:id="@+id/llGraph"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dip"
+                    android:background="@drawable/web_container"
+                    android:orientation="vertical" >
+                    <ProgressBar
+                        android:id="@+id/progressBar1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true" />
+                </RelativeLayout>
+            </LinearLayout>
+            <!-- Dettaglio Graph Inizio -->
+            <!-- Separator -->
+            <!-- Separator -->
+            <!-- RUN -->
+            <LinearLayout
+                android:id="@+id/rowRun"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                 >
+                <Button
+                    android:id="@+id/imgBtnDett"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:padding="10dip"
+                    android:background="@drawable/lista_gradient_no_corners" 
+                    android:text="@string/click_dett"
+                    android:textColor="@android:color/darker_gray"/>
+                   <!--  <TextView
+                        android:id="@+id/txtDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/history_run"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <ImageButton
+                        android:id="@+id/imgBtnDett"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/circle"
+                        android:src="@android:drawable/ic_menu_info_details" />
+                </RelativeLayout> -->
+                <RelativeLayout
+                    android:id="@+id/MiddleBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dip"
+                    android:background="@drawable/glm_container" >
+                    <ImageView
+                        android:id="@+id/imgBurn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignBottom="@+id/txtKal"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="100dp"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/burn" />
+                    <ImageView
+                        android:id="@+id/imgTypeExercise"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/running" />
+                    <ImageView
+                        android:id="@+id/imgMetric"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentTop="true"
+                         android:layout_alignParentRight="true"
+                        android:layout_marginRight="100dp"
+                        android:src="@drawable/metrics" />
+                    <TextView
+                        android:id="@+id/textDistance_run"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="170dp"
+                        android:layout_marginTop="10dp"
+                        android:editable="false"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="-"
+                        android:textColor="#FFFFFF" />
+                    <TextView
+                        android:id="@+id/textKal_run"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="170dp"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="-"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12dip" />
+                </RelativeLayout>
+            </LinearLayout>
+            <!-- RUN -->
+            <!-- Separator -->
+            <!-- Separator -->
+            <!-- WALK -->
+            <LinearLayout
+                android:id="@+id/rowWalk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+                <RelativeLayout
+                    android:id="@+id/RelativeLayout02"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/glm_container"
+                    android:padding="20dip" >
+                    <ImageView
+                        android:id="@+id/ImageView03"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignBottom="@+id/txtKal"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="100dp"
+                        android:src="@drawable/burn" />
+                    <ImageView
+                        android:id="@+id/ImageView02"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/walking" />
+                    <ImageView
+                        android:id="@+id/ImageView01"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="100dp"
+                        android:src="@drawable/metrics" />
+                    <TextView
+                        android:id="@+id/textDistance_walk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="170dp"
+                        android:layout_marginTop="10dp"
+                        android:editable="false"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="-"
+                        android:textColor="#FFFFFF" />
+                    <TextView
+                        android:id="@+id/textKal_walk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="170dp"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="-"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12dip" />
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/rowBike"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+                <RelativeLayout
+                    android:id="@+id/RelativeLayout04"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/glm_container"
+                    android:padding="20dip" >
+                    <ImageView
+                        android:id="@+id/ImageView06"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignBottom="@+id/txtKal"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="100dp"
+                        android:src="@drawable/burn" />
+                    <ImageView
+                        android:id="@+id/ImageView05"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/running" />
+                    <ImageView
+                        android:id="@+id/ImageView04"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="100dp"
+                        android:src="@drawable/metrics" />
+                    <TextView
+                        android:id="@+id/textDistance_bike"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="170dp"
+                        android:layout_marginTop="10dp"
+                        android:editable="false"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="-"
+                        android:textColor="#FFFFFF" />
+                    <TextView
+                        android:id="@+id/textKal_bike"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="170dp"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="-"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12dip" />
+                </RelativeLayout>
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+    <ProgressBar
+        android:id="@+id/waitForLoad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" 
+        style="?android:attr/progressBarStyleLarge"/>
+</RelativeLayout>
+</LinearLayout>	
