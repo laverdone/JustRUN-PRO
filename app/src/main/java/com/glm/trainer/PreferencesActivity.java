@@ -1,9 +1,8 @@
 package com.glm.trainer;
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -16,8 +15,7 @@ import com.glm.app.fragment.UserFragment;
 
 import java.util.Locale;
 
-public class PreferencesActivity extends FragmentActivity implements
-ActionBar.TabListener {
+public class PreferencesActivity extends FragmentActivity  {
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -37,51 +35,69 @@ ActionBar.TabListener {
 	private PreferencesFragment oPreferences=null;
 	private UserFragment 		oUser=null;
 	private boolean isFirstLaunch = false;
+	private int iPrefType=0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);   
 		Bundle extras = getIntent().getExtras();
 		if(extras !=null){
 			isFirstLaunch = extras.getBoolean("first_launch");
+			iPrefType	  = extras.getInt("pref_type");
 		}    
 		setContentView(R.layout.activity_new_main);
 
-		// Set up the action bar.
-		final ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setDisplayShowTitleEnabled(false);
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
+
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager());
 
+		TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+		if(iPrefType==1){
+			tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(0)));
+			tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+		}
+		if(iPrefType==2){
+			tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(1)));
+			tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+		}
+		if(iPrefType==3){
+			tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(2)));
+			tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+		}
+
+		if(iPrefType==4){
+			tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(3)));
+			tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+		}
+
+
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
+
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-		if(isFirstLaunch) mViewPager.setOffscreenPageLimit(1);
+		if(isFirstLaunch || iPrefType>0) mViewPager.setOffscreenPageLimit(1);
 		else mViewPager.setOffscreenPageLimit(4);
 		// When swiping between different sections, select the corresponding
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
 		// a reference to the Tab.
-		mViewPager
-		.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+		mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+		tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 			@Override
-			public void onPageSelected(int position) {
-				actionBar.setSelectedNavigationItem(position);
+			public void onTabSelected(TabLayout.Tab tab) {
+
+				mViewPager.setCurrentItem(tab.getPosition());
+			}
+
+			@Override
+			public void onTabUnselected(TabLayout.Tab tab) {
+
+			}
+
+			@Override
+			public void onTabReselected(TabLayout.Tab tab) {
+
 			}
 		});
-
-		// For each of the sections in the app, add a tab to the action bar.
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			// Create a tab with text corresponding to the page title defined by
-			// the adapter. Also specify this Activity object, which implements
-			// the TabListener interface, as the callback (listener) for when
-			// this tab is selected.
-			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
-					.setTabListener(this));
-		}
 	}
 
 	@Override
@@ -101,24 +117,6 @@ ActionBar.TabListener {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		//getMenuInflater().inflate(R.menu.main, menu);
 		return true;
-	}
-
-	@Override
-	public void onTabSelected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
-		// When the given tab is selected, switch to the corresponding page in
-		// the ViewPager.
-		mViewPager.setCurrentItem(tab.getPosition());
-	}
-
-	@Override
-	public void onTabUnselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
-	}
-
-	@Override
-	public void onTabReselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
 	}
 
 	/**
@@ -145,10 +143,32 @@ ActionBar.TabListener {
 					oUser.setContext(PreferencesActivity.this);
 					return oUser;
 				}else{
-					//Notification PREFERENCES
-					oPreferences =new PreferencesFragment();
-					oPreferences.setContext(PreferencesActivity.this,position);
-					return oPreferences;
+					if(iPrefType==1){
+						//Notification PREFERENCES
+						oPreferences =new PreferencesFragment();
+						oPreferences.setContext(PreferencesActivity.this,0);
+						return oPreferences;
+					}else if(iPrefType==2){
+						//General PREFERENCES
+						oPreferences =new PreferencesFragment();
+						oPreferences.setContext(PreferencesActivity.this,1);
+						return oPreferences;
+					}else if(iPrefType==3){
+						//Trainer PREFERENCES
+						oPreferences =new PreferencesFragment();
+						oPreferences.setContext(PreferencesActivity.this,2);
+						return oPreferences;
+					}else if(iPrefType==4){
+						//USER
+						oUser =new UserFragment();
+						oUser.setContext(PreferencesActivity.this);
+						return oUser;
+					}else {
+						//Notification PREFERENCES
+						oPreferences = new PreferencesFragment();
+						oPreferences.setContext(PreferencesActivity.this, 0);
+						return oPreferences;
+					}
 				}
 			case 1:
 				//General PREFERENCES
@@ -172,7 +192,7 @@ ActionBar.TabListener {
 
 		@Override
 		public int getCount() {
-			if(isFirstLaunch) return 1;
+			if(isFirstLaunch || iPrefType>0) return 1;
 			else return 4;
 		}
 

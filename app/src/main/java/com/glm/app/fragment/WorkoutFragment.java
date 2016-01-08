@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -37,9 +39,13 @@ public class WorkoutFragment extends Fragment {
 	private RelativeLayout oStartRunningExercise;
 	private RelativeLayout oStartWalkingExercise;
 	private RelativeLayout oStartBikingExercise;
+	//private RelativeLayout mBtnPreferences;
 	private TextView oTxtBMI;
-	
-	private ImageButton mBtnPreferences=null;
+	private Toolbar mToolBar;
+	private Toolbar mToolBarRunning;
+	private Toolbar mToolBarWalking;
+	private Toolbar mToolBarBiking;
+
 	private WorkTaskAsync oTask=null;
 	/**
 	 * The fragment argument representing the section number for this
@@ -60,13 +66,82 @@ public class WorkoutFragment extends Fragment {
 		
 		rootView = inflater.inflate(R.layout.new_new_main_page,
 				container, false);
+
+		mToolBar 			  = (Toolbar)  rootView.findViewById(R.id.card_toolbar);
+		mToolBarRunning		  = (Toolbar)  rootView.findViewById(R.id.card_toolbar_running);
+		mToolBarWalking		  = (Toolbar)  rootView.findViewById(R.id.card_toolbar_walking);
+		mToolBarBiking		  = (Toolbar)  rootView.findViewById(R.id.card_toolbar_biking);
 		oStartRunningExercise = (RelativeLayout) rootView.findViewById(R.id.btn_start_running);
 	    oStartWalkingExercise = (RelativeLayout) rootView.findViewById(R.id.btn_start_walking);
 	    oStartBikingExercise  = (RelativeLayout) rootView.findViewById(R.id.btn_start_biking);
-	    mBtnPreferences		  = (ImageButton) rootView.findViewById(R.id.imgBtnPreferences);
+		//mBtnPreferences		  = (RelativeLayout) rootView.findViewById(R.id.btn_preferences);
 	    
 	    oTxtBMI				  = (TextView) rootView.findViewById(R.id.txtBMI);
-	    
+
+		mToolBar.inflateMenu(R.menu.preferences);
+		mToolBar.setLogo(R.drawable.toolbar);
+		mToolBar.setTitle(R.string.app_name_pro);
+		mToolBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				Intent intent = new Intent();
+
+				if (item.getTitle().equals( mContext.getString(R.string.pref_title))) {
+					intent.putExtra("pref_type",1);
+					intent.setClass(mContext, PreferencesActivity.class);
+					startActivity(intent);
+					getActivity().finish();
+				}else if (item.getTitle().equals( mContext.getString(R.string.general_pref))) {
+					intent.putExtra("pref_type",2);
+					intent.setClass(mContext, PreferencesActivity.class);
+					startActivity(intent);
+					getActivity().finish();
+				}else if (item.getTitle().equals( mContext.getString(R.string.show_motivator))) {
+					intent.putExtra("pref_type",3);
+					intent.setClass(mContext, PreferencesActivity.class);
+					startActivity(intent);
+					getActivity().finish();
+				}else if (item.getTitle().equals( mContext.getString(R.string.user))) {
+					intent.putExtra("pref_type",4);
+					intent.setClass(mContext, PreferencesActivity.class);
+					startActivity(intent);
+					getActivity().finish();
+				}
+
+				return false;
+			}
+		});
+
+		mToolBarRunning.inflateMenu(R.menu.manual);
+		mToolBarRunning.setTitle(R.string.run);
+		mToolBarRunning.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+
+				return false;
+			}
+		});
+
+		mToolBarWalking.inflateMenu(R.menu.manual);
+		mToolBarWalking.setTitle(R.string.walk);
+		mToolBarWalking.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+
+				return false;
+			}
+		});
+
+		mToolBarBiking.inflateMenu(R.menu.manual);
+		mToolBarBiking.setTitle(R.string.bike);
+		mToolBarBiking.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+
+				return false;
+			}
+		});
+
 	    oStartRunningExercise.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -124,7 +199,7 @@ public class WorkoutFragment extends Fragment {
 			}
 		} );
 	    
-	    mBtnPreferences.setOnClickListener(new OnClickListener() {
+	    /*mBtnPreferences.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -133,7 +208,7 @@ public class WorkoutFragment extends Fragment {
 				startActivity(intent);
 				getActivity().finish();	
 			}
-		});
+		});*/
 	    
 	    if(((NewMainActivity)getActivity()).oConfigTrainer!=null) oTxtBMI.setText(((NewMainActivity)getActivity()).mUser.getsBMI(((NewMainActivity)getActivity()).oConfigTrainer.getiUnits()));
 	    

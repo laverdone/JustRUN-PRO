@@ -5,7 +5,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
-    android:background="@drawable/carbon_fibre">
+    android:background="@drawable/background_color">
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/lista_gradient"
+                android:background="@drawable/background_color"
                 android:padding="20dp" >
                 <TextView
                     android:id="@+id/textView1"
@@ -43,11 +43,18 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
             </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:background="@drawable/lista_gradient"
+                android:background="@drawable/background_color"
                 android:padding="20dp" >
                 <TextView
                     android:id="@+id/TextView02"
@@ -73,11 +80,18 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
             </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:background="@drawable/lista_gradient"
+                android:background="@drawable/background_color"
                 android:padding="20dp" >
                 <TextView
                     android:id="@+id/TextView03"
@@ -103,13 +117,20 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
             </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+
             <RelativeLayout
                 android:id="@+id/externalplayer"
                 android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:background="@drawable/lista_gradient"
+                android:background="@drawable/background_color"
                 android:padding="20dp" >
                 <TextView
                     android:id="@+id/TextView06"

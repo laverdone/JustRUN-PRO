@@ -42,17 +42,18 @@ public class GCMIntentService extends GCMBaseIntentService{
 	private void generateNotification(Context context, String stringExtra) {
 		mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE); 	
 		
-		// Set the icon, scrolling text and timestamp
-        Notification notification = new Notification(R.drawable.biking, getText(R.string.app_name_pro),
-                System.currentTimeMillis());
 
         // The PendingIntent to launch our activity if the user selects this notification Controller
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, NewMainActivity.class), 0);
 
-        // Set the info for the views that show in the notification panel.
-        notification.setLatestEventInfo(this, getText(R.string.app_name_pro),
-        		stringExtra, contentIntent);
+
+
+		Notification notification = new Notification.Builder(this)
+				.setContentTitle(getText(R.string.app_name_pro))
+				.setContentText(stringExtra)
+				.setSmallIcon(R.drawable.biking).setContentIntent(contentIntent)
+				.build();
         Log.v(this.getClass().getCanonicalName(), "Show Notification "+stringExtra);
         // Send the notification.
         if(mNM!=null) mNM.notify( R.string.app_name_pro, notification);

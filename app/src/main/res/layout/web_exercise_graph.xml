@@ -8,7 +8,7 @@
 	    		android:paddingLeft="@dimen/activity_horizontal_margin"
 	    		android:paddingRight="@dimen/activity_horizontal_margin"
 	android:id="@+id/objMainLayout" 	
-	android:background="@drawable/carbon_fibre" android:gravity="right"
+	android:background="@drawable/background_color" android:gravity="right"
 	android:keepScreenOn="true" >
 			<ScrollView
 			    android:id="@+id/scrollView1"
@@ -21,12 +21,27 @@
 				    android:layout_height="wrap_content"
 				    android:layout_weight="1"
 				    android:orientation="vertical" >
+
+					<android.support.v7.widget.CardView 						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						xmlns:app="http://schemas.android.com/apk/res-auto"
+						android:elevation="@dimen/cardview_default_elevation"
+						android:background="@drawable/abc_popup_background_mtrl_mult"
+						app:cardCornerRadius="4dp"
+						android:layout_margin="5dp">
+
 				    <RelativeLayout
 				        android:id="@+id/graphLayoutPACE"
 				        android:layout_width="match_parent"
 				        android:layout_height="200dp"
-				        android:background="@drawable/lista_gradient"
+				        android:background="@drawable/background_color"
 				        android:orientation="vertical" >
+						<android.support.v7.widget.Toolbar
+							android:id="@+id/card_toolbar_Walking"
+							android:layout_width="match_parent"
+							android:layout_height="40dp"
+							android:background="@android:color/white"
+							/>
 				        <ProgressBar
 				            android:id="@+id/waitForGraphPACE"
 				            style="?android:attr/progressBarStyleLarge"
@@ -39,12 +54,29 @@
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"/>
 				    </RelativeLayout>
-				    <RelativeLayout
+
+					</android.support.v7.widget.CardView>
+
+					<android.support.v7.widget.CardView 						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						xmlns:app="http://schemas.android.com/apk/res-auto"
+						android:elevation="@dimen/cardview_default_elevation"
+						android:background="@drawable/abc_popup_background_mtrl_mult"
+						app:cardCornerRadius="4dp"
+						android:layout_margin="5dp">
+
+					<RelativeLayout
 				        android:id="@+id/graphLayoutALT"
 				        android:layout_width="match_parent"
 				        android:layout_height="200dp"
-				        android:background="@drawable/lista_gradient"
+				        android:background="@drawable/background_color"
 				        android:orientation="vertical" >
+						<android.support.v7.widget.Toolbar
+							android:id="@+id/card_toolbar_Walking"
+							android:layout_width="match_parent"
+							android:layout_height="40dp"
+							android:background="@android:color/white"
+							/>
 				        <ProgressBar
 				            android:id="@+id/waitForGraphALT"
 				            style="?android:attr/progressBarStyleLarge"
@@ -57,12 +89,29 @@
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"/>
 				    </RelativeLayout>
-				    <RelativeLayout
+
+					</android.support.v7.widget.CardView>
+
+					<android.support.v7.widget.CardView 						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						xmlns:app="http://schemas.android.com/apk/res-auto"
+						android:elevation="@dimen/cardview_default_elevation"
+						android:background="@drawable/abc_popup_background_mtrl_mult"
+						app:cardCornerRadius="4dp"
+						android:layout_margin="5dp">
+
+					<RelativeLayout
 				        android:id="@+id/graphLayoutHEART"
 				        android:layout_width="match_parent"
 				        android:layout_height="200dp"
-				        android:background="@drawable/lista_gradient"
+				        android:background="@drawable/background_color"
 				        android:orientation="vertical" >
+						<android.support.v7.widget.Toolbar
+							android:id="@+id/card_toolbar_Walking"
+							android:layout_width="match_parent"
+							android:layout_height="40dp"
+							android:background="@android:color/white"
+							/>
 				        <ProgressBar
 				            android:id="@+id/waitForGraphHEART"
 				            style="?android:attr/progressBarStyleLarge"
@@ -75,6 +124,7 @@
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"/>
 				    </RelativeLayout>
+					</android.support.v7.widget.CardView>
 				</LinearLayout>
 			</ScrollView>
 </LinearLayout> 

@@ -7,7 +7,7 @@ import com.glm.bean.ItemStore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.http.HttpResponse;
+/*import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -17,38 +17,37 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.message.BasicNameValuePair;*/
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class HttpClientHelper {
-	private HttpClient httpclient = null;
+/*	private HttpClient httpclient = null;
 	private HttpPost httppost = null;
 	private HttpGet httpget = null;
-	/**URL Per registrare il Devices*/
+	*//**URL Per registrare il Devices*//*
 	private final String sURI_Register="http://androidtrainer.no-ip.org:8080/GCMTrainerWeb/Register";
-	/**URL Per registrare le informazioni durante la Virtual Race*/
+	*//**URL Per registrare le informazioni durante la Virtual Race*//*
 	private final String sURI_VirtualRace="http://androidtrainer.no-ip.org:8080/GCMTrainerWeb/VirtualRace";
-	/**URL Per registrare le Virtual Race disponibili*/
+	*//**URL Per registrare le Virtual Race disponibili*//*
 	private final String sURI_VirtualRaceStore="http://androidtrainer.no-ip.org:8080/GCMTrainerWeb/VirtualRaceStore";
-	/**salva tutte le richieste post andate in errore*/
+	*//**salva tutte le richieste post andate in errore*//*
 	private ArrayList<HttpPost> aRequestPending = new ArrayList<HttpPost>();
-	/**costruttore*/
+	*//**costruttore*//*
 	public HttpClientHelper(){
 		httpclient = new DefaultHttpClient();
 		
 	}
-	/**
+	*//**
 	 * Registra l'utenza sul server Trainer pre le gare virtuali
 	 * 
 	 * @param String sGCMId identificativo GCM
 	 * @param ConfigTrainer oConfigTrainer oggetto con i dettagli dell'utente.
 	 * 
-	 * */
+	 * *//*
 	public void registerToAndroidTrainerServer(String sGCMId, ConfigTrainer oConfigTrainer) {	   
 	    try {
 	    	httppost = new HttpPost(sURI_Register);
@@ -76,13 +75,13 @@ public class HttpClientHelper {
 	} 
 	
 	
-	/**
+	*//**
 	 * Spedisce i dettagli durante la Virtual Race server Trainer pre le gare virtuali
 	 * 
 	 * @param String sGCMId identificativo GCM
 	 * @param ConfigTrainer oConfigTrainer oggetto con i dettagli dell'utente.
 	 * 
-	 * */
+	 * *//*
 	public void sendDataForVirtualRace(ConfigTrainer oConfigTrainer, int iVirtualRace, 
 			double Latitude, double Longitude, long Alt, float Speed, double Distance,long Time, String sLocale) {	   
 	    try {
@@ -112,13 +111,13 @@ public class HttpClientHelper {
 	        Log.e(this.getClass().getCanonicalName(),"Error IOException Send Virtual Race to Android Trainer Server");
 	    }
 	} 
-	/**
+	*//**
 	 * Spedisce i dettagli durante la Virtual Race server Trainer pre le gare virtuali
 	 * 
 	 * @param String sGCMId identificativo GCM
 	 * @param ConfigTrainer oConfigTrainer oggetto con i dettagli dell'utente.
 	 * 
-	 * */
+	 * *//*
 	public Collection<ItemStore> getVirtualRace(ConfigTrainer oConfigTrainer,String sLocale) {	   
 	    Collection<ItemStore> aVirtualRace = new ArrayList<ItemStore>();
 		try {
@@ -141,9 +140,9 @@ public class HttpClientHelper {
 	        Type collectionType = new TypeToken<Collection<ItemStore>>(){}.getType();
 	        aVirtualRace = oGson.fromJson(responseBody, collectionType);
 	       
-	        /*for(int i=0;i<aVirtualRaceStore.size();i++){
+	        *//*for(int i=0;i<aVirtualRaceStore.size();i++){
 	        	aVirtualRace.add(oGson.fromJson(aVirtualRaceStore.get(i).toString(), VirtualRace.class));
-	        }*/
+	        }*//*
 	        Log.v(this.getClass().getCanonicalName(),"Send Virtual Race Watch Point to Android Trainer Server");
 	        Log.v(this.getClass().getCanonicalName(),"Response from Server: "+responseBody);
 	    } catch (ClientProtocolException e) {
@@ -161,10 +160,10 @@ public class HttpClientHelper {
 	}
 	
 	
-	/**
+	*//**
 	 * invia le richieste andate in errore
 	 * 
-	 * */
+	 * *//*
 	public void sendHttpPostPending(){
 		int iIndex=aRequestPending.size();
 		
@@ -181,5 +180,5 @@ public class HttpClientHelper {
 		        aRequestPending.add(httppost);
 		    }
 		}
-	}
+	}*/
 }

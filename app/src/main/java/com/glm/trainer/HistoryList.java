@@ -4,16 +4,22 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -26,8 +32,7 @@ import com.glm.utils.ExerciseUtils;
 import java.util.Locale;
 
 
-public class HistoryList extends FragmentActivity implements
-		ActionBar.TabListener {
+public class HistoryList extends FragmentActivity  {
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -51,20 +56,25 @@ public class HistoryList extends FragmentActivity implements
 	private WorkoutAdapter mWorkoutAdapterRun=null;
 	private WorkoutAdapter mWorkoutAdapterWalk=null;
 	private WorkoutAdapter mWorkoutAdapterBike=null;
+	private Context mContext;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	    
-		setContentView(R.layout.activity_map_main);
-        
+		mContext=this;
+		setContentView(R.layout.activity_new_main);
+
+
+
 	}
+
+
 	@Override
 	protected void onResume() {
 		//WotkOutTask oTask = new WotkOutTask();
 		//oTask.execute();
 		oWaitForLoad = ProgressDialog.show(HistoryList.this, getString(R.string.app_name_buy), getString(R.string.please_wait));
 		new Thread(new WorkOutThread()).start();
-		
+
 		super.onResume();
 	}
 	@Override
@@ -83,29 +93,18 @@ public class HistoryList extends FragmentActivity implements
 		return true;
 	}
 
-	@Override
-	public void onTabSelected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
-		// When the given tab is selected, switch to the corresponding page in
-		// the ViewPager.
-		mViewPager.setCurrentItem(tab.getPosition());
-	}
-
-	@Override
-	public void onTabUnselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
-	}
-
-	@Override
-	public void onTabReselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
-	}
 
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+		private int[] imageResId = {
+				R.drawable.running,
+				R.drawable.walking,
+				R.drawable.biking
+		};
+
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -146,6 +145,13 @@ public class HistoryList extends FragmentActivity implements
 
 		@Override
 		public CharSequence getPageTitle(int position) {
+			/*Drawable image = mContext.getDrawable(imageResId[position]);
+			image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+			SpannableString sb = new SpannableString(" ");
+			ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
+			sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			return sb;*/
+
 			Locale l = Locale.getDefault();
 			switch (position) {
 			case 0:
@@ -174,18 +180,21 @@ public class HistoryList extends FragmentActivity implements
 				
 				@Override
 				public void run() {
-					// Set up the action bar.
-					final ActionBar actionBar = getActionBar();
-					actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-					actionBar.setDisplayShowHomeEnabled(false);
-					actionBar.setDisplayShowTitleEnabled(false);
-			        // Create the adapter that will return a fragment for each of the three
-					// primary sections of the app.
+
 					mSectionsPagerAdapter = new SectionsPagerAdapter(
 							getSupportFragmentManager());
 
+					TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+					tabLayout.removeAllTabs();
+					tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(0)));
+					tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(1)));
+					//tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(2)));
+					tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(2)));
+					tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
 					// Set up the ViewPager with the sections adapter.
 					mViewPager = (ViewPager) findViewById(R.id.pager);
+
 					a = AnimationUtils.loadAnimation(getApplicationContext(), R.animator.fadein);
 					a.reset();
 
@@ -194,28 +203,25 @@ public class HistoryList extends FragmentActivity implements
 
 					mViewPager.setAdapter(mSectionsPagerAdapter);
 					mViewPager.setOffscreenPageLimit(3);
-					// When swiping between different sections, select the corresponding
-					// tab. We can also use ActionBar.Tab#select() to do this if we have
-					// a reference to the Tab.
-					mViewPager
-							.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-								@Override
-								public void onPageSelected(int position) {
-									actionBar.setSelectedNavigationItem(position);
-								}
-							});
-					
-					actionBar.removeAllTabs();
-					// For each of the sections in the app, add a tab to the action bar.
-					for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-						// Create a tab with text corresponding to the page title defined by
-						// the adapter. Also specify this Activity object, which implements
-						// the TabListener interface, as the callback (listener) for when
-						// this tab is selected.
-						actionBar.addTab(actionBar.newTab()
-								.setText(mSectionsPagerAdapter.getPageTitle(i))
-								.setTabListener(HistoryList.this));
-					}
+					mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+					tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+						@Override
+						public void onTabSelected(TabLayout.Tab tab) {
+
+							mViewPager.setCurrentItem(tab.getPosition());
+						}
+
+						@Override
+						public void onTabUnselected(TabLayout.Tab tab) {
+
+						}
+
+						@Override
+						public void onTabReselected(TabLayout.Tab tab) {
+
+						}
+					});
+
 					//mListWorkOuts.setAdapter(mWorkoutAdapter);
 					mWorkoutAdapterRun.notifyDataSetInvalidated();
 					mWorkoutAdapterRun.notifyDataSetChanged();
@@ -223,6 +229,7 @@ public class HistoryList extends FragmentActivity implements
 					mWorkoutAdapterWalk.notifyDataSetChanged();
 					mWorkoutAdapterBike.notifyDataSetInvalidated();
 					mWorkoutAdapterBike.notifyDataSetChanged();
+
 					if(oWaitForLoad!=null) oWaitForLoad.dismiss();	
 				}
 			});
@@ -231,72 +238,6 @@ public class HistoryList extends FragmentActivity implements
 		}
 		
 	}
-	
-	/*class WotkOutTask extends AsyncTask{
-
-		@Override
-		protected Object doInBackground(Object... params) {
-			oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());
-			mWorkoutAdapterRun = new WorkoutAdapter(HistoryList.this, ExerciseUtils.getHistory(getApplicationContext(),0,oConfigTrainer));
-			mWorkoutAdapterWalk = new WorkoutAdapter(HistoryList.this, ExerciseUtils.getHistory(getApplicationContext(),100,oConfigTrainer));
-			mWorkoutAdapterBike = new WorkoutAdapter(HistoryList.this, ExerciseUtils.getHistory(getApplicationContext(),1,oConfigTrainer));
-			return true;
-		}
-		@Override
-		protected void onPreExecute() {
-			oWaitForLoad = ProgressDialog.show(HistoryList.this, getString(R.string.app_name_buy), getString(R.string.please_wait));
-			super.onPreExecute();
-		}
-		@Override
-		protected void onPostExecute(Object result) {
-			// Set up the action bar.
-			final ActionBar actionBar = getActionBar();
-			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-			actionBar.setDisplayShowHomeEnabled(false);
-			actionBar.setDisplayShowTitleEnabled(false);
-	        // Create the adapter that will return a fragment for each of the three
-			// primary sections of the app.
-			mSectionsPagerAdapter = new SectionsPagerAdapter(
-					getSupportFragmentManager());
-
-			// Set up the ViewPager with the sections adapter.
-			mViewPager = (ViewPager) findViewById(R.id.pager);
-			mViewPager.setAdapter(mSectionsPagerAdapter);
-			mViewPager.setOffscreenPageLimit(3);
-			// When swiping between different sections, select the corresponding
-			// tab. We can also use ActionBar.Tab#select() to do this if we have
-			// a reference to the Tab.
-			mViewPager
-					.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-						@Override
-						public void onPageSelected(int position) {
-							actionBar.setSelectedNavigationItem(position);
-						}
-					});
-			
-			actionBar.removeAllTabs();
-			// For each of the sections in the app, add a tab to the action bar.
-			for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-				// Create a tab with text corresponding to the page title defined by
-				// the adapter. Also specify this Activity object, which implements
-				// the TabListener interface, as the callback (listener) for when
-				// this tab is selected.
-				actionBar.addTab(actionBar.newTab()
-						.setText(mSectionsPagerAdapter.getPageTitle(i))
-						.setTabListener(HistoryList.this));
-			}
-			
-			//mListWorkOuts.setAdapter(mWorkoutAdapter);
-			mWorkoutAdapterRun.notifyDataSetInvalidated();
-			mWorkoutAdapterRun.notifyDataSetChanged();
-			mWorkoutAdapterWalk.notifyDataSetInvalidated();
-			mWorkoutAdapterWalk.notifyDataSetChanged();
-			mWorkoutAdapterBike.notifyDataSetInvalidated();
-			mWorkoutAdapterBike.notifyDataSetChanged();
-			if(oWaitForLoad!=null) oWaitForLoad.dismiss();
-			super.onPostExecute(result);
-		}
-	}*/
 	
 	class DeleteWotkOutTask extends AsyncTask{
 
@@ -317,43 +258,45 @@ public class HistoryList extends FragmentActivity implements
 		}
 		@Override
 		protected void onPostExecute(Object result) {
-			// Set up the action bar.
-			final ActionBar actionBar = getActionBar();
-			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-			actionBar.setDisplayShowHomeEnabled(false);
-			actionBar.setDisplayShowTitleEnabled(false);
-	        // Create the adapter that will return a fragment for each of the three
-			// primary sections of the app.
+
 			mSectionsPagerAdapter = new SectionsPagerAdapter(
 					getSupportFragmentManager());
 
+			TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+			tabLayout.removeAllTabs();
+			tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(0)));
+			tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(1)));
+			//tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(2)));
+			tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(2)));
+			tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
 			// Set up the ViewPager with the sections adapter.
 			mViewPager = (ViewPager) findViewById(R.id.pager);
+
 			mViewPager.setAdapter(mSectionsPagerAdapter);
 			mViewPager.setOffscreenPageLimit(3);
 			// When swiping between different sections, select the corresponding
 			// tab. We can also use ActionBar.Tab#select() to do this if we have
 			// a reference to the Tab.
-			mViewPager
-					.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-						@Override
-						public void onPageSelected(int position) {
-							actionBar.setSelectedNavigationItem(position);
-						}
-					});
-			
-			actionBar.removeAllTabs();
-			// For each of the sections in the app, add a tab to the action bar.
-			for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-				// Create a tab with text corresponding to the page title defined by
-				// the adapter. Also specify this Activity object, which implements
-				// the TabListener interface, as the callback (listener) for when
-				// this tab is selected.
-				actionBar.addTab(actionBar.newTab()
-						.setText(mSectionsPagerAdapter.getPageTitle(i))
-						.setTabListener(HistoryList.this));
-			}
-			
+			mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+			tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+				@Override
+				public void onTabSelected(TabLayout.Tab tab) {
+
+					mViewPager.setCurrentItem(tab.getPosition());
+				}
+
+				@Override
+				public void onTabUnselected(TabLayout.Tab tab) {
+
+				}
+
+				@Override
+				public void onTabReselected(TabLayout.Tab tab) {
+
+				}
+			});
+
 			//mListWorkOuts.setAdapter(mWorkoutAdapter);
 			mWorkoutAdapterRun.notifyDataSetInvalidated();
 			mWorkoutAdapterRun.notifyDataSetChanged();
@@ -361,6 +304,7 @@ public class HistoryList extends FragmentActivity implements
 			mWorkoutAdapterWalk.notifyDataSetChanged();
 			mWorkoutAdapterBike.notifyDataSetInvalidated();
 			mWorkoutAdapterBike.notifyDataSetChanged();
+
 			if(oWaitForLoad!=null) oWaitForLoad.dismiss();
 			super.onPostExecute(result);
 		}
@@ -371,7 +315,7 @@ public class HistoryList extends FragmentActivity implements
     	alertDialog = new AlertDialog.Builder(this).create();
     	alertDialog.setTitle(getString(R.string.titledeleteexercise));
     	alertDialog.setMessage(getString(R.string.messagedeleteexercise));
-    	alertDialog.setButton(getString(R.string.yes), new android.content.DialogInterface.OnClickListener(){
+    	alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,getString(R.string.yes), new android.content.DialogInterface.OnClickListener(){
 
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
@@ -380,7 +324,7 @@ public class HistoryList extends FragmentActivity implements
 			}        				
     	});
     	
-    	alertDialog.setButton2(getString(R.string.no), new android.content.DialogInterface.OnClickListener(){
+    	alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,getString(R.string.no), new android.content.DialogInterface.OnClickListener(){
 
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {					

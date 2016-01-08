@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_margin="0dip"
     android:id="@+id/main_layout"
-    android:background="@drawable/carbon_fibre"
+    android:background="@drawable/background_color"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -17,8 +17,16 @@
 		android:orientation="vertical"
 		android:layout_margin="0dip"
 		
-		android:background="@drawable/lista_gradient"
-		android:clickable="true" android:gravity="right">        
+		android:background="@drawable/background_color"
+		android:clickable="true" android:gravity="right">
+		<android.support.v7.widget.CardView 						android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			xmlns:app="http://schemas.android.com/apk/res-auto"
+			android:elevation="@dimen/cardview_default_elevation"
+			android:background="@drawable/abc_popup_background_mtrl_mult"
+			app:cardCornerRadius="4dp"
+			android:layout_margin="5dp">
+
 	        <ScrollView android:id="@+id/scrollView" 
 	            android:layout_width="match_parent" 
 	            android:layout_height="match_parent"
@@ -39,18 +47,12 @@
 		                android:padding="5dip">
 	
 		               
-		                    <LinearLayout 
-		                        android:layout_height="wrap_content" android:gravity="center_vertical" android:layout_width="match_parent">
-		                        <LinearLayout 
-		                            android:layout_height="match_parent" 
-		                            android:id="@+id/LinearLayout04" 
-		                            android:orientation="vertical" 
-		                            android:layout_width="match_parent"
-		                            android:padding="5dip">
-		                            <TextView 
+
+
+		                            <TextView
 		                            	android:text="@string/nick" 
 		                            	android:id="@+id/textView2" 
-		                            	android:textColor="#FFFFEE" 
+		                            	android:textColor="#000000"
 		                            	android:layout_width="wrap_content" 
 		                            	android:layout_height="wrap_content"></TextView>
 		                            <EditText
@@ -60,15 +62,24 @@
 		                                android:layout_weight="2"
 		                                android:background="@drawable/back_button_shape"
 		                                android:inputType="textNoSuggestions"
-		                                android:textColor="@android:color/primary_text_dark"
+		                                android:textColor="@android:color/background_dark"
 		                                android:textSize="12sp"
 		                                android:textStyle="bold" >
 									</EditText>
-	                           
-		                            <TextView 
+
+						<LinearLayout android:layout_height="wrap_content" android:gravity="center_vertical"  android:layout_width="fill_parent">
+							<View
+								android:layout_width="fill_parent"
+								android:layout_height="1dp"
+								android:layout_marginTop="8dp"
+								android:layout_marginBottom="8dp"
+								android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+						</LinearLayout>
+
+						<TextView
 		                            	android:text="@string/name" 
 		                            	android:id="@+id/textView3" 
-		                            	android:textColor="#FFFFEE" 
+		                            	android:textColor="#000000"
 		                            	android:layout_width="wrap_content" 
 		                            	android:layout_height="wrap_content"></TextView>
 		                            <EditText 
@@ -76,41 +87,28 @@
 		                            	android:layout_width="fill_parent" 	                            	
 		                            	android:layout_weight="1" 
 		                            	android:textStyle="bold" 
-		                            	android:textColor="@android:color/primary_text_dark" 
+		                            	android:textColor="@android:color/background_dark"
 		                            	android:textSize="12sp" 
 		                            	android:id="@+id/editName" 	                            	 
 		                            	android:inputType="textPersonName"
-		                            	android:password="false"
 		                            	android:background="@drawable/back_button_shape">
 		                            </EditText>
 	
-		                        </LinearLayout>
-		                    </LinearLayout>
-		                    <LinearLayout android:layout_height="wrap_content" android:gravity="center_vertical"  android:layout_width="fill_parent">
-		                    <View 
-								android:layout_weight="1" 
-								android:layout_marginRight="20dip" 
-								android:layout_width="fill_parent" 
 
-								android:layout_marginBottom="0dip" 
-								android:layout_height="1dip" 
-								android:layout_marginTop="2dip" 
-								android:layout_marginLeft="20dip">
-							</View>	
-		                    </LinearLayout> 
+
+
+						    <LinearLayout android:layout_height="wrap_content" android:gravity="center_vertical"  android:layout_width="fill_parent">
+								<View
+									android:layout_width="fill_parent"
+									android:layout_height="1dp"
+									android:layout_marginTop="8dp"
+									android:layout_marginBottom="8dp"
+									android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+							</LinearLayout>
 	
-		                    <LinearLayout
-		                        android:id="@+id/TableRow01"
-		                        android:layout_width="match_parent"
-		                        android:layout_height="match_parent"		                        
-		                        android:gravity="center_vertical" 
-		                        android:padding="5dip" 	 >
+
 	
-		                        <LinearLayout
-		                            android:id="@+id/LinearLayout03"
-		                            android:layout_width="match_parent"
-		                            android:layout_height="150dp"
-		                            android:orientation="vertical" >
+
 	
 		                            <TextView
 		                                android:id="@+id/lblWeight"
@@ -118,7 +116,7 @@
 		                                android:layout_height="wrap_content"
 		                                android:layout_marginRight="5dip"
 		                                android:text="@string/weight"
-		                                android:textColor="#FFFFEE" >
+		                                android:textColor="#000000" >
 		                            </TextView>
 	
 		                            <EditText
@@ -127,22 +125,30 @@
 		                                android:layout_height="35dip"
 		                                android:layout_weight="1"
 		                                android:background="@drawable/back_button_shape"
-		                                android:editable="true"
 		                                android:gravity="center_horizontal"
 		                                android:inputType="numberDecimal"
 		                                android:text=""
-		                                android:textColor="@android:color/primary_text_dark"
+		                                android:textColor="@android:color/background_dark"
 		                                android:textSize="12sp"
 		                                android:textStyle="bold" >
 		                            </EditText>
-	
-		                            <TextView
+
+						<LinearLayout android:layout_height="wrap_content" android:gravity="center_vertical"  android:layout_width="fill_parent">
+							<View
+								android:layout_width="fill_parent"
+								android:layout_height="1dp"
+								android:layout_marginTop="8dp"
+								android:layout_marginBottom="8dp"
+								android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+						</LinearLayout>
+
+									<TextView
 		                                android:id="@+id/TextView02"
 		                                android:layout_width="wrap_content"
 		                                android:layout_height="wrap_content"
 		                               	                       
 		                                android:text="@string/age"
-		                                android:textColor="#FFFFEE" >
+		                                android:textColor="#000000" >
 		                            </TextView>
 	
 		                            <EditText
@@ -151,21 +157,29 @@
 		                                android:layout_height="35dip"
 		                                android:layout_weight="1"
 		                                android:background="@drawable/back_button_shape"
-		                                android:editable="true"
 		                                android:gravity="center_horizontal"
 		                                android:inputType="number"
 		                                android:text=""
-		                                android:textColor="@android:color/primary_text_dark"
+		                                android:textColor="@android:color/background_dark"
 		                                android:textSize="12sp"
 		                                android:textStyle="bold" >
 		                            </EditText>
-		                            
-		                            <TextView
+
+						<LinearLayout android:layout_height="wrap_content" android:gravity="center_vertical"  android:layout_width="fill_parent">
+							<View
+								android:layout_width="fill_parent"
+								android:layout_height="1dp"
+								android:layout_marginTop="8dp"
+								android:layout_marginBottom="8dp"
+								android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+						</LinearLayout>
+
+						<TextView
 		                                android:id="@+id/lblHeight"
 		                                android:layout_width="wrap_content"
 		                                android:layout_height="wrap_content"	                               	                       
 		                                android:text="@string/height"
-		                                android:textColor="#FFFFEE" >
+		                                android:textColor="#000000" >
 		                            </TextView>
 	
 		                            <EditText
@@ -174,18 +188,16 @@
 		                                android:layout_height="35dip"
 		                                android:layout_weight="1"
 		                                android:background="@drawable/back_button_shape"
-		                                android:editable="true"
 		                                android:gravity="center_horizontal"
 		                                android:inputType="number"
 		                                android:text=""
-		                                android:textColor="@android:color/primary_text_dark"
+		                                android:textColor="@android:color/background_dark"
 		                                android:textSize="12sp"
 		                                android:textStyle="bold" >
-		                            </EditText>    
-		                        </LinearLayout>
-		                    </LinearLayout>
-	
-		                    <LinearLayout android:layout_height="wrap_content" android:gravity="center_vertical" android:id="@+id/TableRow02" android:layout_width="fill_parent">
+		                            </EditText>
+
+
+						<LinearLayout android:layout_height="wrap_content" android:gravity="center_vertical" android:id="@+id/TableRow02" android:layout_width="fill_parent">
 		                    <View 
 								android:layout_weight="1" 
 								android:layout_marginRight="20dip" 
@@ -217,13 +229,13 @@
 		                                	android:text="@string/male" 
 		                                	android:checked="true"
 		                                	 android:id="@+id/radioGenderM" android:layout_marginLeft="20dip" android:layout_marginRight="20dip"
-		                                	 android:textColor="#FFFFEE" ></RadioButton>
+		                                	 android:textColor="#000000" ></RadioButton>
 		                                <RadioButton 
 		                                	android:layout_height="wrap_content" 
 		                                	android:layout_width="wrap_content" 
 		                                	android:id="@+id/radioGenderF" 
 		                                	android:text="@string/female"
-		                                	android:textColor="#FFFFEE" ></RadioButton>
+		                                	android:textColor="#000000" ></RadioButton>
 		                              </RadioGroup>	                            
 		                            <CheckBox android:visibility="gone" android:textColor="#FFFFEE" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ckTwitter" android:text="@string/tw" android:layout_marginLeft="20dip"></CheckBox>
 		                            <CheckBox android:visibility="gone" android:textColor="#FFFFEE" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ckFB" android:text="@string/fb" android:layout_marginLeft="20dip"></CheckBox>
@@ -233,7 +245,7 @@
 		                        android:id="@+id/btnSave"
 		                        android:layout_width="match_parent"
 		                        android:layout_height="wrap_content"
-		                        android:background="@drawable/lista_gradient"
+		                        android:background="@drawable/button_no_corners"
 		                        android:text="@string/save_user" 
 		                        android:visibility="gone"/>
 					</LinearLayout>
@@ -241,5 +253,6 @@
 					<!-- Dettaglio Fine Step-->
 		        </LinearLayout>
 		  </ScrollView>
+		</android.support.v7.widget.CardView>
 	</RelativeLayout>
 </LinearLayout>	

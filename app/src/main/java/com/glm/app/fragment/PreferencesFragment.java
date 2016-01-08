@@ -104,7 +104,7 @@ public class PreferencesFragment extends Fragment {
 						
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 						    editPrefs.putBoolean("notification", ((CheckBox) v).isChecked());    
 						    editPrefs.commit();					    
@@ -121,7 +121,7 @@ public class PreferencesFragment extends Fragment {
 						
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 						    editPrefs.putBoolean("music", ((CheckBox) v).isChecked());    
 						    editPrefs.commit();					    
@@ -133,7 +133,7 @@ public class PreferencesFragment extends Fragment {
 							
 							@Override
 							public void run() {
-								SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+								SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 								SharedPreferences.Editor editPrefs = oPrefs.edit();
 							    editPrefs.putBoolean("externalPlayer", ((CheckBox) v).isChecked());    
 							    editPrefs.commit();					    
@@ -145,7 +145,7 @@ public class PreferencesFragment extends Fragment {
 							
 							@Override
 							public void run() {
-								SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+								SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 								SharedPreferences.Editor editPrefs = oPrefs.edit();
 							    editPrefs.putBoolean("externalPlayer", false);    
 							    editPrefs.commit();					    
@@ -162,7 +162,7 @@ public class PreferencesFragment extends Fragment {
 						
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 						    editPrefs.putBoolean("externalPlayer", ((CheckBox) v).isChecked());    
 						    editPrefs.commit();					    
@@ -194,7 +194,7 @@ public class PreferencesFragment extends Fragment {
 							
 							@Override
 							public void run() {
-								SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+								SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 								SharedPreferences.Editor editPrefs = oPrefs.edit();
 							    editPrefs.putInt("autopause_time", iPos);    
 							    editPrefs.commit();
@@ -226,7 +226,7 @@ public class PreferencesFragment extends Fragment {
 						
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 						    editPrefs.putInt("units", iPos);    
 						    editPrefs.commit();
@@ -254,7 +254,7 @@ public class PreferencesFragment extends Fragment {
 					AsyncTask.execute(new Runnable() {
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 						    editPrefs.putBoolean("track_exercise", ((CheckBox) v).isChecked());    
 						    editPrefs.commit();					    
@@ -271,7 +271,7 @@ public class PreferencesFragment extends Fragment {
 						
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 						    editPrefs.putBoolean("run_goal", ((CheckBox) v).isChecked());    
 						    editPrefs.commit();					    
@@ -288,7 +288,7 @@ public class PreferencesFragment extends Fragment {
 						
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 						    editPrefs.putBoolean("use_cardio", ((CheckBox) v).isChecked());    
 						    editPrefs.commit();					    
@@ -305,7 +305,7 @@ public class PreferencesFragment extends Fragment {
 						
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 						    editPrefs.putBoolean("virtualrace", ((CheckBox) v).isChecked());    
 						    editPrefs.commit();					    
@@ -323,7 +323,7 @@ public class PreferencesFragment extends Fragment {
 						
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 						    editPrefs.putBoolean("interactive", ((CheckBox) v).isChecked());    
 						    editPrefs.commit();					    
@@ -393,7 +393,7 @@ public class PreferencesFragment extends Fragment {
 					
 					@Override
 					public void run() {
-						SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+						SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 						SharedPreferences.Editor editPrefs = oPrefs.edit();
 					    editPrefs.putBoolean("motivator", ((CheckBox) v).isChecked());    
 					    editPrefs.commit();					    
@@ -411,7 +411,7 @@ public class PreferencesFragment extends Fragment {
 					
 					@Override
 					public void run() {
-						SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+						SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 						SharedPreferences.Editor editPrefs = oPrefs.edit();
 					    editPrefs.putBoolean("say_distance", ((CheckBox) v).isChecked());    
 					    editPrefs.commit();					    
@@ -428,7 +428,7 @@ public class PreferencesFragment extends Fragment {
 						
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 						    editPrefs.putBoolean("say_time", ((CheckBox) v).isChecked());    
 						    editPrefs.commit();					    
@@ -445,7 +445,7 @@ public class PreferencesFragment extends Fragment {
 							
 							@Override
 							public void run() {
-								SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+								SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 								SharedPreferences.Editor editPrefs = oPrefs.edit();
 							    editPrefs.putBoolean("say_kalories", ((CheckBox) v).isChecked());    
 							    editPrefs.commit();					    
@@ -461,7 +461,7 @@ public class PreferencesFragment extends Fragment {
 								
 								@Override
 								public void run() {
-									SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+									SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 									SharedPreferences.Editor editPrefs = oPrefs.edit();
 								    editPrefs.putBoolean("say_pace", ((CheckBox) v).isChecked());    
 								    editPrefs.commit();					    
@@ -478,7 +478,7 @@ public class PreferencesFragment extends Fragment {
 									
 									@Override
 									public void run() {
-										SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_MULTI_PROCESS);
+										SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 										SharedPreferences.Editor editPrefs = oPrefs.edit();
 									    editPrefs.putBoolean("say_inclination", ((CheckBox) v).isChecked());    
 									    editPrefs.commit();					    

@@ -21,6 +21,7 @@ import com.glm.bean.ConfigTrainer;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.JsHandler;
+import com.glm.utils.Logger;
 import com.glm.utils.TrainerServiceConnection;
 import com.glm.utils.animation.ActivitySwitcher;
 
@@ -47,13 +48,14 @@ public class OpenStreetMapActivity  extends Activity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.stopwatch_map);        
 		/**Bind col servizio*/
-		mConnection = new TrainerServiceConnection(getApplicationContext());
-        oMainLayout = (RelativeLayout) findViewById(R.id.MainLayout);
+		oMainLayout = (RelativeLayout) findViewById(R.id.MainLayout);
 		wv 				= (WebView) findViewById(R.id.wv1); 
 		oBtnBack 		= (Button) findViewById(R.id.btnBack); 
 		btnSkipTrack 	= (ImageButton) findViewById(R.id.btnSkipTrack);
         
-		oConfigTrainer = ExerciseUtils.loadConfiguration(this);	
+		oConfigTrainer = ExerciseUtils.loadConfiguration(this);
+
+
 
 		jshandler = new JsHandler (wv,ExerciseUtils.getWeightData(this),getApplicationContext());
 		try {	           
@@ -85,7 +87,8 @@ public class OpenStreetMapActivity  extends Activity implements OnClickListener{
 	}
 	@Override
 	protected void onResume() {
-		
+		mConnection = new TrainerServiceConnection(getApplicationContext(),this.getClass().getCanonicalName());
+
 		// animateIn this activity
 		ActivitySwitcher.animationIn(oMainLayout, getWindowManager());
 		
@@ -116,6 +119,7 @@ public class OpenStreetMapActivity  extends Activity implements OnClickListener{
 
 	@Override
 	protected void onPause() {
+		mConnection.destroy();
 		// animateIn this activity
 		ActivitySwitcher.animationOut(oMainLayout, getWindowManager());
 		super.onPause();

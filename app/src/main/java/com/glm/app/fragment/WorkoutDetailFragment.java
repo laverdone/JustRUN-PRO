@@ -7,8 +7,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -88,6 +90,19 @@ public class WorkoutDetailFragment extends Fragment {
 		rootView = inflater.inflate(R.layout.new_exercise_details,
 				container, false);
 		rootView.setDrawingCacheEnabled(true);
+
+		Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.card_toolbar);
+		toolbar.setTitle("Card Toolbar");
+		if (toolbar != null) {
+			// inflate your menu
+			toolbar.inflateMenu(R.menu.new_main);
+			toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+				@Override
+				public boolean onMenuItemClick(MenuItem menuItem) {
+					return true;
+				}
+			});
+		}
 		txtDate 	  = (TextView) rootView.findViewById(R.id.txtDate);
 		oTxt_Time	  = (TextView) rootView.findViewById(R.id.textTime);
         oTxt_Distance = (TextView) rootView.findViewById(R.id.textDistance);

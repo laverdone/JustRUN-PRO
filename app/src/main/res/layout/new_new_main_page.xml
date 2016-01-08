@@ -8,7 +8,7 @@
 	    		android:paddingLeft="@dimen/activity_horizontal_margin"
 	    		android:paddingRight="@dimen/activity_horizontal_margin"
 
-	android:background="@drawable/carbon_fibre" 
+	android:background="@drawable/background_color"
 	android:gravity="right">
 	<RelativeLayout 
 		android:layout_height="match_parent" 
@@ -28,17 +28,33 @@
 				    android:orientation="vertical"
 				    android:padding="5dip" >
 					<!-- Run Workout -->
+					<android.support.v7.widget.CardView 						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						xmlns:app="http://schemas.android.com/apk/res-auto"
+						android:elevation="@dimen/cardview_default_elevation"
+						android:background="@drawable/abc_popup_background_mtrl_mult"
+						app:cardCornerRadius="4dp"
+						android:layout_margin="5dp"
+						>
 					<LinearLayout
 					    android:layout_width="match_parent"
-					    android:layout_height="100dp"
-					    android:layout_marginBottom="20dp"
+					    android:layout_height="wrap_content"
+					    android:layout_marginBottom="0dp"
 					    android:layout_marginTop="0dip"
-					    android:background="@drawable/glm_title"
+					    android:background="@drawable/background_color"
 					    android:orientation="vertical"
-					    android:padding="0dip" >
+					    android:padding="0dip">
+
+						<android.support.v7.widget.Toolbar
+							android:id="@+id/card_toolbar"
+							android:layout_width="match_parent"
+							android:layout_height="40dp"
+							android:background="@android:color/white"
+							/>
+
 					    <RelativeLayout
 					        android:layout_width="match_parent"
-					        android:layout_height="match_parent"				     
+					        android:layout_height="46dp"
 					        android:layout_marginTop="5dip"
 					        android:orientation="horizontal"
 					        android:padding="5dip" >
@@ -46,68 +62,88 @@
 					            android:id="@+id/textView1"
 					            android:layout_width="wrap_content"
 					            android:layout_height="wrap_content"
-					            android:layout_alignBottom="@+id/txtBMI"
-					            android:layout_alignParentLeft="true"
-					            android:text="@string/about_1"
-					            android:textAppearance="?android:attr/textAppearanceSmall" />
+								android:text="@string/about_1"
+					            android:textAppearance="?android:attr/textAppearanceSmall"
+								android:layout_alignParentTop="true"
+								android:layout_alignParentLeft="true"
+								android:layout_alignParentStart="true" />
 					        <TextView
 					            android:id="@+id/txtBMI"
 					            android:layout_width="wrap_content"
 					            android:layout_height="wrap_content"
-					            android:layout_alignParentBottom="true"
-					            android:layout_alignParentRight="true"
-					            android:text="BMI"
-					            android:textAppearance="?android:attr/textAppearanceLarge" />
-					        <ImageButton
-					            android:id="@+id/imgBtnPreferences"
-					            android:layout_width="40dp"
-					            android:layout_height="40dp"
-					            android:layout_alignParentLeft="true"
-					            android:layout_alignParentTop="true"
-					            android:background="@drawable/lista_gradient"
-					            android:src="@android:drawable/ic_menu_preferences" />
-					        <TextView
+								android:text="BMI"
+					            android:textAppearance="?android:attr/textAppearanceLarge"
+								android:layout_alignTop="@+id/TextView03"
+								android:layout_alignParentRight="true"
+								android:layout_alignParentEnd="true" />
+
+							<TextView
 					            android:id="@+id/TextView03"
 					            android:layout_width="wrap_content"
 					            android:layout_height="wrap_content"
-					            android:layout_alignBaseline="@+id/txtBMI"
-					            android:layout_alignBottom="@+id/txtBMI"
-					            android:layout_toLeftOf="@+id/txtBMI"
-					            android:text="BMI"
-					            android:layout_marginRight="5dp"
-					            android:textAppearance="?android:attr/textAppearanceLarge" />
-					        <ImageButton
-					            android:id="@+id/imgBtnMore"
-					            android:layout_width="40dp"
-					            android:layout_height="40dp"
-					            android:layout_alignParentTop="true"
-					            android:layout_alignRight="@+id/txtBMI"
-					            android:background="@drawable/lista_gradient"
-					            android:src="@android:drawable/ic_menu_more" />
-					    </RelativeLayout>
+								android:text="BMI"
+								android:textAppearance="?android:attr/textAppearanceLarge"
+								android:layout_alignParentTop="true"
+								android:layout_toLeftOf="@+id/txtBMI"
+								android:layout_toStartOf="@+id/txtBMI"
+								android:layout_marginRight="29dp"
+								android:layout_marginEnd="29dp" />
+						</RelativeLayout>
+
+						<ImageButton
+                            android:id="@+id/imgBtnMore"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignRight="@+id/txtBMI"
+                            android:background="@drawable/button_no_corners"
+                            android:src="@android:drawable/ic_menu_more"
+							android:layout_gravity="right"
+							android:visibility="gone"/>
 					</LinearLayout>
+					</android.support.v7.widget.CardView>
+					<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						xmlns:app="http://schemas.android.com/apk/res-auto"
+						android:elevation="@dimen/cardview_default_elevation"
+						android:background="@drawable/abc_popup_background_mtrl_mult"
+						app:cardCornerRadius="4dp"
+						android:layout_margin="5dp"
+						android:foreground="?android:attr/selectableItemBackground">
+
 					<LinearLayout
 					    android:layout_width="match_parent"
 					    android:layout_height="match_parent"
 					    android:layout_marginTop="0dip"
 					    android:orientation="vertical"
 					    android:padding="0dip"
-					    android:layout_marginBottom="5dp" >
+					    android:layout_marginBottom="5dp"
+						android:background="@drawable/background_color"
+						>
+
+						<android.support.v7.widget.Toolbar
+							android:id="@+id/card_toolbar_running"
+							android:layout_width="match_parent"
+							android:layout_height="40dp"
+							android:background="@android:color/white"
+							/>
+
 						<RelativeLayout
 						    android:id="@+id/btn_start_running"
 						    android:layout_width="match_parent"
 						    android:layout_height="wrap_content"
 						    android:layout_marginTop="10dip"
-						    android:background="@drawable/lista_gradient"
 						    android:clickable="true"
 						    android:orientation="horizontal"
-						    android:padding="10dip" >
+						    android:padding="10dip"
+							android:background="@drawable/button_default">
 						    <ImageView
 						        android:id="@+id/imageView1"
 						        android:layout_width="wrap_content"
 						        android:layout_height="wrap_content"
 						        android:background="@android:color/transparent"
-						        android:src="@drawable/running" />
+						        android:src="@drawable/running_dark" />
 						    <TextView
 						        android:id="@+id/textView2"
 						        android:layout_width="wrap_content"
@@ -118,27 +154,50 @@
 						        android:textAppearance="?android:attr/textAppearanceSmall" />
 						</RelativeLayout>
 					</LinearLayout>
+
+					</android.support.v7.widget.CardView>
+
+					<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						xmlns:app="http://schemas.android.com/apk/res-auto"
+						android:elevation="@dimen/cardview_default_elevation"
+						android:background="@drawable/abc_popup_background_mtrl_mult"
+						app:cardCornerRadius="4dp"
+						android:layout_margin="5dp"
+						android:foreground="?android:attr/selectableItemBackground">
+
 					<LinearLayout
 					    android:layout_width="match_parent"
 					    android:layout_height="match_parent"
 					    android:layout_marginTop="0dip"
 					    android:orientation="vertical"
 					    android:padding="0dip"
-					    android:layout_marginBottom="5dp" >
+					    android:layout_marginBottom="5dp"
+						android:background="@drawable/background_color"
+						>
+
+						<android.support.v7.widget.Toolbar
+							android:id="@+id/card_toolbar_walking"
+							android:layout_width="match_parent"
+							android:layout_height="40dp"
+							android:background="@android:color/white"
+							/>
+
 					    <RelativeLayout
 					        android:id="@+id/btn_start_walking"
 					        android:layout_width="match_parent"
 					        android:layout_height="wrap_content"
 					        android:layout_marginTop="10dip"
-					        android:background="@drawable/lista_gradient"
 					        android:orientation="horizontal"
-					        android:padding="10dip" >
+					        android:padding="10dip"
+							android:background="@drawable/button_default">
 					        <ImageButton
 					            android:id="@+id/imageButton1"
 					            android:layout_width="wrap_content"
 					            android:layout_height="wrap_content"
 					            android:background="@android:color/transparent"
-					            android:src="@drawable/walking" />
+					            android:src="@drawable/walking_dark" />
 					        <TextView
 					            android:id="@+id/TextView01"
 					            android:layout_width="wrap_content"
@@ -149,26 +208,47 @@
 					            android:textAppearance="?android:attr/textAppearanceSmall" />
 					    </RelativeLayout>
 					</LinearLayout>
+					</android.support.v7.widget.CardView>
+					<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						xmlns:app="http://schemas.android.com/apk/res-auto"
+						android:elevation="@dimen/cardview_default_elevation"
+						android:background="@drawable/abc_popup_background_mtrl_mult"
+						app:cardCornerRadius="4dp"
+						android:layout_margin="5dp"
+						android:foreground="?android:attr/selectableItemBackground">
+
 					<LinearLayout
 					    android:layout_width="match_parent"
 					    android:layout_height="match_parent"
 					    android:layout_marginTop="0dip"
 					    android:orientation="vertical"
-					    android:padding="0dip">
+					    android:padding="0dip"
+						android:background="@drawable/background_color"
+						>
+
+						<android.support.v7.widget.Toolbar
+							android:id="@+id/card_toolbar_biking"
+							android:layout_width="match_parent"
+							android:layout_height="40dp"
+							android:background="@android:color/white"
+							/>
+
 						<RelativeLayout
 						    android:id="@+id/btn_start_biking"
 						    android:layout_width="match_parent"
 						    android:layout_height="wrap_content"
 						    android:layout_marginTop="10dip"
-						    android:background="@drawable/lista_gradient"
 						    android:orientation="horizontal"
-						    android:padding="10dip" >
+						    android:padding="10dip"
+							android:background="@drawable/button_default">
 						    <ImageButton
 						        android:id="@+id/imageButton2"
 						        android:layout_width="wrap_content"
 						        android:layout_height="wrap_content"
 						        android:background="@android:color/transparent"
-						        android:src="@drawable/biking" />
+						        android:src="@drawable/biking_dark" />
 						    <TextView
 						        android:id="@+id/TextView02"
 						        android:layout_width="wrap_content"
@@ -179,6 +259,58 @@
 						        android:textAppearance="?android:attr/textAppearanceSmall" />
 						</RelativeLayout>
 					</LinearLayout>
+					</android.support.v7.widget.CardView>
+					<!--<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						xmlns:app="http://schemas.android.com/apk/res-auto"
+						android:elevation="@dimen/cardview_default_elevation"
+						android:background="@drawable/abc_popup_background_mtrl_mult"
+						app:cardCornerRadius="4dp"
+						android:layout_margin="5dp">
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:layout_marginTop="0dip"
+						android:orientation="vertical"
+						android:padding="0dip"
+						android:layout_marginBottom="5dp"
+						android:background="@drawable/background_color"
+						>
+
+						<android.support.v7.widget.Toolbar
+							android:id="@+id/card_toolbar_settings"
+							android:layout_width="match_parent"
+							android:layout_height="40dp"
+							android:background="@android:color/white"
+							/>
+
+						<RelativeLayout
+							android:id="@+id/btn_preferences"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginTop="10dip"
+							android:orientation="horizontal"
+							android:padding="10dip" >
+							<ImageButton
+								android:id="@+id/imgBtnPreferences"
+								android:layout_width="30dp"
+								android:layout_height="30dp"
+								android:layout_alignParentLeft="true"
+								android:layout_alignParentTop="true"
+								android:background="@android:color/transparent"
+								android:src="@android:drawable/ic_menu_preferences" />
+							<TextView
+								android:id="@+id/txtPref"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_alignBottom="@+id/imgBtnPreferences"
+								android:layout_alignParentRight="true"
+								android:text="@string/pref_title"
+								android:textAppearance="?android:attr/textAppearanceSmall" />
+						</RelativeLayout>
+					</LinearLayout>
+					</android.support.v7.widget.CardView>-->
 					<!-- Run Workout -->
 					
 					<!-- Walk Workout -->

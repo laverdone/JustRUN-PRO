@@ -8,13 +8,21 @@
 	    		android:paddingLeft="@dimen/activity_horizontal_margin"
 	    		android:paddingRight="@dimen/activity_horizontal_margin"
 	android:id="@+id/objMainLayout" 	
-	android:background="@drawable/carbon_fibre" 
+	android:background="@drawable/background_color"
 	android:gravity="right">
+	<android.support.v7.widget.CardView 						android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		android:elevation="@dimen/cardview_default_elevation"
+		android:background="@drawable/abc_popup_background_mtrl_mult"
+		app:cardCornerRadius="4dp"
+		android:layout_margin="5dp">
 	 <fragment 	
 	     android:id="@+id/gmapv2"
 		    class="com.google.android.gms.maps.MapFragment"
 		    android:layout_width="match_parent"
-		    android:layout_height="match_parent"/> 
+		    android:layout_height="match_parent"/>
+	</android.support.v7.widget.CardView>
 </LinearLayout>
 
 	

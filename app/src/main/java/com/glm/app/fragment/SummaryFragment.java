@@ -217,6 +217,7 @@ public class SummaryFragment extends Fragment {
 		protected Object doInBackground(Object... params) {
 			//oChart = new BarChart(mContext,mTypeGraph,false);
 			//Looper.prepare();
+			if(getActivity()==null) return false;
 			getActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {

@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.glm.bean.ConfigTrainer;
 import com.glm.services.ExerciseService;
 import com.glm.services.IExerciseService;
 
@@ -18,14 +19,24 @@ import com.glm.services.IExerciseService;
  * 
  * **/
 public class TrainerServiceConnection implements ServiceConnection 
-{ 
+{
+	/**Continene tutte le configurazioni del Trainer**/
+	private static ConfigTrainer oConfigTrainer;
 	public IExerciseService mIService;
 	public boolean mIsBound=false;
-	protected ExerciseService oTrainerService = null; 
 	public Context mContext;
-
-    public TrainerServiceConnection(Context context){
+	private String mBinderAct="";
+    public TrainerServiceConnection(Context context,String binder){
         mContext=context;
+		mBinderAct=binder;
+		try{
+			oConfigTrainer=ExerciseUtils.loadConfiguration(mContext);
+		}catch (NullPointerException e) {
+			Log.e(this.getClass().getCanonicalName(),"Error load Config");
+			return;
+		}
+
+		if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - bindService from "+mBinderAct);
         doBindService();
     }
     
@@ -33,6 +44,7 @@ public class TrainerServiceConnection implements ServiceConnection
      * Disconnetto dal servizio
      * */
     public void destroy(){
+		if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - destroy from "+mBinderAct);
         doUnbindService();
     }
     
@@ -41,9 +53,12 @@ public class TrainerServiceConnection implements ServiceConnection
 	{ 
 		try{
 			mIService= IExerciseService.Stub.asInterface(service);
+			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - TrainerServiceConnection->onServiceConnected service Workout");
 
 		}catch (Exception e) {
 			Log.e(this.getClass().getCanonicalName(), "onServiceConnected->Remote Exception"+e.getMessage());
+			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("ERROR - TrainerServiceConnection->onServiceConnected->Remote Exception"+e.getMessage());
+
 			e.printStackTrace();
 		}	                
 	} 
@@ -62,7 +77,12 @@ public class TrainerServiceConnection implements ServiceConnection
 		//Intent bindIntent = new Intent(Main.this, MessengerService.class); 
         //bindService(bindIntent, mConnection, Context.BIND_AUTO_CREATE);                 
 		if(mIsBound==false){
-			mIsBound = mContext.bindService(new Intent("com.glm.trainer.STARTSERVICE"), this, Context.BIND_AUTO_CREATE);
+
+			Intent serviceIntent = new Intent(mContext,ExerciseService.class);
+
+			mIsBound = mContext.bindService(serviceIntent, this, Context.BIND_AUTO_CREATE);
+			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - TrainerServiceConnection->doBindService service Workout");
+
 			Log.i(this.getClass().getCanonicalName(), "Binding from Services");
 		}
 		
@@ -71,8 +91,9 @@ public class TrainerServiceConnection implements ServiceConnection
 	void doUnbindService() {
 	    if (mIsBound) {
 	        // If we have received the service, and hence registered with
-	       
-	        Log.i(this.getClass().getCanonicalName(), "UnBinding from Services");
+			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - TrainerServiceConnection->doUnbindService service Workout");
+
+			Log.i(this.getClass().getCanonicalName(), "UnBinding from Services");
 
 	        // Detach our existing connection.
 	        mContext.unbindService(this);

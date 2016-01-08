@@ -8,7 +8,7 @@
 	    		android:paddingLeft="@dimen/activity_horizontal_margin"
 	    		android:paddingRight="@dimen/activity_horizontal_margin"
 	android:id="@+id/objMainLayout" 	
-	android:background="@drawable/carbon_fibre" 
+	android:background="@drawable/background_color"
 	android:gravity="right">
 	 <fragment 	
 	     android:id="@+id/gmapv2"

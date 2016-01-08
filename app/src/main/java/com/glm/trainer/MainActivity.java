@@ -16,6 +16,7 @@ import android.view.View;
 import com.glm.app.db.Database;
 import com.glm.app.stopwatch.WorkOutActivity;
 import com.glm.bean.ConfigTrainer;
+import com.glm.services.ExerciseService;
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.TrainerServiceConnection;
 import com.google.gson.Gson;
@@ -51,7 +52,9 @@ public class MainActivity  extends Activity{
 					.penaltyDeath()
 					.build());
 		}
-		startService(new Intent("com.glm.trainer.STARTSERVICE"));
+		Intent serviceIntent = new Intent(this,ExerciseService.class);
+		startService(serviceIntent);
+		//startService(new Intent("com.glm.trainer.STARTSERVICE"));
 
 		DBTask task = new DBTask();
 		task.execute(new Database(this));
@@ -207,7 +210,7 @@ public class MainActivity  extends Activity{
 		@Override
 		protected Boolean doInBackground(Database... mDB) {
 			int iRetry=0;
-			mConnection = new TrainerServiceConnection(getApplicationContext());
+			mConnection = new TrainerServiceConnection(getApplicationContext(),this.getClass().getCanonicalName());
 			Database oDB=null;
 			for (Database DB : mDB) {
 				oDB= DB;

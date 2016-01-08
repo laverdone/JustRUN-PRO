@@ -5,7 +5,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
-    android:background="@drawable/carbon_fibre">
+    android:background="@drawable/background_color">
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
                 android:id="@+id/RelativeLayout02"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/lista_gradient"
+                android:background="@drawable/background_color"
                 android:padding="20dp" >
                 <TextView
                     android:id="@+id/TextView13"
@@ -44,14 +44,21 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/TextView17"
-                    android:background="@drawable/glm_title"
-                    android:spinnerMode="dialog"/>
+                    android:background="@drawable/button_no_corners"
+                    android:spinnerMode="dropdown"/>
             </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+
             <RelativeLayout
                 android:id="@+id/RelativeLayout03"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/lista_gradient"
+                android:background="@drawable/background_color"
                 android:padding="20dp" >
                 <TextView
                     android:id="@+id/TextView12a"
@@ -68,8 +75,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/TextView01"
-                    android:background="@drawable/glm_title"
-                    android:spinnerMode="dialog" />
+                    android:background="@drawable/button_no_corners"
+                    android:spinnerMode="dropdown" />
                 <TextView
                     android:id="@+id/TextView01"
                     android:layout_width="wrap_content"
@@ -79,11 +86,18 @@
                     android:text="@string/show_units_desc"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
             </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+
             <RelativeLayout
                 android:id="@+id/RelativeLayout04"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/lista_gradient"
+                android:background="@drawable/background_color"
                 android:padding="20dp" >
                 <TextView
                     android:id="@+id/TextView12b"
@@ -108,11 +122,18 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
             </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+
             <RelativeLayout
                 android:id="@+id/RelativeLayout05"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/lista_gradient"
+                android:background="@drawable/background_color"
                 android:padding="20dp" >
                 <TextView
                     android:id="@+id/TextView12c"
@@ -137,11 +158,18 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
             </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+
             <RelativeLayout
                 android:id="@+id/RelativeLayout06"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/lista_gradient"
+                android:background="@drawable/background_color"
                 android:padding="20dp" >
                 <TextView
                     android:id="@+id/TextView12"
@@ -166,12 +194,15 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
             </RelativeLayout>
+
+
             <RelativeLayout
                 android:id="@+id/RelativeLayout07"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/lista_gradient"
-                android:padding="20dp" >
+                android:background="@drawable/background_color"
+                android:padding="20dp"
+                android:visibility="gone">
                 <TextView
                     android:id="@+id/TextView05"
                     android:layout_width="wrap_content"
@@ -195,12 +226,16 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
             </RelativeLayout>
+
+
+
             <RelativeLayout
                 android:id="@+id/RelativeLayout01"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/lista_gradient"
-                android:padding="20dp" >
+                android:background="@drawable/background_color"
+                android:padding="20dp"
+                android:visibility="gone">
                 <TextView
                     android:id="@+id/TextView03"
                     android:layout_width="wrap_content"

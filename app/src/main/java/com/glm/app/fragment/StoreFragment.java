@@ -34,7 +34,7 @@ import java.util.Locale;
  */
 public class StoreFragment extends Fragment {
 	private View rootView;
-	private HttpClientHelper oHttpClient = new HttpClientHelper();
+	//private HttpClientHelper oHttpClient = new HttpClientHelper();
 	
 	private Context mContext;
 	private ListView mListStore;
@@ -69,7 +69,11 @@ public class StoreFragment extends Fragment {
 
 	public void setContext(Context context) {
 		mContext=context;
-		mServiceConn = new PlayBillingServiceConnection(mContext);
+		try{
+			mServiceConn = new PlayBillingServiceConnection(mContext);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 	}
    
 	@Override
@@ -124,13 +128,13 @@ public class StoreFragment extends Fragment {
 		protected Void doInBackground(Void... params) {
 			//oConfigTrainer = ExerciseUtils.loadConfiguration(mContext);
 			if(!isAdded()) return null;
-			new Thread(new Runnable() {
+			/*new Thread(new Runnable() {
 				
 				@Override
 				public void run() {
 					aVirtualRace = oHttpClient.getVirtualRace(((NewMainActivity)getActivity()).oConfigTrainer, Locale.getDefault().getCountry());	
 				}
-			});
+			});*/
 					
 			
 			ArrayList skuList = new ArrayList();

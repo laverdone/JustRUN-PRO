@@ -8,7 +8,7 @@
 	    		android:paddingLeft="@dimen/activity_horizontal_margin"
 	    		android:paddingRight="@dimen/activity_horizontal_margin"
 
-	android:background="@drawable/carbon_fibre" 
+	android:background="@drawable/background_color"
 	android:gravity="right">	
 <RelativeLayout
 
@@ -29,44 +29,55 @@
             android:layout_weight="1"
             android:orientation="vertical" >
             <!-- Dettaglio Graph Inizio -->
-            <RelativeLayout
+            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-                <ImageButton
-                    android:id="@+id/imgBtnMore"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:background="@drawable/lista_gradient"
-                    android:src="@android:drawable/ic_menu_more" />
-                <TextView
-                    android:id="@+id/textDistance_tot"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="right"
-                    android:text="30,9Km"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="18dip"
-                    android:textStyle="bold" />
-            </RelativeLayout>
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:elevation="@dimen/cardview_default_elevation"
+                android:background="@drawable/abc_popup_background_mtrl_mult"
+                app:cardCornerRadius="4dp"
+                android:layout_margin="5dp">
+
             <LinearLayout
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="1dp" >
-                <!-- 1 Row -->
-                <!-- 1 Row -->
-                <!-- 2 Row -->
-                <!-- 2 Row -->
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/card_toolbar_Walking"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/white"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:visibility="gone">
+                    <ImageButton
+                        android:id="@+id/imgBtnMore"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/button_no_corners"
+                        android:src="@android:drawable/ic_menu_more" />
+                    <TextView
+                        android:id="@+id/textDistance_tot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="right"
+                        android:text="30,9Km"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textSize="18dip"
+                        android:textStyle="bold" />
+                </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/llGraph"
                     android:layout_width="match_parent"
                     android:layout_height="140dip"
-                    android:background="@drawable/web_container"
+                    android:background="@drawable/background_color"
                     android:orientation="vertical" >
                     <ProgressBar
                         android:id="@+id/progressBar1"
@@ -76,10 +87,19 @@
                         android:layout_centerVertical="true" />
                 </RelativeLayout>
             </LinearLayout>
+            </android.support.v7.widget.CardView>
             <!-- Dettaglio Graph Inizio -->
             <!-- Separator -->
             <!-- Separator -->
             <!-- RUN -->
+            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:elevation="@dimen/cardview_default_elevation"
+                android:background="@drawable/abc_popup_background_mtrl_mult"
+                app:cardCornerRadius="4dp"
+                android:layout_margin="5dp">
             <LinearLayout
                 android:id="@+id/rowRun"
                 android:layout_width="match_parent"
@@ -92,9 +112,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
                     android:padding="10dip"
-                    android:background="@drawable/lista_gradient_no_corners" 
+                    android:background="@drawable/button_no_corners"
                     android:text="@string/click_dett"
-                    android:textColor="@android:color/darker_gray"/>
+                    android:textColor="@android:color/darker_gray"
+                    android:visibility="visible"/>
                    <!--  <TextView
                         android:id="@+id/txtDate"
                         android:layout_width="wrap_content"
@@ -114,36 +135,43 @@
                         android:background="@drawable/circle"
                         android:src="@android:drawable/ic_menu_info_details" />
                 </RelativeLayout> -->
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/card_toolbar_running"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/white"
+                    />
                 <RelativeLayout
                     android:id="@+id/MiddleBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="20dip"
-                    android:background="@drawable/glm_container" >
+                    android:background="@drawable/background_color" >
+
                     <ImageView
-                        android:id="@+id/imgBurn"
+                        android:id="@+id/imgBurn_dark"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignBottom="@+id/txtKal"
                         android:layout_alignParentBottom="true"
                         android:layout_marginRight="100dp"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/burn" />
+                        android:src="@drawable/burn_dark" />
                     <ImageView
                         android:id="@+id/imgTypeExercise"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentLeft="true"
-                        android:src="@drawable/running" />
+                        android:src="@drawable/running_dark" />
                     <ImageView
-                        android:id="@+id/imgMetric"
+                        android:id="@+id/imgMetric_dark"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignParentTop="true"
                          android:layout_alignParentRight="true"
                         android:layout_marginRight="100dp"
-                        android:src="@drawable/metrics" />
+                        android:src="@drawable/metrics_dark" />
                     <TextView
                         android:id="@+id/textDistance_run"
                         android:layout_width="wrap_content"
@@ -155,7 +183,7 @@
                         android:editable="false"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="-"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#000000" />
                     <TextView
                         android:id="@+id/textKal_run"
                         android:layout_width="wrap_content"
@@ -165,24 +193,39 @@
                         android:layout_marginLeft="170dp"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="-"
-                        android:textColor="#FFFFFF"
+                        android:textColor="#000000"
                         android:textSize="12dip" />
                 </RelativeLayout>
             </LinearLayout>
+            </android.support.v7.widget.CardView>
             <!-- RUN -->
             <!-- Separator -->
             <!-- Separator -->
             <!-- WALK -->
+            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:elevation="@dimen/cardview_default_elevation"
+                android:background="@drawable/abc_popup_background_mtrl_mult"
+                app:cardCornerRadius="4dp"
+                android:layout_margin="5dp">
             <LinearLayout
                 android:id="@+id/rowWalk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/card_toolbar_walking"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/white"
+                    />
                 <RelativeLayout
                     android:id="@+id/RelativeLayout02"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/glm_container"
+                    android:background="@drawable/background_color"
                     android:padding="20dip" >
                     <ImageView
                         android:id="@+id/ImageView03"
@@ -192,14 +235,14 @@
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="100dp"
-                        android:src="@drawable/burn" />
+                        android:src="@drawable/burn_dark" />
                     <ImageView
                         android:id="@+id/ImageView02"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentLeft="true"
-                        android:src="@drawable/walking" />
+                        android:src="@drawable/walking_dark" />
                     <ImageView
                         android:id="@+id/ImageView01"
                         android:layout_width="30dp"
@@ -207,7 +250,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
                         android:layout_marginRight="100dp"
-                        android:src="@drawable/metrics" />
+                        android:src="@drawable/metrics_dark" />
                     <TextView
                         android:id="@+id/textDistance_walk"
                         android:layout_width="wrap_content"
@@ -219,7 +262,7 @@
                         android:editable="false"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="-"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#000000" />
                     <TextView
                         android:id="@+id/textKal_walk"
                         android:layout_width="wrap_content"
@@ -229,20 +272,35 @@
                         android:layout_marginLeft="170dp"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="-"
-                        android:textColor="#FFFFFF"
+                        android:textColor="#000000"
                         android:textSize="12dip" />
                 </RelativeLayout>
             </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:elevation="@dimen/cardview_default_elevation"
+                android:background="@drawable/abc_popup_background_mtrl_mult"
+                app:cardCornerRadius="4dp"
+                android:layout_margin="5dp">
             <LinearLayout
                 android:id="@+id/rowBike"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/card_toolbar_biking"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/white"
+                    />
                 <RelativeLayout
                     android:id="@+id/RelativeLayout04"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/glm_container"
+                    android:background="@drawable/background_color"
                     android:padding="20dip" >
                     <ImageView
                         android:id="@+id/ImageView06"
@@ -252,14 +310,14 @@
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="100dp"
-                        android:src="@drawable/burn" />
+                        android:src="@drawable/burn_dark" />
                     <ImageView
                         android:id="@+id/ImageView05"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentLeft="true"
-                        android:src="@drawable/running" />
+                        android:src="@drawable/running_dark" />
                     <ImageView
                         android:id="@+id/ImageView04"
                         android:layout_width="30dp"
@@ -267,7 +325,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
                         android:layout_marginRight="100dp"
-                        android:src="@drawable/metrics" />
+                        android:src="@drawable/metrics_dark" />
                     <TextView
                         android:id="@+id/textDistance_bike"
                         android:layout_width="wrap_content"
@@ -279,7 +337,7 @@
                         android:editable="false"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="-"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#000000" />
                     <TextView
                         android:id="@+id/textKal_bike"
                         android:layout_width="wrap_content"
@@ -289,10 +347,11 @@
                         android:layout_marginLeft="170dp"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="-"
-                        android:textColor="#FFFFFF"
+                        android:textColor="#000000"
                         android:textSize="12dip" />
                 </RelativeLayout>
             </LinearLayout>
+            </android.support.v7.widget.CardView>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >

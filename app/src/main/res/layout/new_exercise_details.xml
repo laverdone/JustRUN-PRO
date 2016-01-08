@@ -8,8 +8,17 @@
 	    		android:paddingLeft="@dimen/activity_horizontal_margin"
 	    		android:paddingRight="@dimen/activity_horizontal_margin"
 	android:id="@+id/objMainLayout" 	
-	android:background="@drawable/carbon_fibre"
+	android:background="@drawable/background_color"
 	android:gravity="right">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:elevation="@dimen/cardview_default_elevation"
+        android:background="@drawable/abc_popup_background_mtrl_mult"
+        app:cardCornerRadius="4dp"
+        android:layout_margin="5dp">
 
     <LinearLayout
         android:id="@+id/mainlinearLayout"
@@ -18,29 +27,36 @@
         
         android:orientation="vertical"
         android:padding="1dip" >
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/card_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@android:color/white" />
         <TextView
             android:id="@+id/txtDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
             android:layout_marginRight="0dp"
-            android:background="@drawable/lista_gradient"
+            android:background="@drawable/background_color"
             android:gravity="center"
             android:text=" - "
-            android:textColor="#FFFFFFFF"
+            android:textColor="#000000"
             android:textSize="14sp"
             android:textStyle="bold" />
         <RelativeLayout
             android:id="@+id/InternalRelative"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/lista_gradient"
-            android:padding="5dip" >
+            android:background="@drawable/background_color"
+            android:padding="5dip">
             <ScrollView
                 android:id="@+id/scrollView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="0dp"
                 android:padding="10dp" >
 
                 <LinearLayout
@@ -86,6 +102,7 @@
                                     android:gravity="right"
                                     android:text="wait..."
                                     android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"
                                     android:textSize="18dip"
                                     android:textStyle="bold" />
 
@@ -96,7 +113,8 @@
                                     android:layout_alignParentBottom="true"
                                     android:layout_alignParentLeft="true"
                                     android:text="@string/time"
-                                    android:textColor="#FFFFFF" />
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000" />
 
                             </RelativeLayout>
 
@@ -143,7 +161,8 @@
                                     android:layout_alignParentBottom="true"
                                     android:layout_alignParentLeft="true"
                                     android:text="@string/distance"
-                                    android:textColor="#FFFFFF" />
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
 
                             </RelativeLayout>
 
@@ -190,7 +209,8 @@
                                     android:layout_alignParentBottom="true"
                                     android:layout_alignParentLeft="true"
                                     android:text="@string/kalories"
-                                    android:textColor="#FFFFFF" />
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
 
                             </RelativeLayout>
 
@@ -237,7 +257,8 @@
                                     android:layout_alignParentBottom="true"
                                     android:layout_alignParentLeft="true"
                                     android:text="@string/speed_avg"
-                                    android:textColor="#FFFFFF" />
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
 
                             </RelativeLayout>
 
@@ -276,7 +297,8 @@
                                     android:layout_alignParentBottom="true"
                                     android:layout_alignParentLeft="true"
                                     android:text="@string/speed_max"
-                                    android:textColor="#FFFFFF" />
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
 
                             </RelativeLayout>
 
@@ -312,7 +334,8 @@
                                     android:layout_alignParentLeft="true"
                                     android:text="@string/pace_avg"
                                      android:layout_marginLeft="5dp"
-                                    android:textColor="#FFFFFF" />
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
 
                                 <TextView
                                     android:id="@+id/textPace"
@@ -364,7 +387,8 @@
                                     android:layout_alignParentLeft="true"
                                     android:text="@string/pace_max"
                                      android:layout_marginLeft="5dp"
-                                    android:textColor="#FFFFFF" />
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
 
                             </RelativeLayout>
 
@@ -409,7 +433,8 @@
                                     android:text="@string/step"
                                     android:gravity="right"
                                     android:layout_marginLeft="5dp"
-                                    android:textColor="#FFFFFF" />
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
 
                             </RelativeLayout>
 
@@ -451,7 +476,8 @@
                                     android:layout_alignParentLeft="true"
                                     android:text="@string/max_heart_rate"
                                      android:layout_marginLeft="5dp"
-                                    android:textColor="#FFFFFF" />
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
 
                             </RelativeLayout>
 
@@ -493,7 +519,8 @@
                                     android:layout_alignParentLeft="true"
                                     android:text="@string/avg_heart_rate"
                                      android:layout_marginLeft="5dp"
-                                    android:textColor="#FFFFFF" />
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
 
                             </RelativeLayout>
                         </LinearLayout>
@@ -508,9 +535,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignRight="@+id/scrollView"
-                android:background="@drawable/lista_gradient"
+                android:background="@drawable/button_no_corners"
                 android:clickable="true"
-                android:padding="2dip" >
+                android:padding="2dip" android:visibility="gone">
                 <ImageView
                     android:id="@+id/imgBtnPreferences"
                     android:layout_width="wrap_content"
@@ -520,6 +547,7 @@
                     android:src="@android:drawable/ic_menu_more" />
             </RelativeLayout>
         </RelativeLayout>
+
     </LinearLayout>
-		
+    </android.support.v7.widget.CardView>
 </LinearLayout>

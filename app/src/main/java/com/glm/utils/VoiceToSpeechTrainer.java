@@ -2,6 +2,7 @@ package com.glm.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
@@ -32,7 +33,9 @@ public class VoiceToSpeechTrainer implements TextToSpeech.OnInitListener{
 		return true;
 	}
 
-	
+	public void release(){
+		mTts.stop();
+	}
 	protected void onActivityResult(
 	        int requestCode, int resultCode, Intent data) {
 	    /*if (requestCode == MY_DATA_CHECK_CODE) {
@@ -96,9 +99,16 @@ public class VoiceToSpeechTrainer implements TextToSpeech.OnInitListener{
     }
     
     public void say(String sWord){
-    	mTts.speak(sWord,
-                TextToSpeech.QUEUE_FLUSH,  // Drop all pending entries in the playback queue.
-                null);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			mTts.speak(sWord,
+					TextToSpeech.QUEUE_FLUSH,  // Drop all pending entries in the playback queue.
+					null,"1234");
+		}else{
+			mTts.speak(sWord,
+					TextToSpeech.QUEUE_FLUSH,  // Drop all pending entries in the playback queue.
+					null);
+		}
+
     	while(mTts.isSpeaking()){
     		try {
 				Thread.sleep(2000);
@@ -168,10 +178,16 @@ public class VoiceToSpeechTrainer implements TextToSpeech.OnInitListener{
 		
 		
 		Log.i(this.getClass().getCanonicalName(),"Say: "+sSpeech);
-		mTts.speak(sSpeech,
-                TextToSpeech.QUEUE_FLUSH,  // Drop all pending entries in the playback queue.
-                null);
-		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			mTts.speak(sSpeech,
+                    TextToSpeech.QUEUE_FLUSH,  // Drop all pending entries in the playback queue.
+                    null,"1234");
+		}else{
+			mTts.speak(sSpeech,
+					TextToSpeech.QUEUE_FLUSH,  // Drop all pending entries in the playback queue.
+					null);
+		}
+
 		while(mTts.isSpeaking()){
     		try {
 				Thread.sleep(2000);

@@ -8,13 +8,13 @@
 	    		android:paddingLeft="@dimen/activity_horizontal_margin"
 	    		android:paddingRight="@dimen/activity_horizontal_margin"
 	android:id="@+id/objMainLayout" 	
-	 android:background="@drawable/carbon_fibre">
+	 android:background="@drawable/background_color">
 
         <RelativeLayout
             android:id="@+id/InternalRelative"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/lista_gradient"
+            android:background="@drawable/background_color"
             android:padding="10dip" >
                 <EditText
                     android:id="@+id/txtNote"
@@ -25,12 +25,12 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:layout_weight="1"
-                    android:background="@drawable/note_gradient"
+                    android:background="@drawable/background_color"
                     android:ems="10"
                     android:enabled="true"
                     android:gravity="top"
                     android:singleLine="false"
-                    android:textColor="#FFFFFF" 
+                    android:textColor="#000000"
                     android:layout_marginBottom="50dp">
                     
                 </EditText>
@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/lista_gradient"
+                    android:background="@drawable/button_no_corners"
                     android:text="@string/save_note"
                     android:textColor="#FFFFFF" />
         </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.glm.services;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,101 +10,105 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.media.AudioManager;
-import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.glm.bean.CardioDevice;
 import com.glm.bean.ConfigTrainer;
-import com.glm.services.IExerciseService;
 import com.glm.trainer.MainActivity;
 import com.glm.trainer.R;
 import com.glm.utils.AccelerometerListener;
 import com.glm.utils.AccelerometerUtils;
 import com.glm.utils.ExerciseUtils;
+import com.glm.utils.Logger;
 import com.glm.utils.MediaTrainer;
 import com.glm.utils.VoiceToSpeechTrainer;
-import com.glm.utils.http.HttpClientHelper;
 import com.glm.utils.sensor.BlueToothHelper;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
 /**
  * Avvio il nuovo Esercizio come servizio in background e quindi
  * lo user per popolare la GUI se visibile.
- * 
+ *
  * TODO
  * **/
-public class ExerciseService extends Service implements LocationListener, AccelerometerListener {
-   
-	
+public class ExerciseService extends Service implements LocationListener, AccelerometerListener, GpsStatus.Listener {
+
+
 	/**Proprietà che sostituiranno il NewExecise*/
 	/**Tempo di inizio esercizio*/
-	private static long lStartTime=0;
+	private static long lStartTime = 0;
 	/**Tempo Corrente di esercizio*/
-	private static long lCurrentTime=0;
+	private static long lCurrentTime = 0;
 	/**Current WatchPoint*/
-	private static long lCurrentWatchPoint=0;
+	private static long lCurrentWatchPoint = 0;
 	/**Current WatchPoint*/
-	private static long lPauseTime=0;
-	
+	private static long lPauseTime = 0;
+
 	/**Latidine di esercizio*/
-	private static double dStartLatitude=0;
+	private static double dStartLatitude = 0;
 	/**Longitudine di esercizio*/
-	private static double dStartLongitude=0;
+	private static double dStartLongitude = 0;
 	/**Latidine di double*/
-	private static double dCurrentLatitude=0;
-	/**Longitudine di esercizio*/	
-	private static double dCurrentLongitude=0;
-	
+	private static double dCurrentLatitude = 0;
+	/**Longitudine di esercizio*/
+	private static double dCurrentLongitude = 0;
+
 	/**Latidine di esercizio*/
-	private static long lCurrentAltidute=0;
-	
+	private static long lCurrentAltidute = 0;
+
 	/**Pendenza*/
-	private static int iInclication=0;
-	
+	private static int iInclication = 0;
+
 	/**Latidine di esercizio*/
-	private static String sCurrentAltidute="";
-	
+	private static String sCurrentAltidute = "";
+
 	/**Calorie correnti di esercizio*/
-	private static String sCurrentCalories="";
-		
+	private static String sCurrentCalories = "";
+
 	/**Distanza Corrente di esercizio*/
-	private static double dCurrentDistance=0;
+	private static double dCurrentDistance = 0;
 	/**Velocit� Corrente di esercizio*/
-	private static float fCurrentSpeed=0;
+	private static float fCurrentSpeed = 0;
 	/**Velocit� Totale di esercizio*/
-	private static float fTotalSpeed=0;
+	private static float fTotalSpeed = 0;
 	/**Stato del GPS*/
-	private static boolean bStatusGPS=true;
-	
-	private static float dPace=0;
-	private static String sPace="";
-	
-	private static String sVm="";
+	private static boolean bStatusGPS = true;
+
+	private static float dPace = 0;
+	private static String sPace = "";
+
+	private static String sVm = "";
 	/**Proprietà che sostituiranno il NewExecise*/
-	
-	
-	private static int iHeartRate=0;
-    private static Context mContext;
+
+
+	private static int iHeartRate = 0;
+	private static Context mContext;
 	private static MediaTrainer oMediaPlayer;
-	private VoiceToSpeechTrainer oVoiceSpeechTrainer ;
+	private VoiceToSpeechTrainer oVoiceSpeechTrainer;
 	/**stringe del motivatore*/
 	private String sDistance;
 	private String sUnit;
@@ -116,176 +121,179 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	/**
 	 * Media Player
 	 * */
-	
-	private boolean bStopListener=false;
+
+	private boolean bStopListener = false;
 	private NotificationManager mNM;
-	
+
 	//Identifica i Km di goal se 0 il goal e solo tempo
-	private int iGoalDistance=0;
+	private int iGoalDistance = 0;
 	//Ientifica le ore di goal, se ore e minuti sono 0 il goal è solo distance
-	private double dGoalHH=0;
+	private double dGoalHH = 0;
 	//Ientifica i minuti di goal, se ore e minuti sono 0 il goal è solo distance
-	private double dGoalMM=0;
+	private double dGoalMM = 0;
 	/**Timer da ripetere per il Goal*/
 	private Timer GoalTimer = null;
 	//Ritardo di pronuncia goal
-	private final int iDELAY_GOAL=20000;
-	
-	private boolean isServiceAlive=false;
-    // Unique Identification Number for the Notification.
-    // We use it on Notification start, and to cancel it.
-    private static int NOTIFICATION = R.string.app_name_pro;
-    private PendingIntent contentIntent;
-    private Notification notification;
-    // this is a hack and need to be changed, here the offset is the length of the tag XML "</Document></kml", 
-    // we minus this offset from the end of the file and write the next Placemark entry.  
-    //private static final int KML_INSERT_OFFSET = 17;
-    
-    private static final int gpsMinDistance = 5;
-   
-    /**Avvio ms del Timer per le coordinate e salvare il tutto in DB*/
-    private static final int START_TIMER_DELAY = 0;
-    /**Intervallo ms Periodico del Timer per le coordinate e salvare il tutto in DB*/
-    private static final int PERIOD_TIMER_DELAY = 0;
-    /**Periodo di lettura accelerometro*/
-    private static final int PERIOD_ACCELEROMETER_TIMER=1000;
-    
-    private static final int GEOCODER_MAX_RESULTS = 5;
-    
-    private LocationManager LocationManager = null;
-    private double latitude = 0.0;
-    private double longitude = 0.0;
-    private double pre_latitude = 0.0;
-    private double pre_longitude = 0.0;
-    private long altitude = 0;
-    private long pre_altitude = 0;
-    
-    /**Conta passi*/
-    private int iStep=0;
-    /**Timer per il motivatore*/
-    private Timer MotivatorTimer = null;
-    /**Timer per la condivisione interattiva*/
-    private Timer InteractiveTimer=null;
-    
-    /**Timer per le Virtual Race*/
-    private Timer VirtualRaceTimer=null;
-    private HttpClientHelper oHttpHelper = null;
-    
-    /**Timer per la condivisione interattiva*/
-    private Timer AutoPauseTimer=null;
-    /**Avvio ms del Timer per per l'autopausa*/
-    private static final int SHORT_PERIOD_AUTOPAUSE_TIMER_DELAY=60000;
-    private static final int MEDIUM_PERIOD_AUTOPAUSE_TIMER_DELAY=180000;
-    private static final int LONG_PERIOD_AUTOPAUSE_TIMER_DELAY=300000;
-    
-    private static int iAutoPauseDelay=SHORT_PERIOD_AUTOPAUSE_TIMER_DELAY;
-    
-    /**Avvio ms del Timer per le coordinate e salvare il tutto in DB*/
-    private static final int SHORT_START_MOTIVATOR_TIMER_DELAY = 60000;
-    /**Intervallo ms Periodico del Timer per le coordinate e salvare il tutto in DB ms*/
-    private static final int SHORT_PERIOD_MOTIVATOR_TIMER_DELAY = 60000;
-    /**Avvio ms del Timer per le coordinate e salvare il tutto in DB*/
-    private static final int MEDIUM_START_MOTIVATOR_TIMER_DELAY = 180000;
-    /**Intervallo ms Periodico del Timer per le coordinate e salvare il tutto in DB ms*/
-    private static final int MEDIUM_PERIOD_MOTIVATOR_TIMER_DELAY = 180000;
-    /**Avvio ms del Timer per le coordinate e salvare il tutto in DB*/
-    private static final int LONG_START_MOTIVATOR_TIMER_DELAY = 300000;
-    /**Intervallo ms Periodico del Timer per le coordinate e salvare il tutto in DB ms*/
-    private static final int LONG_PERIOD_MOTIVATOR_TIMER_DELAY = 300000;
-    
-    private static int iDelayMotivator=0;
-    private int iRepeatMotivator=0;
-    
-    
-    
-    /**Timer usato per la scrittura nel DB*/
-    private Timer monitoringTimer = null;
-    
-    /**Thread principale per il controllo del tempo di corsa quando il servizio e' attivo**/
-    private Thread oRunningThread;
-    
-    /**Tempo di corsa*/
-    private static long diffTime;
-    
-    /**identifica se il servizio e' up and running*/
-    private static boolean isRunning = false;
-    /**identifica se il servizio e' in AutoPausa*/
-    private static boolean isAutoPause = false;
-    /**identifica se il servizio e' in Resume AutoPausa*/
-    private static boolean isResumeAutoPause = false;
-    /**indica se il servizio e' in pausa*/
-    private static boolean isPause=false;
-    /**indica se è stata fixata la posizione*/
-    private static boolean isFixPosition=false;
-    ArrayList<Messenger> mClients = new ArrayList<Messenger>(); // Keeps track of all current registered clients.
-    /**messaggi supportati*/
-    public static final int PAUSEEXERCISE=1;
-    public static final int RESUMEEXERCISE=2;
-    public static final int STARTEXERCISE=3;
-    public static final int STOPSERVICE=4;
-    public static final int SAVEEXERCISE=5;
-	
-    
-    
-    //private final IBinder mBinder = new TrainerServiceBinder(); 
-    
-    /**Continene tutte le configurazioni del Trainer**/
-    private static ConfigTrainer oConfigTrainer;
-   
+	private final int iDELAY_GOAL = 20000;
 
-    private String sPid="";
-    /**
-     * Gestione delle chiamate in arrivo
-     * */    
-    TelephonyManager telephonyManager=null;
-    /** Will notify us on changes to the PhoneState*/
-	
-	/**identifica se c' una chiamata*/
-	private boolean isInCalling=false;
-	
-	/**AudioManger per la gestione del volume*/
-	AudioManager oAudioManager = null;
-	
-	/**gestione dei backup sul cloud*/
-	//private BackupManager oBackupManager =null;
-	
-	/**Gestione Cardio*/
-	private static BlueToothHelper oBTHelper;
-	
-	private Timer tCardioTimer;
-	
+	private boolean isServiceAlive = false;
+	// Unique Identification Number for the Notification.
+	// We use it on Notification start, and to cancel it.
+	private static int NOTIFICATION = R.string.app_name_pro;
+	private PendingIntent contentIntent;
+	private Notification notification;
+	// this is a hack and need to be changed, here the offset is the length of the tag XML "</Document></kml",
+	// we minus this offset from the end of the file and write the next Placemark entry.
+	//private static final int KML_INSERT_OFFSET = 17;
+
+	private static final int gpsMinDistance = 5;
+
+	/**Avvio ms del Timer per le coordinate e salvare il tutto in DB*/
+	private static final int START_TIMER_DELAY = 0;
+	/**Intervallo ms Periodico del Timer per le coordinate e salvare il tutto in DB*/
+	private static final int PERIOD_TIMER_DELAY = 0;
+	/**Periodo di lettura accelerometro*/
+	private static final int PERIOD_ACCELEROMETER_TIMER = 1000;
+
+	private static final int GEOCODER_MAX_RESULTS = 5;
+
+	private LocationManager mLocationManager = null;
+	private double latitude = 0.0;
+	private double longitude = 0.0;
+	private double pre_latitude = 0.0;
+	private double pre_longitude = 0.0;
+	private long altitude = 0;
+	private long pre_altitude = 0;
+
+	/**Conta passi*/
+	private int iStep = 0;
+	/**Timer per il motivatore*/
+	private Timer MotivatorTimer = null;
+	/**Timer per la condivisione interattiva*/
+	private Timer InteractiveTimer = null;
+
+	/**Timer per le Virtual Race*/
+	private Timer VirtualRaceTimer = null;
+	//private HttpClientHelper oHttpHelper = null;
+
+	/**Timer per la condivisione interattiva*/
+	private Timer AutoPauseTimer = null;
+	/**Avvio ms del Timer per per l'autopausa*/
+	private static final int SHORT_PERIOD_AUTOPAUSE_TIMER_DELAY = 60000;
+	private static final int MEDIUM_PERIOD_AUTOPAUSE_TIMER_DELAY = 180000;
+	private static final int LONG_PERIOD_AUTOPAUSE_TIMER_DELAY = 300000;
+
+	private static int iAutoPauseDelay = SHORT_PERIOD_AUTOPAUSE_TIMER_DELAY;
+
+	/**Avvio ms del Timer per le coordinate e salvare il tutto in DB*/
+	private static final int SHORT_START_MOTIVATOR_TIMER_DELAY = 60000;
+	/**Intervallo ms Periodico del Timer per le coordinate e salvare il tutto in DB ms*/
+	private static final int SHORT_PERIOD_MOTIVATOR_TIMER_DELAY = 60000;
+	/**Avvio ms del Timer per le coordinate e salvare il tutto in DB*/
+	private static final int MEDIUM_START_MOTIVATOR_TIMER_DELAY = 180000;
+	/**Intervallo ms Periodico del Timer per le coordinate e salvare il tutto in DB ms*/
+	private static final int MEDIUM_PERIOD_MOTIVATOR_TIMER_DELAY = 180000;
+	/**Avvio ms del Timer per le coordinate e salvare il tutto in DB*/
+	private static final int LONG_START_MOTIVATOR_TIMER_DELAY = 300000;
+	/**Intervallo ms Periodico del Timer per le coordinate e salvare il tutto in DB ms*/
+	private static final int LONG_PERIOD_MOTIVATOR_TIMER_DELAY = 300000;
+
+	private static int iDelayMotivator = 0;
+	private int iRepeatMotivator = 0;
+
+
+	/**Timer usato per la scrittura nel DB*/
+	private Timer monitoringTimer = null;
+
+	/**Thread principale per il controllo del tempo di corsa quando il servizio e' attivo**/
+	private Thread oRunningThread;
+
+	/**Tempo di corsa*/
+	private static long diffTime;
+
+	/**identifica se il servizio e' up and running*/
+	private static boolean isRunning = false;
+	/**identifica se il servizio e' in AutoPausa*/
+	private static boolean isAutoPause = false;
+	/**identifica se il servizio e' in Resume AutoPausa*/
+	private static boolean isResumeAutoPause = false;
+	/**indica se il servizio e' in pausa*/
+	private static boolean isPause = false;
+	/**indica se è stata fixata la posizione*/
+	private static boolean isFixPosition = false;
+	ArrayList<Messenger> mClients = new ArrayList<Messenger>(); // Keeps track of all current registered clients.
+	/**messaggi supportati*/
+	public static final int PAUSEEXERCISE = 1;
+	public static final int RESUMEEXERCISE = 2;
+	public static final int STARTEXERCISE = 3;
+	public static final int STOPSERVICE = 4;
+	public static final int SAVEEXERCISE = 5;
+
+
+	//private final IBinder mBinder = new TrainerServiceBinder();
+
+	/**Continene tutte le configurazioni del Trainer**/
+	private static ConfigTrainer oConfigTrainer;
+
+
+	private String sPid = "";
 	/**
 	 * Gestione delle chiamate in arrivo
-	 * */  
-    @Override
-    public void onCreate() {    	      
-    	mContext=getApplicationContext();
-    	oHttpHelper = new HttpClientHelper();
-    	
-        SimpleDateFormat sdf = new SimpleDateFormat("ssSSS");
-        sPid=sdf.format(new Date());
-        
-        Log.i("Start Service ExerciseSevice", "OK");
-        //Carico la configurazione
-        try{
-        	oConfigTrainer=ExerciseUtils.loadConfiguration(mContext);
-        }catch (NullPointerException e) {
-			Log.e(this.getClass().getCanonicalName(),"Error load Config");
+	 * */
+	TelephonyManager telephonyManager = null;
+	/** Will notify us on changes to the PhoneState*/
+
+	/**identifica se c' una chiamata*/
+	private boolean isInCalling = false;
+
+	/**AudioManger per la gestione del volume*/
+	AudioManager oAudioManager = null;
+
+	/**gestione dei backup sul cloud*/
+	//private BackupManager oBackupManager =null;
+
+	/**Gestione Cardio*/
+	private static BlueToothHelper oBTHelper;
+
+	private Timer tCardioTimer;
+
+	/**
+	 * Gestione delle chiamate in arrivo
+	 * */
+	@Override
+	public void onCreate() {
+		mContext = getApplicationContext();
+		//oHttpHelper = new HttpClientHelper();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("ssSSS");
+		sPid = sdf.format(new Date());
+
+		//Log.i("Start Service ExerciseSevice", "OK");
+		//Carico la configurazione
+		try {
+			oConfigTrainer = ExerciseUtils.loadConfiguration(mContext);
+		} catch (NullPointerException e) {
+			Log.e(this.getClass().getCanonicalName(), "Error load Config");
 			return;
 		}
-        
-        isServiceAlive=true;
-                
-        oVoiceSpeechTrainer = new VoiceToSpeechTrainer(mContext);
-                
-		oAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);          
-		AccelerometerUtils.setContext(mContext);	
-	
+
+		if (oConfigTrainer.getsNick().equals("laverdone"))
+			Logger.log("INFO - Create Service for Trainer Services");
+
+		isServiceAlive = true;
+
+		oVoiceSpeechTrainer = new VoiceToSpeechTrainer(mContext);
+
+		oAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+		AccelerometerUtils.setContext(mContext);
+
 		//Cardio
-		if(oConfigTrainer!=null && oConfigTrainer.isbUseCardio() && oConfigTrainer.isbCardioPolarBuyed()){
+		if (oConfigTrainer != null && oConfigTrainer.isbUseCardio() && oConfigTrainer.isbCardioPolarBuyed()) {
 			oBTHelper = new BlueToothHelper();
+			if (oConfigTrainer.getsNick().equals("laverdone"))
+				Logger.log("Create  oBTHelper Service for Trainer Services");
 		}
-				
+
 		//super.onCreate();
 		/*oBackupManager.requestRestore(new RestoreObserver() {
             public void restoreFinished(int error) {
@@ -293,71 +301,91 @@ public class ExerciseService extends Service implements LocationListener, Accele
                 //Log.v(this.getClass().getCanonicalName(), "Restore finished, error = " + error);
             }
         });*/
-		if(oConfigTrainer.isbUseExternalPlayer()){
-			Intent intent = new Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-		}
-		
-    }
-    /**
-     * Esecuzione di avvio esercizio
-     * 
-     * **/
-    public int onStartCommand(Intent intent, int flags, int startId) {
-    	Log.i(this.getClass().getCanonicalName(),"on start Command");
-        return Service.START_STICKY;
-    }
-    
-    /**
-     * Avvio il FIX del GPS
-     * @throws Throwable 
-     * */
-    private void startGPSFix(){
-    	//IMPOSTO QUELLO DEL ON CREATE
-    	mContext=getApplicationContext();
-    	oHttpHelper = new HttpClientHelper();
-    	
-        SimpleDateFormat sdf = new SimpleDateFormat("ssSSS");
-        sPid=sdf.format(new Date());
-        
-        Log.i("Start Service ExerciseSevice", "OK");
-        //Carico la configurazione
-        try{
-        	oConfigTrainer=ExerciseUtils.loadConfiguration(mContext);
-        }catch (NullPointerException e) {
-			Log.e(this.getClass().getCanonicalName(),"Error load Config");
+
+
+	}
+
+	/**
+	 * Esecuzione di avvio esercizio
+	 *
+	 * **/
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		Log.i(this.getClass().getCanonicalName(), "on start Command");
+		if (oConfigTrainer.getsNick().equals("laverdone"))
+			Logger.log("onStartCommand  Service for Trainer Services");
+		return Service.START_STICKY;
+	}
+
+	/**
+	 * Avvio il FIX del GPS
+	 * @throws Throwable
+	 * */
+	private void startGPSFix() {
+		//IMPOSTO QUELLO DEL ON CREATE
+		mContext = getApplicationContext();
+		//oHttpHelper = new HttpClientHelper();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("ssSSS");
+		sPid = sdf.format(new Date());
+		if (oConfigTrainer.getsNick().equals("laverdone"))
+			Logger.log("startGPSFix Service for Trainer Services");
+		//Log.i("Start Service ExerciseSevice", "OK");
+		//Carico la configurazione
+		try {
+			oConfigTrainer = ExerciseUtils.loadConfiguration(mContext);
+			if (oConfigTrainer.getsNick().equals("laverdone"))
+				Logger.log("startGPSFix Load configuration Service for Trainer Services");
+		} catch (NullPointerException e) {
+			Log.e(this.getClass().getCanonicalName(), "Error load Config");
+			if (oConfigTrainer.getsNick().equals("laverdone"))
+				Logger.log("ERROR - startGPSFix Load configuration  NullPointerException Service for Trainer Services");
 			return;
 		}
-        
-        isServiceAlive=true;
-                
-        oVoiceSpeechTrainer = new VoiceToSpeechTrainer(mContext);
-                
-		oAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);          
-		AccelerometerUtils.setContext(mContext);	
-	
+
+		isServiceAlive = true;
+
+		oVoiceSpeechTrainer = new VoiceToSpeechTrainer(mContext);
+
+		oAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+		AccelerometerUtils.setContext(mContext);
+
 		//Cardio
-		if(oConfigTrainer.isbUseCardio() && oConfigTrainer.isbCardioPolarBuyed()){
+		if (oConfigTrainer.isbUseCardio() && oConfigTrainer.isbCardioPolarBuyed()) {
 			oBTHelper = new BlueToothHelper();
+			Logger.log("INFO - startGPSFix oBTHelper Service for Trainer Services");
 		}
 
-    	
-    	
-    	isFixPosition=false;
-    	latitude = 0.0;
-        longitude = 0.0;
-    	pre_latitude = 0.0;
-        pre_longitude = 0.0;
-        
-    	try{
-	    	LocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-	    	LocationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, PERIOD_TIMER_DELAY, gpsMinDistance, this, Looper.getMainLooper());
+
+		isFixPosition = false;
+		latitude = 0.0;
+		longitude = 0.0;
+		pre_latitude = 0.0;
+		pre_longitude = 0.0;
+
+		try {
+			mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+			if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+				// TODO: Consider calling
+				//    ActivityCompat#requestPermissions
+				// here to request the missing permissions, and then overriding
+				//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+				//                                          int[] grantResults)
+				// to handle the case where the user grants the permission. See the documentation
+				// for ActivityCompat#requestPermissions for more details.
+				return;
+			}
+			//mLocationManager.requestLocationUpdates(android.location.mLocationManager.NETWORK_PROVIDER, PERIOD_TIMER_DELAY, gpsMinDistance, this, Looper.getMainLooper());
+			mLocationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, PERIOD_TIMER_DELAY, gpsMinDistance, this, Looper.getMainLooper());
+			mLocationManager.getLastKnownLocation(android.location.LocationManager.GPS_PROVIDER);
+
 	 		Log.i(this.getClass().getCanonicalName(),"Add GPS Fix");
-    	}catch (RuntimeException e) {
+			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - startGPSFix Add GPS Fix Service for Trainer Services");
+		}catch (RuntimeException e) {
 			Log.e(this.getClass().getCanonicalName(),"Errore avvio esercizio");
 			e.printStackTrace();
 			endAllListner();
+			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("ERROR - startGPSFix RuntimeException Service for Trainer Services");
 			try {
 				this.finalize();
 			} catch (Throwable e1) {
@@ -380,8 +408,10 @@ public class ExerciseService extends Service implements LocationListener, Accele
        }*/
        latitude = location.getLatitude();
        longitude = location.getLongitude();
-       altitude = Math.round(location.getAltitude());        
-       
+       altitude = Math.round(location.getAltitude());
+
+		if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - onLocationChanged latitude: "+latitude+" longitude: "+longitude+" altidute: "+altitude+" Service for Trainer Services");
+
        NumberFormat oNFormat = NumberFormat.getNumberInstance();
 	   oNFormat.setMaximumFractionDigits(2);
 	   sAlt=oNFormat.format(altitude);
@@ -486,8 +516,10 @@ public class ExerciseService extends Service implements LocationListener, Accele
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-    	//if(status==LocationProvider.AVAILABLE) isFixPosition=true;
-    }    
+    	if(status== LocationProvider.AVAILABLE) isFixPosition=true;
+
+		if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - onStatusChanged satellites n. "+extras.getInt("satellites")+" Service for Trainer Services");
+	}
         
     private void startMotivatorTimer(final boolean bSpeech){   	
     	try{
@@ -543,7 +575,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	        							if(bSpeech) oVoiceSpeechTrainer.sayDistanza(mContext, oConfigTrainer, 
 	        									sDistanceToSpeech, oMediaPlayer, sTimeToSpeech,sKaloriesToSpeech,
 	        									ExerciseService.sPace+sMinutePerUnit, ExerciseService.iInclication+"%", iHeartRate); 
-	        							//showNotification(R.drawable.start_trainer, getText(R.string.start_exercise)+" StepCount: "+iStep);
+	        							showNotification(R.drawable.start_trainer, getText(R.string.pace)+": "+ExerciseService.sPace+sMinutePerUnit+" "+getText(R.string.kalories)+": "+sKaloriesToSpeech);
 	        							
 	        							//Avvio il timer del goal solo in certe condizioni
 	        							
@@ -695,23 +727,75 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	// In this sample, we'll use the same text for the ticker and the expanded notification
         CharSequence text = getText(R.string.app_name_pro);
 
+
+
+
+
         // Set the icon, scrolling text and timestamp
-        notification = new Notification(iIcon, text,
-                System.currentTimeMillis());
+        /*notification = new Notification(iIcon, text,
+                System.currentTimeMillis());*/
 
         // The PendingIntent to launch our activity if the user selects this notification Controller
         contentIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, MainActivity.class), 0);
 
-        // Set the info for the views that show in the notification panel.
-        notification.setLatestEventInfo(this, charSequence,
-                       text, contentIntent);
+		notification = new Notification.Builder(mContext)
+				.setContentTitle(text)
+				.setContentText(charSequence)
+				.setSmallIcon(iIcon).setContentIntent(contentIntent)
+				.build();
 
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		mNotificationManager.notify(Integer.parseInt(sPid), notification);
+
+
+        // Set the info for the views that show in the notification panel.
+        /*notification.setLatestEventInfo(this, charSequence,
+                       text, contentIntent);
+*/
         // Send the notification.
         //if(mNM!=null) mNM.notify(NOTIFICATION, notification);
         return notification;
-    }             
-	
+    }
+
+	@Override
+	public void onGpsStatusChanged(int event) {
+		switch(event)
+		{
+			case GpsStatus.GPS_EVENT_STARTED:
+				if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - onGpsStatusChanged->GPS searching: Service for Trainer Services");
+
+				break;
+			case GpsStatus.GPS_EVENT_STOPPED:
+				if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - onGpsStatusChanged->GPS stopped: Service for Trainer Services");
+
+				break;
+			case GpsStatus.GPS_EVENT_FIRST_FIX:
+				isFixPosition=true;
+                /*
+                 * GPS_EVENT_FIRST_FIX Event is called when GPS is locked
+                 */
+				Location gpslocation = mLocationManager
+						.getLastKnownLocation(mLocationManager.GPS_PROVIDER);
+
+				if(gpslocation != null)
+				{
+					if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - onGpsStatusChanged->GPS fix position: Service for Trainer Services");
+
+
+                    /*
+                     * Removing the GPS status listener once GPS is locked
+                     */
+					mLocationManager.removeGpsStatusListener(this);
+				}
+
+				break;
+			case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
+				//                 System.out.println("TAG - GPS_EVENT_SATELLITE_STATUS");
+				break;
+		}
+	}
+
 	/**
      * Classe che si occupa di monitorare il tempo di corsa istantaneo ogni sec.
      * 
@@ -849,6 +933,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
      * **/
     private void startExerciseAsService(int TypeExercise, int goalDistance, double goalHH, double goalMM){ 
     	Log.v(this.getClass().getCanonicalName(),"startExerciseAsService ");
+		if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - startExerciseAsService as services");
     	isServiceAlive=true;
 
     	oVoiceSpeechTrainer = new VoiceToSpeechTrainer(mContext);
@@ -879,7 +964,6 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	longitude 		= 0.0;
     	pre_latitude 	= 0.0;
     	pre_longitude 	= 0.0;
-    	iStep			=	0;
     	dGoalHH=goalHH;
     	dGoalMM=goalMM;
 
@@ -905,13 +989,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	oConfigTrainer=ExerciseUtils.loadConfiguration(mContext);
     	//Forzo il reset dell'esercizio
     	//NewExercise.reset();
-    	if(oConfigTrainer.isbPlayMusic()){
-    		//AVVIO DEL PLAYER ESTERNO	
-    		oMediaPlayer = new MediaTrainer(mContext, oConfigTrainer.isbUseExternalPlayer());
-    		
-    		oMediaPlayer.play(false);
-    		listenForIncomingCall();
-    	}
+
     	if(oConfigTrainer.isbAutoPause()){	
     		if(oConfigTrainer.getiAutoPauseTime()==0){
     			//- none -
@@ -961,17 +1039,17 @@ public class ExerciseService extends Service implements LocationListener, Accele
 
     	//Avvio sempre il motivatore ma non esegua la say se disabilitato
     	startMotivatorTimer(oConfigTrainer.isbMotivator());	
-    	/**Aggiungo il timer per l'interactive sharing*/
+    	/**Aggiungo il timer per l'interactive sharing
     	if(oConfigTrainer.isbInteractiveExercise()){
-    		/**Aggiungo il timer per l'interactive sharing*/
+
     		
-    	}
+    	}*/
     	
-    	/**Aggiungo il timer per le Virtual race*/
+    	/**Aggiungo il timer per le Virtual race
     	
     	if(oConfigTrainer.isVirtualRaceSupport()){
     		addVirtualRaceTimer();
-    	}
+    	}*/
 
     	//AutoPause
     	if(oConfigTrainer.isbAutoPause() && iAutoPauseDelay>0) addAutoPauseTimer();
@@ -989,6 +1067,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	//Cardio
     	if(oConfigTrainer.isbUseCardio() && oConfigTrainer.isbCardioPolarBuyed()){
     		startCardio();
+
     	}
   		
     	ExerciseService.lStartTime=System.currentTimeMillis();
@@ -999,18 +1078,58 @@ public class ExerciseService extends Service implements LocationListener, Accele
 
     	
   		startForeground(Integer.parseInt(sPid), showNotification(R.drawable.start_trainer, getText(R.string.app_name_buy)));
+		if(oConfigTrainer.isbPlayMusic()){
+			if(oConfigTrainer.isbUseExternalPlayer()){
+				Intent intent = new Intent("android.intent.action.MUSIC_PLAYER");
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+					intent.makeMainSelectorActivity(intent.ACTION_MAIN,
+							"android.intent.category.APP_MUSIC");
+					if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - Launch External Music Player in new Mode from Services");
+				}else{
+					intent = new Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER);
+					if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO Launch External Music Player in OLD Mode from Services");
+				}
+				startActivity(intent);
+				if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("Launch External Music Player from Services");
+			}
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+
+
+
+			//AVVIO DEL PLAYER ESTERNO
+			oMediaPlayer = new MediaTrainer(mContext, oConfigTrainer.isbUseExternalPlayer());
+
+			oMediaPlayer.play(false);
+			listenForIncomingCall();
+
+			Intent intent=new Intent();
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent = intent.setClass(getApplicationContext(), MainActivity.class);
+			startActivity(intent);
+			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("Launch External Music Player from Services");
+		}
     }
     /**
      * Fermo tutti i servizi che usano GPS/Accelerometro e salvataggi al DB
      * 
      * @see IExerciseService.Stub
      * **/
-    private void stopExerciseAsService(){  	
+    private void stopExerciseAsService(){
+		if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - stopExerciseAsService as services");
     	bStopListener	= true;
     	isRunning 		= false;  
     	isServiceAlive 	= true;
     	isAutoPause     = false;
-    	if(oConfigTrainer.isbPlayMusic()){   		
+
+
+		if(mNM!=null) mNM.cancel(NOTIFICATION);
+		if(oConfigTrainer.isbPlayMusic()){
     		if(oMediaPlayer!=null && oMediaPlayer.isPlaying()){
     			oMediaPlayer.destroy();   			    			
         		oMediaPlayer=null;
@@ -1020,7 +1139,10 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	   	if(oConfigTrainer.isbUseCardio() && oConfigTrainer.isbCardioPolarBuyed()){
 			stopCardio();
 		}
-    	endAllListner();
+		if(MotivatorTimer!=null) MotivatorTimer.cancel();
+		//SAVE
+		mNM.cancel(NOTIFICATION);
+		endAllListner();
     }
     /**
      * Salvo l'esercizio corrente
@@ -1028,6 +1150,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
      * @see IExerciseService.Stub
      * **/
     private void saveExerciseAsService(){
+		if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - saveExerciseAsService as services");
     	if(oConfigTrainer.isbPlayMusic()){
     		if(oMediaPlayer!=null) {
     			if(oMediaPlayer.isPlaying()){   				
@@ -1040,6 +1163,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	            		oMediaPlayer=null;
 	    			}
     			}
+
     		}    		
     	}
 	   	if(MotivatorTimer!=null) MotivatorTimer.cancel();
@@ -1055,14 +1179,14 @@ public class ExerciseService extends Service implements LocationListener, Accele
     }                     
     /**
      * Ritorna il Servizio
-     * **/
+     *
     public class TrainerServiceBinder extends Binder 
     { 
             public ExerciseService getService() 
             { 
                     return ExerciseService.this; 
             } 
-    } 
+    } **/
     
 	 /**
      * When binding to the service, we return an interface to our messenger
@@ -1070,14 +1194,16 @@ public class ExerciseService extends Service implements LocationListener, Accele
      */
     @Override
     public IBinder onBind(Intent intent) {
-    	Log.i(this.getClass().getCanonicalName(), "onBind->Services");   
+    	Log.i(this.getClass().getCanonicalName(), "onBind->Services");
+		if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - onBind "+intent.getPackage()+" as services");
     	//startGPSFix();
     	return mBinder;
         //return mMessenger.getBinder();
     }
     @Override
     public boolean onUnbind(Intent intent) {
-    	
+		if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - onUnbind "+intent.getPackage()+" as services");
+
     	return super.onUnbind(intent);
     }
     @Override
@@ -1255,7 +1381,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 
     /**
      *  Metodi utilizzati per l'uso dell'accelerometro per il conteggio dei passi*
-     *  Se x cambia da 0 ad 1  stato fatto un passo
+     *  Se x cambia da 0 ad 1 e' stato fatto un passo
      * 
      * **/
 	@Override
@@ -1264,16 +1390,16 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		//Log.v(this.getClass().getCanonicalName(),"Acceleration: x="+x+" y="+y+" z="+z);
 		if(iTypeExercise==0){
 			if(y>9 ||
-					x==5
-					|| z==5){
+					x>=5
+					|| z>=5){
 				////Log.v(this.getClass().getCanonicalName(),"Acceleration: x="+x+" y="+y+" z="+z);
 				iStep++;
 				//Log.v(this.getClass().getCanonicalName(),"Step: "+iStep);
 			}
 		}else{
 			if(y>5 ||
-					x==5
-					|| z==5){
+					x>=5
+					|| z>=5){
 				////Log.v(this.getClass().getCanonicalName(),"Acceleration: x="+x+" y="+y+" z="+z);
 				iStep++;
 				//Log.v(this.getClass().getCanonicalName(),"Step: "+iStep);
@@ -1293,8 +1419,8 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	 * Ferma il GPS e tutti i listner
 	 * 
 	 * */
-	protected void endAllListner() {		
-
+	protected void endAllListner() {
+		if(oConfigTrainer.getsNick().equals("laverdone"))  Logger.log("INFO - endAllListner as services");
 		 if(oConfigTrainer!=null){
 	        	if(oConfigTrainer.isbDisplayNotification()){
 	            	// Cancel the persistent notification.
@@ -1309,20 +1435,20 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	        }    
 		 
 		if(oRunningThread!=null) oRunningThread.interrupt();
-		if(LocationManager!=null) LocationManager.removeUpdates(this);
-		
+		if(mLocationManager !=null) mLocationManager.removeUpdates(this);
+
 	    if(monitoringTimer!=null) monitoringTimer.cancel();
 	    if(InteractiveTimer!=null) InteractiveTimer.cancel(); 
 	    if(AutoPauseTimer!=null) AutoPauseTimer.cancel();
 	    if(VirtualRaceTimer!=null) VirtualRaceTimer.cancel();
-	    if(oHttpHelper!=null) oHttpHelper.sendHttpPostPending();
+	    //if(oHttpHelper!=null) oHttpHelper.sendHttpPostPending();
 	    
 	    /**Arresto il listener del Conta Passi*/
 	    if (AccelerometerUtils.isListening()) {
     		AccelerometerUtils.stopListening();
-    		
+			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - endAllListner AccelerometerUtils.stopListening() as services");
         }
-	    LocationManager=null;
+	    mLocationManager =null;
 	    monitoringTimer=null;
 	    InteractiveTimer=null; 
 	    AutoPauseTimer=null;
@@ -1380,8 +1506,8 @@ public class ExerciseService extends Service implements LocationListener, Accele
     	
     	ExerciseService.sVm="";
     	stopForeground(true);
-    	if(LocationManager!=null) LocationManager.removeUpdates(this);
-		LocationManager=null;
+
+		oVoiceSpeechTrainer.release();
 	}
 
 	@Override
@@ -1391,8 +1517,8 @@ public class ExerciseService extends Service implements LocationListener, Accele
 			this.finalize();
 			Log.i(this.getClass().getCanonicalName(),"Destroy Services, remove GPS Fix");
 			isFixPosition=false;
-			if(LocationManager!=null) LocationManager.removeUpdates(this);
-			LocationManager=null;
+			if(mLocationManager !=null) mLocationManager.removeUpdates(this);
+			mLocationManager =null;
 			stopForeground(true);
 			System.gc();
 			System.exit(0);
@@ -1459,8 +1585,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	
 	/**
 	 * Lancia il TimerTask per l'interactive exercise
-	 * @param c 
-	 * @param isFaceBookShareActive 
+	 * @deprecated
 	 * */
 	private void addVirtualRaceTimer() {
 		VirtualRaceTimer = new Timer();
@@ -1477,10 +1602,10 @@ public class ExerciseService extends Service implements LocationListener, Accele
 							Log.e(ExerciseService.this.getClass().getCanonicalName(),"Error Generating VirtualRaceId");
 						} 					
     					//Send data to server 					
-    					oHttpHelper.sendDataForVirtualRace(oConfigTrainer, iVirtualRace, 
-    							ExerciseService.dCurrentLatitude, ExerciseService.dCurrentLongitude, 
-    							ExerciseService.lCurrentAltidute, ExerciseService.dPace, 
-    							ExerciseService.dCurrentDistance, new Date().getTime(),Locale.getDefault().getCountry());
+    		//			oHttpHelper.sendDataForVirtualRace(oConfigTrainer, iVirtualRace,
+    		//					ExerciseService.dCurrentLatitude, ExerciseService.dCurrentLongitude,
+    		//					ExerciseService.lCurrentAltidute, ExerciseService.dPace,
+    		//					ExerciseService.dCurrentDistance, new Date().getTime(),Locale.getDefault().getCountry());
     					 					
     				}					
     			}, 
@@ -1491,6 +1616,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	 * Rimuove il timer per l'auto pausa
 	 * */
 	private void removeAutoPauseTimer(){
+		if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - removeAutoPauseTimer Service for Trainer Services");
 		if(AutoPauseTimer!=null) AutoPauseTimer.cancel();
 		AutoPauseTimer=null;
 	}
@@ -1498,8 +1624,13 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	 * Imposta il timer per l'auto pausa
 	 * */
 	private void addAutoPauseTimer(){
-		if(iAutoPauseDelay<0 ) return;
+		if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - addAutoPauseTimer Service for Trainer Services");
+		if(iAutoPauseDelay<0 ) {
+			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - addAutoPauseTimer No AUTOPAUSE Service for Trainer Services");
+			return;
+		}
 		if(AutoPauseTimer==null){
+			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - addAutoPauseTimer AutoPauseTimer==null Service for Trainer Services");
 			AutoPauseTimer = new Timer();		
 			AutoPauseTimer.schedule(
 	    			new TimerTask()
@@ -1514,6 +1645,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	    			}, 
 	    			iAutoPauseDelay);
 		}else{
+			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - addAutoPauseTimer AutoPauseTimer!=null Service for Trainer Services");
 			AutoPauseTimer.cancel();
 			AutoPauseTimer = new Timer();
 			AutoPauseTimer.schedule(
@@ -1533,7 +1665,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	 * Avvia la vomunicazione col Cardio
 	 * */
 	private void startCardio(){
-		
+
 		Log.i(this.getClass().getCanonicalName(),"Start Cardio ");
 		
 		oBTHelper.searchPairedDevice();
