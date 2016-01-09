@@ -81,11 +81,12 @@ public class WorkoutDetail extends FragmentActivity {
 
 		TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 		tabLayout.removeAllTabs();
-		tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(0)));
-		tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(1)));
-		tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(2)));
-		tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(3)));
-		tabLayout.addTab(tabLayout.newTab().setText(mSectionsPagerAdapter.getPageTitle(4)));
+		tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.running_light));
+		tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.graph_light));
+		tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.map_light));
+		tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.music_light));
+		tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.edit_light));
+
 		tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
 		// Set up the ViewPager with the sections adapter.
@@ -105,7 +106,17 @@ public class WorkoutDetail extends FragmentActivity {
 		tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 			@Override
 			public void onTabSelected(TabLayout.Tab tab) {
-
+				if(tab.getPosition()==0){
+					tab.setIcon(R.drawable.running_light);
+				}else if(tab.getPosition()==1){
+					tab.setIcon(R.drawable.graph_light);
+				}else if(tab.getPosition()==2){
+					tab.setIcon(R.drawable.map_light);
+				}else if(tab.getPosition()==3){
+					tab.setIcon(R.drawable.music_light);
+				}else{
+					tab.setIcon(R.drawable.edit_light);
+				}
 				mViewPager.setCurrentItem(tab.getPosition());
 			}
 
@@ -241,7 +252,7 @@ public class WorkoutDetail extends FragmentActivity {
 		protected void onPostExecute(Void result) {			
 			SimpleDateFormat dfm = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 			
-			oWorkoutDetail.txtDate.setText(dfm.format(ExerciseManipulate.getdDateTimeStart()));
+			oWorkoutDetail.mToolbar.setTitle(dfm.format(ExerciseManipulate.getdDateTimeStart()));
 			oWorkoutDetail.oTxt_Time.setText(ExerciseManipulate.getsTotalTime());
 			oWorkoutDetail.oTxt_Distance.setText(ExerciseManipulate.getsTotalDistance());
 			oWorkoutDetail.oTxt_AVGSpeed.setText(ExerciseManipulate.getsAVGSpeed());
@@ -252,6 +263,7 @@ public class WorkoutDetail extends FragmentActivity {
 			
 			if(ExerciseManipulate.getsStepCount().compareToIgnoreCase("0")==0){
 				oWorkoutDetail.oTxt_Step.setVisibility(View.GONE);
+				oWorkoutDetail.oLbl_Step.setVisibility(View.GONE);
 			}
 			
 			

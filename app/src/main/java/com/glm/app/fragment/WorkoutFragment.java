@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+//import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,9 +24,9 @@ import com.glm.trainer.NewMainActivity;
 import com.glm.trainer.PreferencesActivity;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
-import com.glm.utils.quickaction.ActionItem;
-import com.glm.utils.quickaction.MainQuickBar;
-import com.glm.utils.quickaction.QuickAction;
+//import com.glm.utils.quickaction.ActionItem;
+//import com.glm.utils.quickaction.MainQuickBar;
+//import com.glm.utils.quickaction.QuickAction;
 
 
 /**
@@ -117,7 +117,13 @@ public class WorkoutFragment extends Fragment {
 		mToolBarRunning.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-
+				Intent intent = new Intent();
+				intent.setClass(mContext, ManualWorkout.class);
+				intent.putExtra("type", "1001");
+				Toast.makeText(mContext, "Manual Bike", Toast.LENGTH_SHORT)
+						.show();
+				startActivity(intent);
+				getActivity().finish();
 				return false;
 			}
 		});
@@ -127,6 +133,13 @@ public class WorkoutFragment extends Fragment {
 		mToolBarWalking.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
+				Intent intent = new Intent();
+				intent.setClass(mContext, ManualWorkout.class);
+				intent.putExtra("type", "10000");
+				startActivity(intent);
+				Toast.makeText(mContext, "Manual Walk", Toast.LENGTH_SHORT)
+						.show();
+				getActivity().finish();
 
 				return false;
 			}
@@ -137,6 +150,13 @@ public class WorkoutFragment extends Fragment {
 		mToolBarBiking.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
+				Intent intent = new Intent();
+				intent.setClass(mContext, ManualWorkout.class);
+				intent.putExtra("type", "1000");
+				Toast.makeText(mContext, "Manual Bike", Toast.LENGTH_SHORT)
+						.show();
+				startActivity(intent);
+				getActivity().finish();
 
 				return false;
 			}
@@ -212,7 +232,7 @@ public class WorkoutFragment extends Fragment {
 	    
 	    if(((NewMainActivity)getActivity()).oConfigTrainer!=null) oTxtBMI.setText(((NewMainActivity)getActivity()).mUser.getsBMI(((NewMainActivity)getActivity()).oConfigTrainer.getiUnits()));
 	    
-	    ImageButton imgBtnMore = (ImageButton) rootView.findViewById(R.id.imgBtnMore);
+	    /*ImageButton imgBtnMore = (ImageButton) rootView.findViewById(R.id.imgBtnMore);
 	    imgBtnMore.setOnClickListener(new OnClickListener() {
 	    	final MainQuickBar oBar = new MainQuickBar(mContext);
 			@Override
@@ -255,7 +275,7 @@ public class WorkoutFragment extends Fragment {
 			        });			
 					oBar.getQuickAction().show(v);
 			}
-		});
+		});*/
 	   
 		
 		

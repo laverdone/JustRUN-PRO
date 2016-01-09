@@ -43,8 +43,7 @@ public class WorkoutDetailFragment extends Fragment {
 	private Context mContext;
 	private int mIDWorkout=0;
 
-	public TextView txtDate;
-	
+	public Toolbar mToolbar;
 	public TextView oTxt_Time;
 	
 	public TextView oTxt_Distance;
@@ -57,8 +56,10 @@ public class WorkoutDetailFragment extends Fragment {
 	
 	public TextView oTxt_MAXSpeed;
 	
-	public TextView oTxt_MAXPace;	
-	
+	public TextView oTxt_MAXPace;
+
+	public TextView oLbl_Step;
+
 	public TextView oTxt_Step;
 	
 	public TextView oTxt_MaxBpm;
@@ -91,19 +92,18 @@ public class WorkoutDetailFragment extends Fragment {
 				container, false);
 		rootView.setDrawingCacheEnabled(true);
 
-		Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.card_toolbar);
-		toolbar.setTitle("Card Toolbar");
-		if (toolbar != null) {
+		mToolbar = (Toolbar) rootView.findViewById(R.id.card_toolbar);
+		mToolbar.setLogo(R.drawable.info);
+		if (mToolbar != null) {
 			// inflate your menu
-			toolbar.inflateMenu(R.menu.new_main);
-			toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+			mToolbar.inflateMenu(R.menu.new_main);
+			mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 				@Override
 				public boolean onMenuItemClick(MenuItem menuItem) {
 					return true;
 				}
 			});
 		}
-		txtDate 	  = (TextView) rootView.findViewById(R.id.txtDate);
 		oTxt_Time	  = (TextView) rootView.findViewById(R.id.textTime);
         oTxt_Distance = (TextView) rootView.findViewById(R.id.textDistance);
         oTxt_Kalories = (TextView) rootView.findViewById(R.id.textKalories);
@@ -112,6 +112,7 @@ public class WorkoutDetailFragment extends Fragment {
         oTxt_MAXSpeed = (TextView) rootView.findViewById(R.id.textMAXSpeed);
         oTxt_MAXPace  = (TextView) rootView.findViewById(R.id.textMAXPace);
         oTxt_Step	  = (TextView) rootView.findViewById(R.id.textStep);
+		oLbl_Step	  = (TextView) rootView.findViewById(R.id.lblStep);
         oTxt_MaxBpm	  = (TextView) rootView.findViewById(R.id.textMaxBpm);
         oTxt_AvgBpm	  = (TextView) rootView.findViewById(R.id.textAvgBpm);           
         oLLDectails 	= (LinearLayout) rootView.findViewById(R.id.LLDett);  

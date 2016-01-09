@@ -50,4 +50,6 @@
 		<item name="@android:windowEnterAnimation">@animator/pump_bottom</item>
 		<item name="@android:windowExitAnimation">@animator/disappear</item>
 	</style>
+
+
 </resources>

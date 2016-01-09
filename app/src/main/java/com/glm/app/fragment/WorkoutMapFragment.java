@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -50,6 +51,7 @@ public class WorkoutMapFragment extends Fragment {
 	private Context mContext;
 	private View rootView;
 	private int mIDWorkout=0;
+	private Toolbar mToolBar;
 	/**
 	 * 
 	 * The fragment argument representing the section number for this
@@ -75,6 +77,7 @@ public class WorkoutMapFragment extends Fragment {
 	        //handle this situation because you are necessary will get 
 	        //an exception here :-(
 	    }
+
 		rootView=null;
 		oMapView=null;
 	}
@@ -100,6 +103,10 @@ public class WorkoutMapFragment extends Fragment {
 				oMapView = ((MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.gmapv2)).getMap();
 			}
 
+			mToolBar 			  = (Toolbar)  rootView.findViewById(R.id.card_toolbar);
+			mToolBar.inflateMenu(R.menu.new_main);
+			mToolBar.setLogo(R.drawable.toolbar);
+			mToolBar.setTitle(R.string.maps);
 			/*SupportMapFragment mMapFragment = SupportMapFragment.newInstance();
 			FragmentTransaction fragmentTransaction =
 			             getChildFragmentManager().beginTransaction();

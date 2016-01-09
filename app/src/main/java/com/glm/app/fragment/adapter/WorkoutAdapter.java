@@ -27,7 +27,11 @@ import com.glm.trainer.R;
 import com.glm.trainer.WorkoutDetail;
 import com.glm.utils.ExerciseUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class WorkoutAdapter extends BaseAdapter{
 	private ArrayList<Exercise> mWorkouts;
@@ -72,7 +76,9 @@ public class WorkoutAdapter extends BaseAdapter{
         //}
 
 		Toolbar toolbar = (Toolbar) convertView.findViewById(R.id.card_toolbar);
-		toolbar.setTitle(oExercise.getsStart());
+		toolbar.setLogo(R.drawable.calendar);
+		toolbar.setTitle(oExercise.getDateFormatted(mContext));
+
 		if (toolbar != null) {
 			// inflate your menu
 			toolbar.inflateMenu(R.menu.new_main);
@@ -114,7 +120,6 @@ public class WorkoutAdapter extends BaseAdapter{
 			});
 		}
 
-		TextView txtDate 			= (TextView) convertView.findViewById(R.id.txtDate);
 		TextView txtTime 			= (TextView) convertView.findViewById(R.id.txtTime);
 		TextView txtKm 				= (TextView) convertView.findViewById(R.id.txtKm);
 		TextView txtDistance		= (TextView) convertView.findViewById(R.id.txtDistance);
@@ -161,7 +166,15 @@ public class WorkoutAdapter extends BaseAdapter{
 				return false;
 			}
 		});
-		txtDate.setText(oExercise.getsStart());
+		//SimpleDateFormat dnf = new SimpleDateFormat("yyyy-MMM-dd");
+
+
+
+		/*Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", ge);
+		cal.setTime(sdf.parse("Mon Mar 14 16:02:37 GMT 2011"));// all done
+		oExerxise.setdDateExercise(oCursor.get);*/
+
 		txtTime.setText(oExercise.getsTotalTime());
 		txtKm.setText(oExercise.getsAVGSpeed());
 		txtDistance.setText(oExercise.getsDistanceFormatted());

@@ -1,5 +1,10 @@
 package com.glm.bean;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.glm.trainer.R;
+
 import java.util.Calendar;
 
 /**
@@ -56,6 +61,36 @@ public class Exercise {
 	}
 	public synchronized String getsStart() {
 		return sStart;
+	}
+	public String getDateFormatted(Context context){
+		String month="";
+		if(sStart.substring(5,7).equals("01")){
+			month=context.getString(R.string.month1);
+		}else if(sStart.substring(5,7).equals("02")){
+			month=context.getString(R.string.month2);
+		}else if(sStart.substring(5,7).equals("03")){
+			month=context.getString(R.string.month3);
+		}else if(sStart.substring(5,7).equals("04")){
+			month=context.getString(R.string.month4);
+		}else if(sStart.substring(5,7).equals("05")){
+			month=context.getString(R.string.month5);
+		}else if(sStart.substring(5,7).equals("06")){
+			month=context.getString(R.string.month6);
+		}else if(sStart.substring(5,7).equals("07")){
+			month=context.getString(R.string.month7);
+		}else if(sStart.substring(5,7).equals("08")){
+			month=context.getString(R.string.month8);
+		}else if(sStart.substring(5,7).equals("09")){
+			month=context.getString(R.string.month9);
+		}else if(sStart.substring(5,7).equals("10")){
+			month=context.getString(R.string.month10);
+		}else if(sStart.substring(5,7).equals("11")){
+			month=context.getString(R.string.month11);
+		}else if(sStart.substring(5,7).equals("12")){
+			month=context.getString(R.string.month12);
+		}
+		if(sStart!=null) return sStart.substring(8,10)+" "+month+" "+sStart.substring(0,4);
+		else return "N.D.";
 	}
 	public synchronized void setsStart(String sStart) {
 		////Log.v(this.getClass().getCanonicalName(),"start:"+sStart);

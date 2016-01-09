@@ -115,7 +115,7 @@ public class NewMainActivity extends FragmentActivity {
         }
 		setContentView(R.layout.activity_new_main);
 
-		Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+		/*Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			setActionBar(toolbar);
 			toolbar.inflateMenu(R.menu.new_main);
@@ -125,7 +125,7 @@ public class NewMainActivity extends FragmentActivity {
 					return true;
 				}
 			});
-		}
+		}*/
 
 		oSummary=new SummaryFragment();
 		oWorkout= new WorkoutFragment();

@@ -2855,6 +2855,7 @@ public class ExerciseUtils {
 	   	if(oCursor!=null){        		
 	   		int iKey = oCursor.getColumnIndex("id_exercise");
    			int iTitle = oCursor.getColumnIndex("creation_date");
+
    			int iNote = oCursor.getColumnIndex("note");
    			int iStart = oCursor.getColumnIndex("start_date");
    			int iEnd = oCursor.getColumnIndex("end_date");
@@ -2874,6 +2875,7 @@ public class ExerciseUtils {
    				Exercise oExerxise = new Exercise();   				
    				oExerxise.setsIDExerise(oCursor.getString(iKey));
    				oExerxise.setsTitle(oCursor.getString(iTitle));
+
    				oExerxise.setsNote(oCursor.getString(iNote));
    				oExerxise.setsStart(oCursor.getString(iStart));  				
    				oExerxise.setsEnd(oCursor.getString(iEnd));

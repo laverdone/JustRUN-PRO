@@ -1141,7 +1141,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		}
 		if(MotivatorTimer!=null) MotivatorTimer.cancel();
 		//SAVE
-		mNM.cancel(NOTIFICATION);
+		if(mNM!=null )mNM.cancel(NOTIFICATION);
 		endAllListner();
     }
     /**

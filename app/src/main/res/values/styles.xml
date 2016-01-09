@@ -13,10 +13,16 @@
     </style>
 
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:color">#fefefe</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">12sp</item>
+        <item name="android:color">#fefefe</item>
+    </style>
 </resources>
