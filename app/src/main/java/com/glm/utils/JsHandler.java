@@ -9,6 +9,7 @@ import com.glm.bean.ExerciseManipulate;
 import com.glm.bean.WatchPoint;
 import com.glm.trainer.R;
 
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -27,15 +28,12 @@ public class JsHandler {
 		//Log.v(this.getClass().getCanonicalName(), "Exercise: "+oExercise.size());
 	}
 
-	public String getGraphTitle() {
-		return "This is my graph, baby!";
-	}  
-
-
+/*
 	public void loadGraphWeight() {			
 		//return arr.toString();  //This _WILL_ return the data in a good looking JSON string, but if you pass it straight into the Flot Plot method, it will not work!		
 		mAppView.loadUrl("javascript: var data = "+getRawDataWeight()+"; var options="+getLineOptionsWeight()+"; loadGraphHTML();");  //this callback works!
 	}
+
 
 	public void loadGraphExercise(){
 		mAppView.loadUrl("javascript: var data = "+getRawDataPaceExercise()+"; var options="+getLineOptionsExercise(0.0)+"; loadGraphHTML();");  //this callback works!	
@@ -55,7 +53,8 @@ public class JsHandler {
 	public void loadGraphMonthExercise(){
 		mAppView.loadUrl("javascript: var data = "+getRawDataMonthExercise()+"; var options="+getTotalMonthOptions()+"; loadGraphHTML();");  //this callback works!	
 	}
-
+*/
+/*
 	private String getLineOptionsRealTime() {
 		String sOptions = "{  series: { lines: { show: true , fill: true}, points: { show: false }, shadowSize: 0 } ,grid: { hoverable: false, clickable: false } ,xaxis: { show: false } , yaxis: { show: false } };";
 		//Log.v(this.getClass().getCanonicalName(), "Option for Jflot: "+sOptions);
@@ -91,13 +90,14 @@ public class JsHandler {
 		//Log.v(this.getClass().getCanonicalName(), "Option for Jflot: "+sOptions);
 		return sOptions;
 	}
+	*/
 	/**
 	 * Preleva i dati per passo e distanza
 	 * 
 	 * */
 	private String getRawDataPaceExercise() {
 		ArrayList<WatchPoint> aWatchPoint = ExerciseManipulate.getWatchPoint();
-		String sData = "[ { label: \""+oContext.getString(R.string.pace)+"\", data: ["; 		
+		String sData = "[ { label: \""+oContext.getString(R.string.pace)+"\", data: [";
 		if(aWatchPoint.size()==0) return "";
 		int iWPSize=aWatchPoint.size()-2;
 		for(int i=0;i<iWPSize;i++){
@@ -112,7 +112,7 @@ public class JsHandler {
 	 * Preleva i dati per altezza e distanza
 	 * 
 	 * */
-	private String getRawDataAltExercise() {
+	/*private String getRawDataAltExercise() {
 		double dTmpAlt=0.0;
 		ArrayList<WatchPoint> aWatchPoint = ExerciseManipulate.getWatchPoint();
 		String sData = "[ { label: \""+oContext.getString(R.string.alt)+"\", data: ["; 		
@@ -131,12 +131,12 @@ public class JsHandler {
 		//Log.v(this.getClass().getCanonicalName(), "Data for Jflot: "+sData);
 		return sData;
 	}
-
+*/
 	/**
 	 * Preleva i dati per bpm e distanza
 	 * 
 	 * */
-	private String getRawDataBpmExercise() {
+	/*private String getRawDataBpmExercise() {
 		double dTmpAlt=0.0;
 		ArrayList<WatchPoint> aWatchPoint = ExerciseManipulate.getWatchPoint();
 		String sData = "[ { label: \""+oContext.getString(R.string.heart_rate)+"\", data: ["; 		
@@ -182,7 +182,7 @@ public class JsHandler {
 	
 	private String getRawDataMonthExercise() {
 		
-		Vector<DistancePerMonth> table = ExerciseUtils.getDistanceForMonth( ExerciseUtils.loadConfiguration(oContext), 
+		Vector<DistancePerMonth> table = ExerciseUtils.getDistanceForMonth(-1, ExerciseUtils.loadConfiguration(oContext),
 				oContext);
 		String sData = "[ { data: ["; 		
 		
@@ -210,7 +210,7 @@ public class JsHandler {
         	//Log.v(this.getClass().getCanonicalName(), "Option for Jflot: "+sOptions);
 			return sOptions;
 	}
-
+*/
 	public void updateMap(double dLong, double dLat) {
 		//Log.v("updateMap"," Now Location; "+dLong+" - "+dLat);
 		mAppView.loadUrl("javascript: var iLon="+dLong+"; var iLat="+dLat+";");  //this callback works!							

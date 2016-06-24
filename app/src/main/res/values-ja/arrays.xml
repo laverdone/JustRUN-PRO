@@ -4,9 +4,12 @@
         <item>Voice TTS</item>        
     </string-array> 
     <string-array name="motivator_time">
-        <item>Short (1 Min)</item>
-        <item>Medium (3 Min)</item>
-        <item>Long (5 Min)</item>     
+        <item>ショート (1 Min)</item>
+        <item>中 (3 Min)</item>
+        <item>ロング (5 Min)</item>
+        <item>ショート 距離</item>
+        <item>中 距離</item>
+        <item>ロング 距離</item>
     </string-array>  
     <string-array name="units">
         <item>Kg/Km/Hour</item>
@@ -14,9 +17,9 @@
     </string-array>    
      <string-array name="autopausetime">
          <item>- none -</item>
-         <item>Short (1 Min)</item>
-        <item>Medium (3 Min)</item>
-        <item>Long (5 Min)</item>     
+         <item>ショート (1 Min)</item>
+        <item>中 (3 Min)</item>
+        <item>ロング (5 Min)</item>
     </string-array>  
     <string-array name="goal_distance_km">
         <item>-</item>

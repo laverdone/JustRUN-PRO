@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,7 +17,6 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.glm.app.stopwatch.WorkOutActivity;
-import com.glm.trainer.NewMainActivity;
 import com.glm.trainer.R;
 
 public class GoalActivity extends Activity implements OnClickListener {
@@ -24,7 +24,7 @@ public class GoalActivity extends Activity implements OnClickListener {
 	private Spinner oSpinner;
 	private ArrayAdapter<CharSequence> adapter;
 	private TimePicker oTimeGoal;
-	private String sType="0";
+	private int mType=0;
 	private CheckBox oCheckGoal;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,8 +53,13 @@ public class GoalActivity extends Activity implements OnClickListener {
 
 		oTimeGoal = ((TimePicker) findViewById(R.id.timeGoal));       	    				
 		oTimeGoal.setIs24HourView(true);
-		oTimeGoal.setCurrentHour(0);
-		oTimeGoal.setCurrentMinute(0);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			oTimeGoal.setHour(0);
+			oTimeGoal.setMinute(0);
+		}else{
+			oTimeGoal.setCurrentHour(0);
+			oTimeGoal.setCurrentMinute(0);
+		}
 
 		oRunButton.setOnClickListener(this);
 
@@ -81,37 +86,22 @@ public class GoalActivity extends Activity implements OnClickListener {
 		if (v.getId() == R.id.btnRun) {
 			Bundle extras = getIntent().getExtras();
 			if(extras !=null){
-				sType = extras.getString("type");
+				mType = extras.getInt("type");
 			}
 			Intent intent = new Intent();
-			intent.setClass(getApplicationContext(), WorkOutActivity.class);
-			if(sType.compareToIgnoreCase("0")==0){
-				//Run
-
-				intent.putExtra("type", 0);
-				intent.putExtra("goalDistance", oSpinner.getSelectedItemId());
+			intent.setClass(this, WorkOutActivity.class);
+			intent.putExtra("type", mType);
+			intent.putExtra("goalDistance", oSpinner.getSelectedItemId());
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				intent.putExtra("goalHH", oTimeGoal.getHour());
+				intent.putExtra("goalMM", oTimeGoal.getMinute());
+			}else{
 				intent.putExtra("goalHH", oTimeGoal.getCurrentHour());
 				intent.putExtra("goalMM", oTimeGoal.getCurrentMinute());
-				startActivity(intent);
-				finish();
-			}else if(sType.compareToIgnoreCase("1")==0){
-				//Bike
-				intent.putExtra("type", 1);
-				intent.putExtra("goalDistance", oSpinner.getSelectedItemId());
-				intent.putExtra("goalHH", oTimeGoal.getCurrentHour());
-				intent.putExtra("goalMM", oTimeGoal.getCurrentMinute());
-				startActivity(intent);
-				finish();
-			}else if(sType.compareToIgnoreCase("100")==0){
-				//Walk
-
-				intent.putExtra("type", 100);
-				intent.putExtra("goalDistance", oSpinner.getSelectedItemId());
-				intent.putExtra("goalHH", oTimeGoal.getCurrentHour());
-				intent.putExtra("goalMM", oTimeGoal.getCurrentMinute());
-				startActivity(intent);
-				finish();
 			}
+			startActivity(intent);
+			finish();
+
 
 		}
 	}

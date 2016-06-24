@@ -150,7 +150,6 @@
 	<string name="note">"Notes"</string>
 	<string name="generic_error">"Erreur générale"</string>
 	<string name="not_avail_manual">"pas disponible pour le manuel d'entraînement"</string>
-    <string name="only_in_full">""</string>
     <string name="manual_workout">"Exercice Manuel"</string>
     <string name="inclination">"Inclination"</string>
     <string name="tabStore_label">"Stocker"</string>
@@ -174,8 +173,13 @@
     <string name="heart_rate">"fréquence cardiaque"</string>
     <string name="vote">"Voter"</string>      
     <string name="gpsfix">En attente de données GPS</string>
-
 	<string name="title_activity_chart_summary">Chart Summary</string>
-	<string name="dummy_button">Dummy Button</string>
-	<string name="dummy_content">DUMMY\nCONTENT</string>
+	<string name="backup">backup</string>
+	<string name="backup_ok">Backup Created</string>
+	<string name="restore_ok">Backup Restored</string>
+	<string name="export_gpx">Export GPX</string>
+	<string name="export_kml">Export KML</string>
+	<string name="export_tcx">Export TCX</string>
+	<string name="backup_desc">Etes-vous sûr de créer une sauvegarde?</string>
+	<string name="restore_desc">Etes-vous sûr de restaurer la sauvegarde?</string>
 </resources>

@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.glm.trainer"
     android:installLocation="auto"
-    android:versionCode="122"
-    android:versionName="6.0.2">
+    android:versionCode="126"
+    android:versionName="7.0" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -20,15 +20,15 @@
     <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <!-- GCM -->
 
     <permission
-        android:name="com.glm.trainer.permission.C2D_MESSAGE"
+        android:name="com.glm.trainerlite.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.glm.trainer.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.glm.trainerlite.permission.C2D_MESSAGE" />
     <!-- App receives GCM messages. -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <!-- GCM requires a Google account. -->
@@ -53,7 +53,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/icon_pro"
-        android:label="@string/app_name_buy">
+        android:label="@string/app_name_buy" >
 
         <!--
         <application android:icon="@drawable/icon_pro" android:label="@string/app_name_pro" android:backupAgent="TrainerBackupAgent">
@@ -65,7 +65,7 @@
         <service
             android:name="com.glm.services.ExerciseService"
             android:enabled="true"
-            android:process=":com.glm.services">
+            android:process=":com.glm.services" >
             <intent-filter>
                 <action android:name="com.glm.trainer.STARTSERVICE" />
 
@@ -85,7 +85,7 @@
             </intent-filter>
         </receiver>
         -->
-        <receiver android:name="com.glm.app.widget.AndroidTrainerWidget">
+        <receiver android:name="com.glm.app.widget.AndroidTrainerWidget" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -94,7 +94,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/trainer_widget_info" />
         </receiver>
-        <receiver android:name="com.glm.utils.BatteryMonitor">
+        <receiver android:name="com.glm.utils.BatteryMonitor" >
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_BATTERY_LOW" />
             </intent-filter>
@@ -102,7 +102,7 @@
         <!-- GCM -->
         <receiver
             android:name="com.google.android.gcm.GCMBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
@@ -112,13 +112,13 @@
         </receiver>
         <!-- GCM -->
         <activity
-            android:name=".MainActivity"
+            android:name="com.glm.app.MainActivity"
             android:clearTaskOnLaunch="true"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name_buy"
-            android:launchMode="standard"
+            android:launchMode="singleInstance"
             android:screenOrientation="sensor"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -129,9 +129,9 @@
             android:name="com.glm.app.stopwatch.WorkOutActivity"
             android:clearTaskOnLaunch="true"
             android:configChanges="orientation|keyboardHidden"
-            android:launchMode="standard"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_BATTERY_LOW" />
             </intent-filter>
@@ -139,21 +139,21 @@
         <activity
             android:name="com.glm.app.ManualWorkout"
             android:clearTaskOnLaunch="true"
-            android:launchMode="singleTop"
+            android:launchMode="singleInstance"
             android:screenOrientation="sensor"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name="com.glm.app.OpenStreetMapActivity"
             android:clearTaskOnLaunch="true"
-            android:launchMode="singleTop"
+            android:launchMode="singleInstance"
             android:screenOrientation="sensor"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name="com.glm.app.GoalActivity"
             android:clearTaskOnLaunch="true"
-            android:launchMode="singleTop"
+            android:launchMode="singleInstance"
             android:screenOrientation="sensor"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@style/AppTheme" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -168,10 +168,10 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".NewMainActivity"
+            android:name="com.glm.app.NewMainActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="com.android.vending.billing.IN_APP_NOTIFY" />
                 <action android:name="com.android.vending.billing.RESPONSE_CODE" />
@@ -179,25 +179,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HistoryList"
+            android:name="com.glm.app.HistoryList"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
-            android:name=".PreferencesActivity"
+            android:name="com.glm.app.PreferencesActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
-            android:name=".WorkoutDetail"
+            android:name="com.glm.app.WorkoutDetail"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
-            android:name=".ChartSummaryActivity"
+            android:name="com.glm.app.ChartSummaryActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_chart_summary"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:launchMode="standard"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

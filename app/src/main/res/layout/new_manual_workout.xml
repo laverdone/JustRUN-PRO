@@ -8,13 +8,13 @@
 	android:paddingLeft="@dimen/activity_horizontal_margin"
 	android:paddingRight="@dimen/activity_horizontal_margin"
 	android:id="@+id/main_layout"
-	android:background="@drawable/carbon_fibre" 
+	android:background="@drawable/background_color"
 	android:clickable="true" android:gravity="right">
 	<RelativeLayout 
 		android:layout_height="match_parent" 
 		android:layout_width="match_parent" 
 		android:orientation="vertical"
-		android:background="@drawable/lista_gradient" 
+		android:background="@drawable/background_color"
 		android:clickable="true" android:gravity="right">
 	            
 	      <ScrollView 
@@ -58,14 +58,25 @@
 			                        android:layout_width="match_parent"
 			                        android:layout_height="wrap_content" 
 			                        android:layout_gravity="center"
-			                        android:background="@drawable/lista_gradient"/>
+			                        android:background="@drawable/background_color"/>
 	
 			                </LinearLayout>				
 						</LinearLayout>
 			            <!-- Dettaglio Inizio Distance -->
 			            <LinearLayout android:layout_marginTop="5dip" android:layout_weight="1" android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/LinearLayout02" android:orientation="vertical">
-			                <TextView android:layout_width="wrap_content" android:layout_marginLeft="0dip" android:text="@string/weight" android:layout_height="wrap_content" android:id="@+id/txtBMI" android:textColor="#FFFFFF"></TextView>
-			                <EditText android:layout_weight="1" android:layout_width="fill_parent" android:layout_marginLeft="150dip" android:text="" android:numeric="decimal" android:textSize="12sp" android:paddingRight="20dip" android:layout_height="35dip" android:gravity="center_horizontal" android:background="@drawable/back_button_shape" android:editable="true" android:textStyle="bold" android:paddingLeft="20dip" android:id="@+id/txtWeight" android:textColor="#003399"></EditText>
+			                <TextView android:layout_width="wrap_content"
+								android:layout_marginLeft="0dip"
+								android:text="@string/weight"
+								android:layout_height="wrap_content" android:id="@+id/txtBMI" android:textColor="#000000"></TextView>
+			                <EditText android:layout_weight="1"
+								android:layout_width="fill_parent"
+								android:layout_marginLeft="150dip"
+								android:text=""
+								android:numeric="decimal" android:textSize="12sp"
+								android:paddingRight="20dip" android:layout_height="35dip"
+								android:gravity="center_horizontal"
+								android:background="@drawable/back_button_shape" android:editable="true"
+								android:textStyle="bold" android:paddingLeft="20dip" android:id="@+id/txtWeight" android:textColor="#000000"></EditText>
 			            </LinearLayout>	            
 			            <LinearLayout android:layout_marginTop="5dip"
 
@@ -80,7 +91,7 @@
 								android:text="@string/distance" 
 
 								android:layout_width="wrap_content"
-								android:textColor="#FFFFFF">
+								android:textColor="#000000">
 							</TextView>
 							<EditText android:paddingRight="20dip" android:layout_marginLeft="150dip" 
 								android:textSize="12sp" android:background="@drawable/back_button_shape" 
@@ -109,7 +120,7 @@
 								android:text="@string/kalories" 
 
 								android:layout_width="wrap_content"
-								android:textColor="#FFFFFF">
+								android:textColor="#000000">
 							</TextView>
 							<EditText android:paddingRight="20dip" android:textSize="12sp" android:layout_weight="1" 
 								android:layout_height="35dip" android:background="@drawable/back_button_shape" 
@@ -134,7 +145,7 @@
 								android:text="@string/speed" 
 								android:id="@+id/textTitle" 
 								android:layout_width="wrap_content"
-								android:textColor="#FFFFFF">
+								android:textColor="#000000">
 							</TextView>
 							<EditText android:paddingRight="20dip" android:textSize="12sp" android:layout_weight="1" 
 								android:layout_height="35dip" android:background="@drawable/back_button_shape" 
@@ -149,8 +160,8 @@
 						<!-- Dettaglio Fine Step-->
 			            <LinearLayout android:layout_weight="1" android:layout_marginTop="5dip" android:layout_width="match_parent" android:id="@+id/LinearLayout05" android:orientation="vertical" android:layout_height="match_parent">
 			                <TextView android:text="@string/note" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textColor="#FFFFFF" android:layout_marginLeft="0dip" android:id="@+id/TextView02"></TextView>
-			                <EditText 
-			                	android:background="@drawable/note_gradient"  android:textStyle="bold" android:layout_weight="1" 
+			                <EditText
+								android:background="@color/common_action_bar_splitter"  android:textStyle="bold" android:layout_weight="1"
 			                	android:gravity="left" android:editable="true" android:paddingRight="20dip" 
 			                	android:textSize="12sp" android:layout_height="75dip" android:textColor="#003399" 
 			                	android:layout_width="fill_parent" android:id="@+id/txtNote" android:singleLine="false" 
@@ -158,8 +169,8 @@
 			            </LinearLayout>
 					</LinearLayout>			
 					<LinearLayout android:layout_marginTop="10dip" android:layout_height="wrap_content" android:id="@+id/rowWalk" android:layout_width="match_parent">
-	                     <Button android:textSize="25sp"  android:textColor="#FFFFFF"  android:background="@drawable/lista_gradient" android:layout_marginTop="0dip" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1" android:id="@+id/btnSave" android:text="@string/save_user"></Button>
-	                     <Button android:textSize="25sp"  android:textColor="#FFFFFF"  android:layout_marginLeft="10dip" android:background="@drawable/lista_gradient" android:layout_marginTop="0dip" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1" android:id="@+id/btnCancel" android:text="@string/cancel_user"></Button>
+	                     <Button android:textSize="25sp"  android:textColor="#FFFFFF"  android:background="@drawable/button_no_corners" android:layout_marginTop="0dip" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1" android:id="@+id/btnSave" android:text="@string/save_user"></Button>
+	                     <Button android:textSize="25sp"  android:textColor="#FFFFFF"  android:layout_marginLeft="10dip" android:background="@drawable/button_no_corners_1" android:layout_marginTop="0dip" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1" android:id="@+id/btnCancel" android:text="@string/cancel_user"></Button>
 	                 </LinearLayout>									
 				</LinearLayout>
 				

@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 	
+	android:layout_height="wrap_content"
+	android:layout_width="match_parent"
+	android:orientation="vertical"
+	android:paddingTop="@dimen/activity_vertical_margin"
+	    		android:paddingBottom="@dimen/activity_vertical_margin"
+	    		android:paddingLeft="@dimen/activity_horizontal_margin"
+	    		android:paddingRight="@dimen/activity_horizontal_margin"
+	android:id="@+id/objMainLayout" 	
+	android:background="@drawable/background_color"
+	android:gravity="right">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:elevation="@dimen/cardview_default_elevation"
+        android:background="@drawable/abc_popup_background_mtrl_mult"
+        app:cardCornerRadius="4dp"
+        android:layout_margin="5dp">
+
+    <LinearLayout
+        android:id="@+id/mainlinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        
+        android:orientation="vertical"
+        android:padding="1dip" >
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/card_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/toolbar_gradient"
+            app:titleTextAppearance="@style/Toolbar.TitleText"/>
+
+        <RelativeLayout
+            android:id="@+id/InternalRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_color"
+            android:padding="5dip">
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:padding="10dp" >
+
+                <LinearLayout
+                    android:id="@+id/rowWalk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
+
+                    <RelativeLayout
+                        android:id="@+id/linearLayout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:id="@+id/LLDett"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_weight="1"
+                            android:orientation="vertical" >
+
+                            <RelativeLayout
+                                android:id="@+id/RLTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:orientation="vertical" >
+
+                                <RelativeLayout
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" >
+                                </RelativeLayout>
+
+                                <TextView
+                                    android:id="@+id/textTime"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                                <TextView
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/time"
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLDistance"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <RelativeLayout
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" >
+                                </RelativeLayout>
+
+                                <View
+
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="0dip"
+                                    android:layout_marginTop="2dip"
+
+                                    android:layout_weight="1"
+                                    android:background="#0c0c0c" />
+
+                                <TextView
+                                    android:id="@+id/textDistance"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                                <TextView
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/distance"
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLKal"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <RelativeLayout
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" >
+                                </RelativeLayout>
+
+                                <View
+
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dp"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="0dip"
+                                    android:layout_marginTop="2dip"
+                                    android:layout_weight="1"
+                                    android:background="#0c0c0c" />
+
+                                <TextView
+                                    android:id="@+id/textKalories"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/textTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/kalories"
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLAvgSpeed"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <RelativeLayout
+                                    android:id="@+id/relativeLayout2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" >
+                                </RelativeLayout>
+
+                                <View
+                                    android:id="@+id/view3"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dp"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="0dip"
+                                    android:layout_marginTop="2dip"
+                                    android:layout_weight="1"
+                                    android:background="#0c0c0c" />
+
+                                <TextView
+                                    android:id="@+id/textAVGSpeed"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                                <TextView
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/speed_avg"
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLMaxSpeed"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <View
+                                    android:id="@+id/View02"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_weight="1"
+                                    android:background="#0c0c0c" />
+
+                                <TextView
+                                    android:id="@+id/textMAXSpeed"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                                <TextView
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/speed_max"
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLPace"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <RelativeLayout
+                                    android:id="@+id/RelativeLayout01"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" >
+                                </RelativeLayout>
+
+                                <View
+
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dp"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="0dip"
+                                    android:layout_marginTop="2dip"
+                                    android:layout_weight="1"
+                                    android:background="#0c0c0c" />
+
+                                <TextView
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/pace_avg"
+                                     android:layout_marginLeft="5dp"
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
+
+                                <TextView
+                                    android:id="@+id/textPace"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLMaxPace"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <View
+                                    android:id="@+id/View03"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dp"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_weight="1"
+                                    android:background="#0c0c0c" />
+
+                                <TextView
+                                    android:id="@+id/textMAXPace"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                                <TextView
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/pace_max"
+                                     android:layout_marginLeft="5dp"
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLStep"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <View
+
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dip"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="0dip"
+                                    android:layout_marginTop="2dip"
+                                    android:layout_weight="1"
+                                    android:background="#0c0c0c" />
+
+                                <TextView
+                                    android:id="@+id/textStep"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold"  />
+
+                                <TextView
+                                    android:id="@+id/lblStep"
+
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/step"
+                                    android:gravity="right"
+                                    android:layout_marginLeft="5dp"
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLMaxBpm"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <View
+
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dp"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="0dip"
+                                    android:layout_marginTop="2dip"
+                                    android:layout_weight="1"
+                                    android:background="#0c0c0c" />
+
+                                <TextView
+                                    android:id="@+id/textMaxBpm"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold"  />
+
+                                <TextView
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/max_heart_rate"
+                                     android:layout_marginLeft="5dp"
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/RLAvgBpm"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical" >
+
+                                <View
+                                    android:id="@+id/View01"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="0.5dp"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="0dip"
+                                    android:layout_marginTop="2dip"
+                                    android:layout_weight="1"
+                                    android:background="#0c0c0c" />
+
+                                <TextView
+                                    android:id="@+id/textAvgBpm"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignRight="@+id/View01"
+                                    android:gravity="right"
+                                    android:text="wait..."
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textSize="18dip"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/TextView03"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:text="@string/avg_heart_rate"
+                                     android:layout_marginLeft="5dp"
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#000000"  />
+
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </RelativeLayout>
+
+        
+                </LinearLayout>
+            </ScrollView>
+            <RelativeLayout
+                android:id="@+id/btnInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignRight="@+id/scrollView"
+                android:background="@drawable/button_no_corners"
+                android:clickable="true"
+                android:padding="2dip" android:visibility="gone">
+                <ImageView
+                    android:id="@+id/imgBtnPreferences"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@android:drawable/ic_menu_more" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

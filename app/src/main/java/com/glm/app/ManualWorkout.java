@@ -18,11 +18,12 @@ import android.widget.Toast;
 
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.User;
-import com.glm.trainer.NewMainActivity;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
 
 import java.text.NumberFormat;
+
+import static com.glm.trainer.R.animator.*;
 
 public class ManualWorkout extends Activity implements OnClickListener, OnFocusChangeListener{
 	/**pulsante torna alla lista esercizi*/
@@ -59,7 +60,7 @@ public class ManualWorkout extends Activity implements OnClickListener, OnFocusC
         
         setContentView(R.layout.new_manual_workout);
         
-        a = AnimationUtils.loadAnimation(this, R.animator.fadein);
+        a = AnimationUtils.loadAnimation(this, fadein);
         a.reset();
         
         oMainLinearLayout = (LinearLayout) findViewById(R.id.main_layout); 
@@ -92,11 +93,11 @@ public class ManualWorkout extends Activity implements OnClickListener, OnFocusC
 	
 	@Override
 	public void onClick(View oObj) {
-		String sType="0";
+		int mType=0;
 		if(oObj.getId()==R.id.btnSave){			
 			Bundle extras = getIntent().getExtras();
 			if(extras !=null){
-			  sType = extras.getString("type");
+				mType = extras.getInt("type");
 			}
 			
 			int Distance=0;
@@ -112,7 +113,7 @@ public class ManualWorkout extends Activity implements OnClickListener, OnFocusC
 					oTxt_Weight.getText().toString(),
 					Distance,
 					oTxt_Kalories.getText().toString(),Kalories,
-					oTxt_Speed.getText().toString(),oTxt_Note.getText().toString(),sType, getApplicationContext(),oConfigTrainer)){
+					oTxt_Speed.getText().toString(),oTxt_Note.getText().toString(),mType, getApplicationContext(),oConfigTrainer)){
 				Intent intent = new Intent();
 				intent.setClass(getApplicationContext(), NewMainActivity.class);
 				startActivity(intent);
@@ -127,8 +128,6 @@ public class ManualWorkout extends Activity implements OnClickListener, OnFocusC
 			intent.setClass(getApplicationContext(), NewMainActivity.class);
 			startActivity(intent);
 			finish();
-		}else if(oObj.getId()==R.id.btn_back){
-			onBackPressed();
 		}
 	}	
 	@Override

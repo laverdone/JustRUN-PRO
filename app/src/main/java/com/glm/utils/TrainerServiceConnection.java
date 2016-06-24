@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.glm.app.ConstApp;
 import com.glm.bean.ConfigTrainer;
 import com.glm.services.ExerciseService;
 import com.glm.services.IExerciseService;
@@ -36,7 +37,7 @@ public class TrainerServiceConnection implements ServiceConnection
 			return;
 		}
 
-		if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - bindService from "+mBinderAct);
+		if(ConstApp.IS_DEBUG) Logger.log("INFO - bindService from "+mBinderAct);
         doBindService();
     }
     

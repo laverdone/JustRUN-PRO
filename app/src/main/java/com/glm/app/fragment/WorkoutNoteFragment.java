@@ -45,7 +45,7 @@ public class WorkoutNoteFragment extends Fragment {
 			Bundle savedInstanceState) {
 		mContext=getActivity().getApplicationContext();
 		if(rootView==null){ 
-			rootView = inflater.inflate(R.layout.new_exercise_details_note,container, false);
+			rootView = inflater.inflate(R.layout.new_workout_details_note,container, false);
 			rootView.setDrawingCacheEnabled(true);
 			oNote		  = (EditText) rootView.findViewById(R.id.txtNote);
 			oNote.setText(ExerciseManipulate.getsNote());

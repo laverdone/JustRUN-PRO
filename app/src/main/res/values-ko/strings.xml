@@ -22,11 +22,11 @@
 	<string name="sci">"문화"</string>
 	<string name="walk">"걷다"</string>
 	<string name="about_1">"이렇게하면 운동을위한 개인 트레이너이다."</string>
-	<string name="about_2"/>
-	<string name="about_3"/>
+	<string name="about_2">""</string>
+	<string name="about_3">""</string>
 	<string name="about_4">"당신은 운동을 공유할 수 있습니다"</string>
 	<string name="about_5">"당신의 친구와."</string>
-	<string name="about_6"/>
+	<string name="about_6">""</string>
 	<string name="about_7">"안드로이드를 통해 성능을 향상 - 트레이너"</string>
 	<string name="author">"GLM-실험실"</string>
 	<string name="version">"버전"</string>
@@ -151,7 +151,6 @@
 	<string name="note">"메모"</string>
 	<string name="generic_error">"일반 오류"</string>
 	<string name="not_avail_manual">"수동 운동에 사용할 수 없습니다"</string>
-    <string name="only_in_full"/>
     <string name="manual_workout">"수동 운동"</string>
     <string name="inclination">"기울기"</string>
     <string name="tabStore_label">"상점"</string>
@@ -177,6 +176,12 @@
     <string name="gpsfix">Waiting for GPS data</string>
 
 	<string name="title_activity_chart_summary">Chart Summary</string>
-	<string name="dummy_button">Dummy Button</string>
-	<string name="dummy_content">DUMMY\nCONTENT</string>
+	<string name="backup">백업 데이터 </string>
+	<string name="backup_ok">백업 생성</string>
+	<string name="restore_ok">백업 복원</string>
+	<string name="export_gpx">Export GPX</string>
+	<string name="export_kml">Export KML</string>
+	<string name="export_tcx">Export TCX</string>
+	<string name="backup_desc">당신은 백업을 생성 하시겠습니까?</string>
+	<string name="restore_desc">당신은 백업을 복원 하시겠습니까?</string>
 </resources>

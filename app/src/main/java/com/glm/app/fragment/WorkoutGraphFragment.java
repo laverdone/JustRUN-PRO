@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import com.glm.trainer.R;
@@ -52,7 +51,7 @@ public class WorkoutGraphFragment extends Fragment {
 			Bundle savedInstanceState) {
 		mContext=getActivity().getApplicationContext();
 		if(rootView==null){
-			rootView = inflater.inflate(R.layout.web_exercise_graph,
+			rootView = inflater.inflate(R.layout.workout_graph,
 					container, false);
 			oGraphContainerALT = (RelativeLayout) rootView.findViewById(R.id.graphLayoutALT);
 			oGraphContainerPACE = (RelativeLayout) rootView.findViewById(R.id.graphLayoutPACE);

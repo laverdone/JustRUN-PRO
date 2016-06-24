@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:background="@drawable/stopwatch_container_carbon"
+        android:background="@drawable/background_color"
         android:keepScreenOn="true">
 
         <LinearLayout
@@ -14,14 +14,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/rowWalk"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="0dp"
             android:orientation="vertical" >
 
             <LinearLayout
                 android:id="@+id/LinearLayout02"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/web_container"
+                android:background="@drawable/background_grey"
                 android:orientation="vertical" >
 
                 <WebView
@@ -40,15 +40,15 @@
 	          android:layout_alignParentLeft="true"
 	          android:layout_alignParentTop="true"
 	          android:orientation="horizontal" 
-	          android:layout_marginTop="10dp">
+	          android:layout_marginTop="0dp">
 
 	          <Button
 	              android:id="@+id/btnBack"
 	              android:layout_width="wrap_content"
 	              android:layout_height="wrap_content"
-	              android:layout_marginRight="5dp"
+	              android:layout_marginRight="0dp"
 	              android:layout_weight="1"
-	              android:background="@drawable/lista_gradient"
+	              android:background="@drawable/button_no_corners_1"
 	              android:text="@string/exercise"
 	              android:textColor="#FFFFFF"
 	              android:textSize="15sp" />
@@ -56,9 +56,9 @@
 	          <ImageButton
 	              android:id="@+id/btnSkipTrack"
 	              android:layout_width="wrap_content"
-	              android:layout_height="wrap_content"
-	              android:layout_weight="1"
-	              android:background="@drawable/lista_gradient"            
+	              android:layout_height="match_parent"
+	              android:layout_weight="1.56"
+	              android:background="@drawable/button_no_corners"
 	              android:textColor="#FFFFFF"
 	              android:textSize="15sp" 
 	              android:src="@drawable/skip"/>

@@ -21,11 +21,11 @@
 	<string name="sci">"SCI"</string>
 	<string name="walk">"歩く"</string>
 	<string name="about_1">"これは、あなたの演習のためのパーソナルトレーナーです。"</string>
-	<string name="about_2"/>
-	<string name="about_3"/>
+	<string name="about_2">""</string>
+	<string name="about_3">""</string>
 	<string name="about_4">"あなたの運動を共有できるようにすることができます"</string>
 	<string name="about_5">"あなたの友人である。"</string>
-	<string name="about_6"/>
+	<string name="about_6">""</string>
 	<string name="about_7">"アンドロイドを使用してパフォーマンスを向上させる - トレーナー"</string>
 	<string name="author">"GLM-ラボ"</string>
 	<string name="version">"バージョン"</string>
@@ -150,7 +150,6 @@
 	<string name="note">"注釈"</string>
 	<string name="generic_error">"一般的なエラー"</string>
 	<string name="not_avail_manual">"マニュアルトレーニングでは使用できません"</string>
-    <string name="only_in_full"/>
     <string name="manual_workout">"マニュアルエクササイズ"</string>
     <string name="inclination">"傾斜"</string>
     <string name="tabStore_label">"ストア"</string>
@@ -174,8 +173,13 @@
     <string name="heart_rate">"心拍数"</string>
     <string name="vote">投票</string> 
     <string name="gpsfix">Waiting for GPS data</string>
-
 	<string name="title_activity_chart_summary">Chart Summary</string>
-	<string name="dummy_button">Dummy Button</string>
-	<string name="dummy_content">DUMMY\nCONTENT</string>
+	<string name="backup">backup</string>
+	<string name="backup_ok">Backup Created</string>
+	<string name="restore_ok">Backup Restored</string>
+	<string name="export_gpx">Export GPX</string>
+	<string name="export_kml">Export KML</string>
+	<string name="export_tcx">Export TCX</string>
+	<string name="backup_desc">[バックアップを作成しますか？</string>
+	<string name="restore_desc">あなたは、バックアップをリストアしますか？</string>
 </resources>

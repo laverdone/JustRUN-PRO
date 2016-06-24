@@ -15,9 +15,7 @@ import android.widget.ListView;
 
 import com.glm.app.fragment.adapter.StoreAdapter;
 import com.glm.bean.ItemStore;
-import com.glm.trainer.NewMainActivity;
 import com.glm.trainer.R;
-import com.glm.utils.http.HttpClientHelper;
 import com.glm.utils.vending.PlayBillingServiceConnection;
 
 import org.json.JSONException;
@@ -26,7 +24,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Locale;
 
 /**
  * A dummy fragment representing a section of the app, but that simply

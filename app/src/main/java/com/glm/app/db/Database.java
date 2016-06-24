@@ -7,9 +7,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 
+import com.glm.app.ConstApp;
+import com.glm.utils.CryptoUtils;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
  * DATABASE STRUCTURE
  * 
@@ -379,7 +388,7 @@ public class Database {
   
     			//manualDB();
     		}
-    		
+
     	}catch(SQLiteException e){
  
     		//TODO il database non esiste createDataBase()
@@ -394,9 +403,103 @@ public class Database {
  
     	return checkDB != null ? true : false;
     }
-    
-    
-    /**
+	/**
+	 * backup DB to External sdCard
+	 *
+	 * */
+	public void backupDB(){
+		String myPath = DB_PATH + DB_NAME;
+		//Copy DB to External sdCard
+		File db = new File(myPath);
+		if(db.exists()){
+			copyToExternalSd(myPath);
+		}
+	}
+	/**
+	 * restore backup
+	 * */
+	public void restoreDB(){
+		String myPath = DB_PATH + DB_NAME;
+		//Copy DB to External sdCard
+		File db = new File(myPath);
+		if(db.exists()){
+			copyToInternal(myPath);
+		}
+	}
+	private void copyToInternal(final String targetFile){
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				File oRoot = Environment.getExternalStorageDirectory();
+				FileInputStream fis = null;
+				FileOutputStream fos = null;
+				if(oRoot.canRead() && oRoot.canWrite()) {
+					//try {
+					File oRootPersonalTrainer = new File(oRoot.getAbsolutePath()+"/"+ConstApp.FOLDER_PERSONAL_TRAINER);
+					if(!oRootPersonalTrainer.exists() && oRootPersonalTrainer.mkdir()){
+						//Log.v(Exercise.class.getCanonicalName(),"Folder PersonalTrainer Create"+oRoot.getAbsolutePath()+"/"+FOLDER_PERSONAL_TRAINER);
+					}
+					File oInput	= new File(oRoot.getAbsolutePath()+"/"+ConstApp.FOLDER_PERSONAL_TRAINER+"/"+ConstApp.DB_BACKUP_NAME);
+					File oOutput 	= new File(targetFile);
+					if(oInput.exists())
+						CryptoUtils.decrypt(ConstApp.CRYPTO_KEY,oInput,oOutput);
+				}
+			}
+		}).start();
+	}
+
+	private void copyToExternalSd(final String sourceFile) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				File oRoot = Environment.getExternalStorageDirectory();
+				FileInputStream fis = null;
+				FileOutputStream fos = null;
+				if(oRoot.canRead() && oRoot.canWrite()) {
+					//try {
+						File oRootPersonalTrainer = new File(oRoot.getAbsolutePath()+"/"+ConstApp.FOLDER_PERSONAL_TRAINER);
+						if(!oRootPersonalTrainer.exists() && oRootPersonalTrainer.mkdir()){
+							//Log.v(Exercise.class.getCanonicalName(),"Folder PersonalTrainer Create"+oRoot.getAbsolutePath()+"/"+FOLDER_PERSONAL_TRAINER);
+						}
+						File oInput 	= new File(sourceFile);
+						File oOutput	= new File(oRoot.getAbsolutePath()+"/"+ConstApp.FOLDER_PERSONAL_TRAINER+"/"+ConstApp.DB_BACKUP_NAME);
+						if(oInput.exists())
+							CryptoUtils.encrypt(ConstApp.CRYPTO_KEY,oInput,oOutput);
+
+						/*fis = new FileInputStream(sourceFile);
+
+						fos = new FileOutputStream(oRoot.getAbsolutePath()+"/"+ConstApp.FOLDER_PERSONAL_TRAINER+"/database.db");
+						byte[] buffer = new byte[1024];
+						int noOfBytes = 0;
+						System.out.println("Copying file using streams");
+						// read bytes from source file and write to destination file
+						while ((noOfBytes = fis.read(buffer)) != -1) {
+							fos.write(buffer, 0, noOfBytes);
+						}
+					} catch (FileNotFoundException e) {
+						Log.e(this.getClass().getCanonicalName(), "File not found" + e);
+					} catch (IOException ioe) {
+						Log.e(this.getClass().getCanonicalName(), "Exception while copying file " + ioe);
+					} finally {
+						// close the streams using close method
+						try {
+							if (fis != null) {
+								fis.close();
+							}
+							if (fos != null) {
+								fos.close();
+							}
+						} catch (IOException ioe) {
+							Log.e(this.getClass().getCanonicalName(), "Error while closing stream: " + ioe);
+						}
+					}*/
+				}
+			}
+		}).start();
+	}
+
+
+	/**
      * Ony for DEVELOPMENT
      * 
      * **/

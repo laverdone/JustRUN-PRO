@@ -11,7 +11,7 @@ import android.os.IBinder;
 import android.widget.RemoteViews;
 
 import com.glm.bean.Summary;
-import com.glm.trainer.MainActivity;
+import com.glm.app.MainActivity;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
 

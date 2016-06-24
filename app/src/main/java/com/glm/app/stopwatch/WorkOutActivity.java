@@ -21,31 +21,32 @@ import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.glm.app.ConstApp;
 import com.glm.app.OpenStreetMapActivity;
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.User;
 import com.glm.services.ExerciseService;
-import com.glm.trainer.MainActivity;
-import com.glm.trainer.NewMainActivity;
+import com.glm.app.NewMainActivity;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.Logger;
 import com.glm.utils.StopwatchUtils;
 import com.glm.utils.TrainerServiceConnection;
 import com.glm.utils.sensor.BlueToothHelper;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
+import static com.glm.trainer.R.animator.*;
 
 public class WorkOutActivity extends Activity implements OnClickListener{
 	/**indica se è stato premuto il pulsante avvia*/
@@ -61,7 +62,9 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	protected static final int NOSAVEEXERCISE = 0x1998;
 	protected static final int STOPEXERCISE = 0x1997;
 	protected static final int GUIUPDATECARDIO = 0x2000;
-	
+	private Thread mThreadConnection=null;
+	private ConnectToServiceTask mConnectionTask=null;
+
 	protected static final int GPSNOTENABLED  = 0x1999;
 	/**Wait for GPS Fix*/
     private ProgressDialog oWaitForGPSFix;
@@ -118,7 +121,8 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	 * 
 	 * */
 	private int I_TYPE_OF_TRAINER=0;
-	
+	private Bundle extras=null;
+
 	/**Oggetto principale per disegnare/controllare lo stopwatch**/	
 	private StopwatchUtils StopwatchUtils = new StopwatchUtils();
 	
@@ -130,8 +134,9 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	
 	/**Messaggi del/per server*/
 	//private Messenger mMessenger =null;
-	
-	
+
+	volatile boolean isRun=true;
+
 	/**Oggetto connessione al servizio*/
 	private TrainerServiceConnection mConnection =null;
 	boolean mIsBound=false;
@@ -143,7 +148,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	/**Gestione Cardio*/
 	private BlueToothHelper oBTHelper;
 	private boolean bShowAlert=true;
-
+	private String sStatus="";
 	private Context mContext=null;
 	/**
 	 * 
@@ -163,19 +168,19 @@ public class WorkOutActivity extends Activity implements OnClickListener{
                     		if(mConnection.mIService.isCardioConnected()){
                     			Toast.makeText(getApplicationContext(), "Connect to Cardio OK", Toast.LENGTH_SHORT).show();	
                     		}
-							if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - Start Workout");
+							if(ConstApp.IS_DEBUG) Logger.log("INFO - Start Workout");
 						}
                     	
                     } catch (RemoteException e) {
                     	Log.e(this.getClass().getCanonicalName(), "RemoteException STARTEXERCISE");
                     	WorkOutActivity.this.ThreadTrainer.interrupt();
-						if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("ERORR - Start Workout Fail RemoteException "+e.getMessage());
+						if(ConstApp.IS_DEBUG) Logger.log("ERORR - Start Workout Fail RemoteException "+e.getMessage());
                     } catch (NullPointerException e) {
                     	Log.e(this.getClass().getCanonicalName(), "NullPointerException STARTEXERCISE");
-						if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("ERROR - Start Workout Fail NullPointerException "+e.getMessage());
+						if(ConstApp.IS_DEBUG) Logger.log("ERROR - Start Workout Fail NullPointerException "+e.getMessage());
 					} catch (IllegalArgumentException e) {
 						Log.e(this.getClass().getCanonicalName(), "IllegalArgumentException STARTEXERCISE");
-						if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("ERROR - Start Workout Fail IllegalArgumentException "+e.getMessage());
+						if(ConstApp.IS_DEBUG) Logger.log("ERROR - Start Workout Fail IllegalArgumentException "+e.getMessage());
 					}
 																
 					break;
@@ -225,7 +230,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 					break;										
 				case WorkOutActivity.GUIUPDATEIDENTIFIER:																	
 					try {
-						if(mConnection.mIService!=null){
+						if(mConnection!=null && mConnection.mIService!=null){
 							if(!mConnection.mIService.isRunning() 
 									&& !mConnection.mIService.isRefumeFromAutoPause()){								
 								//Chiamato quando entro in autopausa
@@ -364,21 +369,22 @@ public class WorkOutActivity extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);                
     	mContext=this;
 
-		a = AnimationUtils.loadAnimation(this, R.animator.fadein);
+		a = AnimationUtils.loadAnimation(this, fadein);
 		a.reset();
 
 		try{
 			oConfigTrainer=ExerciseUtils.loadConfiguration(mContext);
-			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("startGPSFix Load configuration Service for Trainer Services");
+			if(ConstApp.IS_DEBUG) Logger.log("INFO - onCreate WokoutActivity");
 		}catch (NullPointerException e) {
 			Log.e(this.getClass().getCanonicalName(),"Error load Config");
-			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("ERROR - startGPSFix Load configuration  NullPointerException Service for Trainer Services");
+			if(ConstApp.IS_DEBUG) Logger.log("ERROR - onCreate WokoutActivity Error load Config");
 			return;
 		}
 
 		Bundle extras = getIntent().getExtras();
 		if(extras !=null){
 			I_TYPE_OF_TRAINER = extras.getInt("type");
+			sStatus = extras.getString("Status");
 		}          
         
         //a = AnimationUtils.loadAnimation(this, R.animator.slide_right);
@@ -456,16 +462,33 @@ public class WorkOutActivity extends Activity implements OnClickListener{
         	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);	
         }
 
-		if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - WorkOut->onCreate service Workout");
+		if(ConstApp.IS_DEBUG) Logger.log("INFO - WorkOut->onCreate service Workout");
 
 		oMainLayout.clearAnimation();
 		oMainLayout.setAnimation(a);
+
+		checkGoal(extras);
+
+		if(getPackageName().equals(ConstApp.ADS_APP_PACKAGE_NAME)){
+			AdView mAdView = (AdView) findViewById(R.id.adView);
+			AdRequest adRequest = new AdRequest.Builder().build();
+			mAdView.loadAd(adRequest);
+		}else{
+			AdView mAdView = (AdView) findViewById(R.id.adView);
+			mAdView.setVisibility(View.GONE);
+		}
     }
 	@Override
 	protected void onResume() {
 
-		mConnection= new TrainerServiceConnection(getApplicationContext(),this.getClass().getCanonicalName());
+		Bundle extras = getIntent().getExtras();
+		if(extras !=null){
+			I_TYPE_OF_TRAINER = extras.getInt("type");
+			sStatus = extras.getString("Status");
+		}
 
+		mConnection= new TrainerServiceConnection(getApplicationContext(),this.getClass().getCanonicalName());
+		if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->onResume->mConnection: "+mConnection+" Trainer Services ");
 		//ActivitySwitcher.animationIn(oMainLayout, getWindowManager());
 		bShowAlert=true;
 		if(I_TYPE_OF_TRAINER==1){
@@ -476,8 +499,10 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 			Toast.makeText(this, this.getString(R.string.walk), Toast.LENGTH_SHORT).show();
 		}
 
+		mConnectionTask=new ConnectToServiceTask();
 
-		new Thread(new ConnectToServiceTask()).start();
+		mThreadConnection = new Thread(mConnectionTask);
+		mThreadConnection.start();
 
 		/*ConnectToServiceTask oService = new ConnectToServiceTask();
 		oService.execute();*/
@@ -487,13 +512,25 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	
 	@Override
 	protected void onPause() {
+		if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->onPause Trainer Services ");
 		mConnection.destroy();
+		if(mThreadConnection!=null ){
+			isRun=false;
+			mThreadConnection.interrupt();
+		}
+		if(ThreadTrainer!=null){
+			ThreadTrainer.interrupt();
+		}
+		mConnection=null;
 		// animateIn this activity
 		//ActivitySwitcher.animationOut(oMainLayout, getWindowManager());
-		a = AnimationUtils.loadAnimation(this, R.animator.disappear);
+		a = AnimationUtils.loadAnimation(this, disappear);
 		a.reset();
 		oMainLayout.clearAnimation();
 		oMainLayout.setAnimation(a);
+		if(I_TYPE_OF_TRAINER!=1) {
+			finish();
+		}
 		super.onPause();
 	}
 	/**
@@ -503,34 +540,41 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				String sStatus="";
-				Bundle extras = getIntent().getExtras();
-				if(extras !=null){
-					sStatus = extras.getString("Status");
 
-					if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - Workout->changeGUIStatus->sStatus: "+sStatus+" Trainer Services ");
+
+					if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->changeGUIStatus->sStatus: "+sStatus+" Trainer Services ");
 
 					if(sStatus!=null){
 						if(sStatus.compareToIgnoreCase("service_under_user_pause")==0){
-							if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - Workout->changeGUIStatus->service_under_user_pause: "+sStatus+" Trainer Services ");
+							if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->changeGUIStatus->service_under_user_pause: "+sStatus+" Trainer Services ");
 
 							//Servizio in pausa dall'utente
 							iStartTrainer=2;
 							btnPause.setText(mContext.getString(R.string.btnresume));
 							btnStart.setEnabled(false);
+						}else if(sStatus.compareToIgnoreCase("running")==0){
+							ThreadTrainer = new Thread(new TrainerRunner());
+							ThreadTrainer.start();
+							Message mToStart = new Message();
+							mToStart.what=WorkOutActivity.GUIUPDATEIDENTIFIER;
+							WorkOutActivity.this.StopwatchViewUpdateHandler.sendMessage(mToStart);
+							iStartTrainer=1;
+							btnStart.setText(mContext.getString(R.string.btnstop));
+							btnPause.setEnabled(true);
+							checkGoal(extras);
+							return;
 						}
 						btnStart.setText(mContext.getString(R.string.btnstop));
 						btnPause.setEnabled(true);
 					}
-					checkGoal(extras);
+
 				}
-			}
 		});
 
         try {                	        	
-			if(mConnection.mIService.isRunning()){
+			if(mConnection!= null && mConnection.mIService!=null && mConnection.mIService.isRunning()){
 				//Esercizio in running prelevo il tempo e faccio partire il timer
-				if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - Workout->changeGUIStatus->isRunning: "+mConnection.mIService.isRunning()+" Trainer Services ");
+				if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->changeGUIStatus->isRunning: "+mConnection.mIService.isRunning()+" Trainer Services ");
 
 
 				//Log.v(this.getClass().getCanonicalName(),"start time restored: "+NewExercise.getlStartTime());
@@ -541,11 +585,11 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 				WorkOutActivity.this.StopwatchViewUpdateHandler.sendMessage(mToStart);
 				iStartTrainer=1;	            					            				    				
 			}
-			if(mConnection.mIService.isAutoPause()){
+			if(mConnection!= null && mConnection.mIService!=null && mConnection.mIService.isAutoPause()){
 				//Resume in autopause quando rientro dal background
 				iStartTrainer=2;
 
-				if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - Workout->changeGUIStatus->isAutoPause: "+mConnection.mIService.isAutoPause()+" Trainer Services ");
+				if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->changeGUIStatus->isAutoPause: "+mConnection.mIService.isAutoPause()+" Trainer Services ");
 				mConnection.mIService.setRefumeFromAutoPause(true);
 				mConnection.mIService.resumeExercise();
 				bAutoPause=false;
@@ -556,10 +600,12 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 				WorkOutActivity.this.StopwatchViewUpdateHandler.sendMessage(mToStart);
 				iStartTrainer=1;
 			}
+			if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->changeGUIStatus->: mConnection is: "+mConnection+" mConnection.mIService: "+mConnection.mIService
+					+" Trainer Services ");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("ERROR - Workout->changeGUIStatus->Exception: "+e.getMessage()+" Trainer Services ");
+			if(ConstApp.IS_DEBUG) Logger.log("ERROR - Workout->changeGUIStatus->Exception: "+e.getMessage()+" Trainer Services ");
 
 		}
         
@@ -733,8 +779,8 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 				return;		
 		}
 	}		
-	private void NotrackWeight(){
-		
+	private void startWorkout(){
+			sStatus="running";
 			//TTS Voice
 	    	iStartTrainer=1;
 			/**
@@ -751,119 +797,11 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	        Message mToStart = new Message();
 			mToStart.what=WorkOutActivity.STARTEXERCISE;				
 			WorkOutActivity.this.StopwatchViewUpdateHandler.sendMessage(mToStart);
-			mToStart=null;  		
+			if(I_TYPE_OF_TRAINER==ConstApp.TYPE_BIKE && oConfigTrainer.isbPlayMusic())
+				finish();
 			
 	}
-	
-	/**
-	 * Traccio il peso mostrando una alert per inserire il peso
-	 * ad ogni esercizio
-	 * 
-	 * */
-	private void trackWeight() {
-		//AlertDialog dialog = new AlertDialog(this);
-	    AlertDialog.Builder builder;
-	    AlertDialog alertDialog;
-	    
-	    LayoutInflater inflater = getLayoutInflater();
-	    LinearLayout dialoglayout = (LinearLayout) inflater.inflate(R.layout.track_weight,(ViewGroup) findViewById(R.id.objMainLayout)); 
-	    Button btmPlus =null;
-	    Button btmMinus =null;
-	    EditText txtWeight = null;
-	    int iChild=dialoglayout.getChildCount();
-	    for(int i=0;i<iChild;i++){
-	    	if(i==0){
-	    		LinearLayout oInternal = (LinearLayout) dialoglayout.getChildAt(i);
-	    		int jChild=oInternal.getChildCount();
-	    		for(int j=0;j<jChild;j++){
-	    			if(j==0){
-	    				//btnPlus
-	    				btmPlus = (Button) oInternal.getChildAt(j);
-	    			}else if (j==1){
-	    				//txtWeight
-	    				txtWeight = (EditText) oInternal.getChildAt(j);
-	    			}else{
-	    				//btnMinus
-	    				btmMinus = (Button) oInternal.getChildAt(j);
-	    			}
-	    		}
-	    	}
-	    }	   
-	    
-	    final EditText oTxtWeight=txtWeight;
-	    //Log.v(this.getClass().getCanonicalName(),"Peso: "+User.getiWeight());
-	    //Imposto il peso corrente
-	    oTxtWeight.setText(String.valueOf(mUser.iWeight));
-	    btmPlus.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				
-				try{
-					fWeight=Float.parseFloat(oTxtWeight.getText().toString());
-				}catch (Exception e) {
-					//Log.v(this.getClass().getCanonicalName(), "parseInt Weight error");
-				}
-				fWeight+=1;
-				oTxtWeight.setText(String.valueOf(fWeight));				
-			}
-		});
-	    
-	    btmMinus.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				
-				try{
-					fWeight=Float.parseFloat(oTxtWeight.getText().toString());
-				}catch (Exception e) {
-					//Log.v(this.getClass().getCanonicalName(), "parseInt Weight error");
-				}
-				fWeight-=1;
-				if(fWeight<0) fWeight=0;
-				oTxtWeight.setText(String.valueOf(fWeight));	
-				
-			}
-		});
-	    
-	    builder = new AlertDialog.Builder(this);
-	    builder.setView(dialoglayout);
-	    
-	    alertDialog = builder.create();
-	    alertDialog.setTitle(this.getString(R.string.track_weight));
-    	alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,this.getString(R.string.run), new android.content.DialogInterface.OnClickListener(){
 
-			@Override
-			public void onClick(DialogInterface arg0, int arg1) {					
-				
-					//TTS Voice
-					//Start Exercise
-					iStartTrainer=1;
-					//Se non premo plus/minus
-					try{
-						fWeight=Float.parseFloat(oTxtWeight.getText().toString());
-					}catch(NumberFormatException e){
-						fWeight=oConfigTrainer.getiWeight();
-					}
-					/**
-					 * 
-					 * CREAZIONE DI UN NUOVO ESERCIZIO IN DB
-					 * 
-					 * 
-					 */
-					iCurrentExercise=oExerciseUtil.createNewExercise(getApplicationContext(), oConfigTrainer, I_TYPE_OF_TRAINER, fWeight);
-					
-					
-			        ThreadTrainer = new Thread(new TrainerRunner());
-			        ThreadTrainer.start();
-			        Message mToStart = new Message();
-					mToStart.what=WorkOutActivity.STARTEXERCISE;				
-					WorkOutActivity.this.StopwatchViewUpdateHandler.sendMessage(mToStart);
-					mToStart=null;  				
-														 
-			}});    	
-	    alertDialog.show();
-	}
 
 	@Override
 	protected void onDestroy() {
@@ -910,7 +848,8 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		if(mConnection.mIService!=null) {
 			try {
 				if(mConnection.mIService.isRunning()){
-					if(oWaitForGPSFix!=null){
+					if(oWaitForGPSFix!=null && oWaitForGPSFix.isShowing()){
+						if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->onBackPressed Back Press on Running and GPS FIX ");
 						Log.d(this.getClass().getCanonicalName(),"Back Press on Running and GPS FIX");
 						oWaitForGPSFix.dismiss();
 						mConnection.mIService.stopGPSFix();
@@ -921,6 +860,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 					Log.d(this.getClass().getCanonicalName(),"Back Press on Running");
 					return;
 				}else{
+					if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->onBackPressed Back Press on NOT Running ");
 					Log.d(this.getClass().getCanonicalName(),"Back Press on NOT Running");
 					mConnection.mIService.stopGPSFix();
 					mConnection.mIService.shutDown();
@@ -931,6 +871,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 					finish(); 				
 				}
 			} catch (RemoteException e) {
+				if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->onBackPressed RemoteException "+e.getMessage());
 				Log.e(this.getClass().getCanonicalName(),"onBackPressed RemoteException: "+e.getMessage());
 				intent.setClass(getApplicationContext(), NewMainActivity.class);
 				startActivity(intent);
@@ -960,8 +901,8 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 			 * */
 			getBaseContext().startService(new Intent(getApplication(),ExerciseService.class));
 			
-			Log.i("Avvio Servizio New Exercise", "Stopwatch->TrainerRunner");
-			
+			//Log.i("Avvio Servizio New Exercise", "Stopwatch->TrainerRunner");
+			if(ConstApp.IS_DEBUG) Logger.log("INFO - TrainerRunner id "+Thread.currentThread().getId()+" is started");
 			while(!Thread.currentThread().isInterrupted()){
 				Message m = new Message();
 				
@@ -974,7 +915,9 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 				} catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
 				}
-			}   	   
+			}
+
+			if(ConstApp.IS_DEBUG) Logger.log("INFO - TrainerRunner id "+Thread.currentThread().getId()+" is interrupted!");
 	    }
 	}
 	
@@ -1066,13 +1009,8 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						if(!bInStarting){
 							btnStart.setText(getApplicationContext().getString(R.string.btnstop));
 							btnPause.setEnabled(true);
-						    if(oConfigTrainer.isbTrackExercise()){
-						    	//Traccio il Peso
-						    	trackWeight();
-						    }else{
-						    	//Non Traccio Il Peso
-						    	NotrackWeight();
-						    }
+						   	//Non Traccio Il Peso
+						   	startWorkout();
 						    bInStarting=true;
 					    }
 					}else{
@@ -1090,30 +1028,36 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 			
 			//TODO Check User if(!bCheckUser()) return;
 			final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
-			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - Workout->NewExerciseTask->doInBackground Create new exercise for Trainer Services");
+			if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->NewExerciseTask->doInBackground Create new exercise for Trainer Services");
 			while(mConnection.mIService==null){
-				if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - Workout->NewExerciseTask->doInBackground try to reconnect to service wait for service Workout");
-				new Thread(new ConnectToServiceTask()).start();
+				if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->NewExerciseTask->doInBackground try to reconnect to service wait for service Workout");
+				if(mConnection==null || mConnectionTask==null || !mThreadConnection.isAlive()){
+					mConnectionTask=new ConnectToServiceTask();
+					mThreadConnection = new Thread(mConnectionTask);
+					mThreadConnection.start();
+				}
+
 			}
 			if(mConnection.mIService!=null){
-				try {		
-					mConnection.mIService.runGPSFix();
-					while(!mConnection.mIService.isGPSFixPosition()){
+				try {
+					if(mConnection!=null) mConnection.mIService.runGPSFix();
+					while(mConnection!=null &&
+							!mConnection.mIService.isGPSFixPosition()){
 						Thread.sleep(1000);
 					}
-					if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - Workout->NewExerciseTask->doInBackground FIX GPS for Trainer Services");
+					if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->NewExerciseTask->doInBackground FIX GPS for Trainer Services");
 
 				} catch (RemoteException e) {
 					Log.e(this.getClass().getCanonicalName(), "RemoteException from service");
-					if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("ERROR - Workout->NewExerciseTask->doInBackground RemoteException FIX GPS for Trainer Services "+e.getMessage());
+					if(ConstApp.IS_DEBUG) Logger.log("ERROR - Workout->NewExerciseTask->doInBackground RemoteException FIX GPS for Trainer Services "+e.getMessage());
 					finish();
 				} catch (InterruptedException e) {
 					Log.e(this.getClass().getCanonicalName(), "InterruptedException from service");
-					if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("ERROR - Workout->NewExerciseTask->doInBackground InterruptedException FIX GPS for Trainer Services "+e.getMessage());
+					if(ConstApp.IS_DEBUG) Logger.log("ERROR - Workout->NewExerciseTask->doInBackground InterruptedException FIX GPS for Trainer Services "+e.getMessage());
 
 				}
 			}else{
-				if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("WARNING - Workout->NewExerciseTask->doInBackground mConnection.mIService==null FIX GPS for Trainer Services ");
+				if(ConstApp.IS_DEBUG) Logger.log("WARNING - Workout->NewExerciseTask->doInBackground mConnection.mIService==null FIX GPS for Trainer Services ");
 
 				return false;
 			}
@@ -1125,75 +1069,27 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		}
 	}	
 	private class ConnectToServiceTask implements Runnable{
-/*
-		@Override
-		protected Object doInBackground(Object... params) {
-			while(mConnection.mIService==null){
-				Log.v(this.getClass().getCanonicalName(),"wait for Service");
-				if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - ConnectToServiceTask wait for service Workout");
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-			oConfigTrainer = ExerciseUtils.loadConfiguration(getApplicationContext());
-	        mUser=ExerciseUtils.loadUserDectails(getApplicationContext());
-	      			
-			return null;
-		}
-		@Override
-		protected void onPostExecute(Object result) {
-			try{
-	        	if(oConfigTrainer.isbUseCardio() && oConfigTrainer.isbCardioPolarBuyed()){
-	      	       oBTHelper = new BlueToothHelper();
-	      			   
-	      		   if(!oBTHelper.isBluetoothAvail()){
-	      			   Toast.makeText(getBaseContext(), "NO Bluetooth", Toast.LENGTH_LONG)
-	      				.show();
-	      		   }
-	      		   if(!oBTHelper.isBlueToothEnabled()){
-	      			   Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-	      			   startActivityForResult(enableBtIntent, BluetoothAdapter.STATE_TURNING_ON);
-	      		   }
-	      		   //startCardio();
-	             }else{
-	          	   lblHeatRate.setVisibility(View.INVISIBLE);
-	             }
-	        }catch (NullPointerException e) {
-				Log.e(this.getClass().getCanonicalName(),"Error Cardio Polar");
-			}
-	        
-	        if(oConfigTrainer.isbDisplayMap()){
-	        	btnMaps.setVisibility(View.VISIBLE);
-	        }else{
-	        	btnMaps.setVisibility(View.INVISIBLE);
-	        }
-	        
-	        if(oConfigTrainer.isbPlayMusic()){
-	        	btnSkipTrack.setVisibility(View.VISIBLE);
-	        }else{
-	        	btnSkipTrack.setVisibility(View.INVISIBLE);
-	        }
-	        
-			changeGUIStatus();
-			super.onPostExecute(result);
-		}*/
 
 		@Override
 		public void run() {
-			while(mConnection.mIService==null){
+			while(isRun){
 				Log.v(this.getClass().getCanonicalName(),"wait for Service");
-				if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - ConnectToServiceTask wait for service Workout");
+				if(ConstApp.IS_DEBUG) Logger.log("INFO - ConnectToServiceTask wait for service from Workout");
 				try {
 					Thread.sleep(1000);
+					if(mConnection!=null && mConnection.mIService!=null){
+						isRun=false;
+						break;
+					}
+					if(Thread.interrupted()){
+						break;
+					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
+			if(ConstApp.IS_DEBUG) Logger.log("INFO - ConnectToServiceTask connected to service from Workout");
 
 			oConfigTrainer = ExerciseUtils.loadConfiguration(getApplicationContext());
 			mUser=ExerciseUtils.loadUserDectails(getApplicationContext());

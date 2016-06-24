@@ -2,14 +2,16 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!--   your app branding color for the app bar -->
-        <item name="colorPrimary">#7f962b</item>
+        <item name="colorPrimary">#b0c850</item>
         <!--   darker variant for the status bar and contextual app bars -->
-        <item name="colorPrimaryDark">#b0c850</item>
+        <item name="colorPrimaryDark">#7f962b</item>
         <!--   theme UI controls like checkboxes and text fields -->
         <item name="colorAccent">#7d7c9e</item>
         <!--<item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>-->
         <item name="android:textSize">14sp</item>
+
+        <item name="android:spinnerDropDownItemStyle">@style/mySpinnerItemStyle</item>
     </style>
 
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
@@ -24,5 +26,8 @@
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">12sp</item>
         <item name="android:color">#fefefe</item>
+    </style>
+    <style name="mySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
+        <item name="android:textColor">@color/black_overlay</item>
     </style>
 </resources>

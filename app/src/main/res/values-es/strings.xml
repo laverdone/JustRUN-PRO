@@ -21,11 +21,11 @@
 	<string name="sci">de esquí </string>
 	<string name="walk">Walk </string>
 	<string name="about_1">un \'un entrenador personal para Sus entrenamientos </string>
-	<string name="about_2"/>
-	<string name="about_3"/>
+	<string name="about_2">""</string>
+	<string name="about_3">""</string>
 	<string name="about_4">tiene la opción Usted para compartir su Allen </string>
 	<string name="about_5">con tus amigos. </string>
-	<string name="about_6"/>
+	<string name="about_6">""</string>
 	<string name="about_7">Aumente su rendimiento con Android - Trainer</string>
 	<string name="author">GLM-Labs</string>
 	<string name="version">versión </string>
@@ -144,7 +144,6 @@
 	<string name="message_text">Hola amigo Este es mi ejercicio que quiero compartir con ustedes.</string>
 	<string name="licenceok">Cheking licence ok</string>
 	<string name="licenceko">Cheking licence fail</string>
-	<string name="only_in_full">Disponible en la versión completa</string>
 	<string name="messagesaveworkout">Guardar sesión de ejercicios?</string>
 	<string name="autopause_time">Autopausa Tiempo</string>
 	<string name="manual">Manual</string>
@@ -176,6 +175,12 @@
     <string name="gpsfix">Esperando a los datos del GPS</string>
 
 	<string name="title_activity_chart_summary">Chart Summary</string>
-	<string name="dummy_button">Dummy Button</string>
-	<string name="dummy_content">DUMMY\nCONTENT</string>
+	<string name="backup">backup</string>
+	<string name="backup_ok">Backup Created</string>
+	<string name="restore_ok">Backup Restored</string>
+	<string name="export_gpx">Export GPX</string>
+	<string name="export_kml">Export KML</string>
+	<string name="export_tcx">Export TCX</string>
+	<string name="backup_desc">Seguro de crear una copia de seguridad?</string>
+	<string name="restore_desc">Seguro de restaurar la copia de seguridad?</string>
 </resources>

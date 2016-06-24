@@ -169,7 +169,6 @@
     <string name="note">Notes</string>
     <string name="generic_error">Generic Error</string>
     <string name="not_avail_manual">not available for manual workout</string>
-    <string name="only_in_full" />
     <string name="manual_workout">Manual Exercise</string>
     <string name="inclination">Inclination</string>
     <string name="tabStore_label">Store</string>
@@ -211,12 +210,16 @@
     <string name="title_section4" translatable="false">Store</string>
     <string name="title_section5" translatable="false">About</string>
     <string name="title_activity_history_list" translatable="false">HistoryList</string>
-
     <string name="title_activity_chart_summary">Chart Summary</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="title_activity_nav_drawer">1</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="export_gpx">Export GPX</string>
+    <string name="export_tcx">Export TCX</string>
+    <string name="export_kml">Export KML</string>
+    <string name="backup">Backup Data</string>
+    <string name="backup_ok">Backup Created</string>
+    <string name="restore_ok">Backup Restored</string>
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-7615079230514788/1165833954</string>
+    <string name="banner_ad_unit_id_summary" translatable="false">ca-app-pub-7615079230514788/3074715956</string>
+    <string name="banner_ad_unit_id_run" translatable="false">ca-app-pub-7615079230514788/8981648759</string>
+    <string name="restore_desc">Are you sure to Retore the backup?</string>
+    <string name="backup_desc">Are you sure to create a Backup?</string>
 </resources>

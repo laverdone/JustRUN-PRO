@@ -4,26 +4,20 @@
 	android:layout_width="match_parent" 
 	android:orientation="vertical"
 	android:id="@+id/GoalMainLayout" 	
-	android:background="@drawable/background_grey"
-	android:gravity="right"
-	android:paddingTop="@dimen/activity_vertical_margin"
-	android:paddingBottom="@dimen/activity_vertical_margin"
-	android:paddingLeft="@dimen/activity_horizontal_margin"
-	android:paddingRight="@dimen/activity_horizontal_margin">
+	android:background="@drawable/background_color"
+	android:gravity="right">
 	<android.support.v7.widget.CardView
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		xmlns:app="http://schemas.android.com/apk/res-auto"
 		android:elevation="@dimen/cardview_default_elevation"
 		android:background="@drawable/abc_popup_background_mtrl_mult"
-		app:cardCornerRadius="4dp"
-		android:layout_margin="5dp"
-		>
+		cardCornerRadius="4dp"
+		android:layout_margin="5dp"	>
 	<RelativeLayout
 	        android:orientation="vertical"
 	        android:layout_width="fill_parent"
 	        android:layout_height="fill_parent"
-	        android:background="@drawable/background_grey">
+	        >
 				<ScrollView
 		    android:id="@+id/scrollView"
 		    android:layout_width="match_parent"
@@ -34,7 +28,7 @@
 			    android:layout_height="match_parent"
 			    android:orientation="vertical" >
 					    <LinearLayout
-
+							android:background="@drawable/background_color"
 					        android:layout_width="match_parent"
 					        android:layout_height="match_parent"
 					        android:layout_marginTop="0dip"					       
@@ -57,20 +51,22 @@
 					                android:gravity="top|left"
 					                android:text="@string/distance"
 					                android:textColor="#000000"
-					                android:textSize="10sp" />
+					                android:textSize="20sp" />
 	
 					            <Spinner
 					                android:id="@+id/spDistance"
 					                android:layout_width="match_parent"
 					                android:layout_height="wrap_content" 
-					                android:background="@drawable/button_no_corners"/>
+					                android:background="@drawable/button_no_corners"
+									android:spinnerMode="dropdown"
+									android:textColor="@android:color/black"/>
 					    
 					        </LinearLayout>
 					    </LinearLayout>
 						<LinearLayout
 						    android:layout_width="match_parent"
 						    android:layout_height="wrap_content"
-						    android:layout_marginTop="10dip"
+						    android:layout_marginTop="5dip"
 						    
 						    android:orientation="vertical"
 						    android:padding="10dip" >
@@ -100,7 +96,7 @@
 						                android:gravity="top|left"
 						                android:text="@string/time"
 						                android:textColor="#000000"
-						                android:textSize="10sp" />
+						                android:textSize="20sp" />
 		
 						            <TimePicker
 						                android:id="@+id/timeGoal"
@@ -145,7 +141,7 @@
 						        android:id="@+id/btnRun"
 						        android:layout_width="match_parent"
 						        android:layout_height="wrap_content"
-						        android:background="@drawable/button_no_corners"
+						        android:background="@drawable/button_no_corners_1"
 						        android:text="@string/run"
 						        android:textColor="#000000" />
 				

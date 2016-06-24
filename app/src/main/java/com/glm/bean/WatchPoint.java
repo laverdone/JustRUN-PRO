@@ -14,6 +14,17 @@ public class WatchPoint {
 	private double dAlt=0.0;
 	private int bpm=0;
 	private LatLng mLatLong;
+	private Float mAccurancy;
+
+	public void setAccurancy(Float mAccurancy) {
+		this.mAccurancy = mAccurancy;
+	}
+
+	public Float getAccurancy() {
+
+		return mAccurancy;
+	}
+
 	/**
 	 * @return the dDistance
 	 */

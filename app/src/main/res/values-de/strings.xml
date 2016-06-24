@@ -150,7 +150,6 @@
 	<string name="note">"Notizen"</string>
 	<string name="generic_error">"allgemeiner Fehler"</string>
 	<string name="not_avail_manual">"für manuelles Training nicht verfügbar"</string>
-    <string name="only_in_full">""</string>
     <string name="manual_workout">"manuelles Training"</string>
     <string name="inclination">"Neigung"</string>
     <string name="tabStore_label">"Speichern"</string>
@@ -176,6 +175,12 @@
     <string name="gpsfix">Warten auf GPS-Daten</string>
 
 	<string name="title_activity_chart_summary">Chart Summary</string>
-	<string name="dummy_button">Dummy Button</string>
-	<string name="dummy_content">DUMMY\nCONTENT</string>
+	<string name="backup">Sicherungskopie Daten</string>
+	<string name="backup_ok">Sicherungskopie Erstellt</string>
+	<string name="restore_ok">Sicherungskopie Restauriert</string>
+	<string name="export_gpx">Export GPX</string>
+	<string name="export_kml">Export KML</string>
+	<string name="export_tcx">Export KML</string>
+	<string name="backup_desc">Sind Sie sicher, dass eine Sicherungskopie zu erstellen?</string>
+	<string name="restore_desc">Sind Sie sicher, dass die Sicherung wiederherstellen?</string>
 </resources>

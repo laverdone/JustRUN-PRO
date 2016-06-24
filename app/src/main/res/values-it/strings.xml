@@ -21,11 +21,11 @@
 	<string name="sci">sci</string>
 	<string name="walk">Camminata</string>
 	<string name="about_1">Il tuo allenatore personale.</string>
-	<string name="about_2"/>
-	<string name="about_3"/>
+	<string name="about_2">""</string>
+	<string name="about_3">""</string>
 	<string name="about_4">Hai la possibilita\' di condividere i tuoi allenamenti</string>
 	<string name="about_5">con i tuoi amici.</string>
-	<string name="about_6"/>
+	<string name="about_6">""</string>
 	<string name="about_7">Aumenta le tue performance con Android - Trainer</string>
 	<string name="author">GLM-Labs</string>
 	<string name="version">Versione</string>
@@ -120,8 +120,8 @@
 	<string name="insertdata">Inserisci tutti i campi</string>
 	<string name="track_weight">Traccia il peso</string>
 	<string name="track_weight_desc">Controlla il peso ad ogni esercizio</string>
-	<string name="weight_error">Inserisci un numero corretto</string>
-	<string name="age_error">Inserisci un numero corretto</string>
+	<string name="weight_error">Inserisci un peso corretto</string>
+	<string name="age_error">Inserisci un\'età corretta</string>
 	<string name="save_share">Salva/Condividi</string>
 	<string name="edit_note">Modifica Nota</string>
 	<string name="save_note">Salva Nota</string>
@@ -144,7 +144,6 @@
 	<string name="message_text">Ciao Amico questo è il mio allenamento che voglio condividere con te.</string>
 	<string name="licenceko">Controllo licenza fallito</string>
 	<string name="licenceok">Controllo licenza ok</string>
-	<string name="only_in_full">Disponibile nella versione completa</string>
 	<string name="messagesaveworkout">Salvare l\'allenamento?</string>
 	<string name="autopause_time">Tempo AutoPausa</string>
 	<string name="manual">Allenamento Manuale</string>
@@ -176,6 +175,12 @@
     <string name="gpsfix">In attesa di segnale GPS</string>
 
 	<string name="title_activity_chart_summary">Chart Summary</string>
-	<string name="dummy_button">Dummy Button</string>
-	<string name="dummy_content">DUMMY\nCONTENT</string>
+	<string name="export_tcx">Exporta TCX</string>
+	<string name="export_kml">Exporta KML</string>
+	<string name="backup">Salva Dati</string>
+	<string name="backup_ok">Copia Creata</string>
+	<string name="restore_ok">Copia Ripristinata</string>
+	<string name="export_gpx">Esporta GPX</string>
+	<string name="backup_desc">Sei sicuro di voler creare un backup?</string>
+	<string name="restore_desc">Sei sicuro di voler ripristinare il backup?</string>
 </resources>

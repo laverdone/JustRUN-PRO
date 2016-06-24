@@ -72,7 +72,7 @@ public class AboutFragment extends Fragment {
 					        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 					        dialog.setContentView(R.layout.new_changelog_full);
 					        Window window = dialog.getWindow();
-					        window.setLayout(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+					        window.setLayout(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
 					        owvChangeLog = (WebView) dialog.findViewById(R.id.wvChangeLog);
 					        owvChangeLog.loadUrl("file:///android_asset/changelog/us_US.html");
 					        dialog.setOnKeyListener(new OnKeyListener() {

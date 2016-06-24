@@ -12,16 +12,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.glm.app.ConstApp;
+
 public class Rate {
 
-    private final static String APP_TITLE = "Trainer Run, walk & bike";
 
-    private final static String APP_PNAME = "com.glm.trainer";
 
     
-    private final static int DAYS_UNTIL_PROMPT = 2;
 
-    private final static int LAUNCHES_UNTIL_PROMPT = 5;
 
     
     public static void app_launched(Context mContext) {
@@ -30,10 +28,10 @@ public class Rate {
 
         if (prefs.getBoolean("dontshowagain", false)) { return ; }
 
-        
+
         final SharedPreferences.Editor editor = prefs.edit();
 
-        
+
         // Increment launch counter
 
         long launch_count = prefs.getLong("launch_count", 0) + 1;
@@ -53,14 +51,14 @@ public class Rate {
 
         }
 
-        
+
         // Wait at least n days before opening
 
-        if (launch_count >= LAUNCHES_UNTIL_PROMPT) {
+        if (launch_count >= ConstApp.LAUNCHES_UNTIL_PROMPT) {
 
-            if (System.currentTimeMillis() >= date_firstLaunch + 
+            if (System.currentTimeMillis() >= date_firstLaunch +
 
-                    (DAYS_UNTIL_PROMPT * 24 * 60 * 60 * 1000)) {
+                    (ConstApp.DAYS_UNTIL_PROMPT * 24 * 60 * 60 * 1000)) {
 
                 showRateDialog(mContext, editor);
 
@@ -69,11 +67,11 @@ public class Rate {
         }
 
         AsyncTask.execute(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				 editor.commit();	
+				 editor.commit();
 			}
 		});
        
@@ -85,7 +83,7 @@ public class Rate {
 
         final Dialog dialog = new Dialog(mContext);
 
-        dialog.setTitle("Rate " + APP_TITLE);
+        dialog.setTitle("Rate " + ConstApp.APP_TITLE);
 
 
         LinearLayout ll = new LinearLayout(mContext);
@@ -95,7 +93,7 @@ public class Rate {
         
         TextView tv = new TextView(mContext);
 
-        tv.setText("If you enjoy using " + APP_TITLE + ", please take a moment to rate it. Thanks for your support!");
+        tv.setText("If you enjoy using " + ConstApp.APP_TITLE + ", please take a moment to rate it. Thanks for your support!");
 
         tv.setWidth(240);
 
@@ -106,13 +104,13 @@ public class Rate {
         
         Button b1 = new Button(mContext);
 
-        b1.setText("Rate " + APP_TITLE);
+        b1.setText("Rate " + ConstApp.APP_TITLE);
 
         b1.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
 
-                mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PNAME)));
+                mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + ConstApp.APP_PNAME)));
 
                 dialog.dismiss();
 

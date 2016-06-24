@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 	
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_height="match_parent"
 	android:layout_width="match_parent" 
 	android:orientation="vertical"
 	android:layout_margin="0dip"
-	android:id="@+id/ChangeLogMainLayout" 	
-	android:gravity="center_horizontal|center_vertical"
-	android:background="@android:drawable/screen_background_light_transparent">
+	android:id="@+id/ChangeLogMainLayout">
+	<android.support.v7.widget.Toolbar
+		android:id="@+id/my_toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"
+		android:background="?attr/colorPrimary"
+		android:elevation="4dp"
+		android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+		popupTheme="@style/ThemeOverlay.AppCompat.Light"
+		titleTextAppearance="@style/Toolbar.TitleText"
+		android:title="@string/app_name_pro"/>
 	<ImageView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:background="@drawable/splash"/>
-</LinearLayout>
+		android:background="@drawable/splash"
+		android:layout_centerVertical="true"
+		android:layout_centerHorizontal="true" />
+</RelativeLayout>

@@ -22,6 +22,11 @@ public class MediaTrainer {
 	private static int 		iMusicIndex=0;
 	private static String sCurrentSong=""; 
 	private boolean mPause=false;
+
+	public static void setsCurrentSong(String sCurrentSong) {
+		MediaTrainer.sCurrentSong = sCurrentSong;
+	}
+
 	/**identifica se avviare il lettore interno o esterno*/
 	private boolean isExternalPlayer=false;
 	/**Command for External Player*/

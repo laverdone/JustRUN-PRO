@@ -4,46 +4,52 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Vibrator;
+import android.net.Uri;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.glm.bean.ConfigTrainer;
 import com.glm.bean.Exercise;
-import com.glm.trainer.HistoryList;
+import com.glm.app.HistoryList;
 import com.glm.trainer.R;
-import com.glm.trainer.WorkoutDetail;
+import com.glm.app.WorkoutDetail;
 import com.glm.utils.ExerciseUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+
+import static com.glm.trainer.R.animator.*;
 
 public class WorkoutAdapter extends BaseAdapter{
 	private ArrayList<Exercise> mWorkouts;
     private HistoryList mContext;
+	public ConfigTrainer oConfigTrainer;
+	private Exercise mExercise;
 
 	private Animation a;
-
+	private View mRootView;
 
     public WorkoutAdapter(HistoryList context, ArrayList<Exercise> workouts){
     	mContext=context;
     	mWorkouts=workouts;
-
+		try {
+			oConfigTrainer = ExerciseUtils.loadConfiguration(mContext);
+		} catch (NullPointerException e) {
+			Log.e(this.getClass().getCanonicalName(), "Error load Config");
+			return;
+		}
     }
     
     
@@ -67,53 +73,118 @@ public class WorkoutAdapter extends BaseAdapter{
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		final Exercise oExercise = (Exercise) getItem(position);
+		mExercise=oExercise;
 		//if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView =  infalInflater.inflate(R.layout.history_row_cardview, null);
         //}
-
+		mRootView=convertView;
+		mRootView.setDrawingCacheEnabled(true);
+		mRootView.buildDrawingCache(true);
 		Toolbar toolbar = (Toolbar) convertView.findViewById(R.id.card_toolbar);
 		toolbar.setLogo(R.drawable.calendar);
 		toolbar.setTitle(oExercise.getDateFormatted(mContext));
 
 		if (toolbar != null) {
 			// inflate your menu
-			toolbar.inflateMenu(R.menu.new_main);
+			toolbar.inflateMenu(R.menu.history_menu);
 
 			toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 				@Override
 				public boolean onMenuItemClick(MenuItem menuItem) {
-					AlertDialog alertDialog;
-					alertDialog = new AlertDialog.Builder(mContext).create();
-					alertDialog.setTitle(mContext.getString(R.string.titledeleteexercise));
-					alertDialog.setMessage(mContext.getString(R.string.messagedeleteexercise));
-					alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,mContext.getString(R.string.yes), new android.content.DialogInterface.OnClickListener(){
+					Log.v(this.getClass().getCanonicalName(),"menu itme is: "+menuItem.getTitle());
 
-						@Override
-						public void onClick(DialogInterface arg0, int arg1) {
-							a = AnimationUtils.loadAnimation(mContext, R.animator.disappear);
-							a.reset();
+					if (menuItem.getTitle().equals( mContext.getString(R.string.erase))) {
+						AlertDialog alertDialog;
+						alertDialog = new AlertDialog.Builder(mContext).create();
+						alertDialog.setTitle(mContext.getString(R.string.titledeleteexercise));
+						alertDialog.setMessage(mContext.getString(R.string.messagedeleteexercise));
+						alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,mContext.getString(R.string.yes), new android.content.DialogInterface.OnClickListener(){
 
-							if(ExerciseUtils.deleteExercise(mContext, oExercise.getsIDExerise())){
-								notifyDataSetChanged();
-								notifyDataSetInvalidated();
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+								a = AnimationUtils.loadAnimation(mContext, disappear);
+								a.reset();
+
+								if(ExerciseUtils.deleteExercise(mContext, oExercise.getsIDExerise())){
+									mWorkouts.remove(position);
+									WorkoutAdapter.this.notifyDataSetChanged();
+									WorkoutAdapter.this.notifyDataSetInvalidated();
+								}
+								mRootView.clearAnimation();
+								mRootView.setAnimation(a);
+								mRootView.animate();
+							}
+						});
+
+						alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,mContext.getString(R.string.no), new android.content.DialogInterface.OnClickListener(){
+
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+
 							}
 
+						});
+						alertDialog.show();
+					}else if (menuItem.getTitle().equals( mContext.getString(R.string.export_kml))) {
+						if(ExerciseUtils.writeKML(-1,mContext,oConfigTrainer)){
+							Toast.makeText(mContext, mContext.getString(R.string.exercise_export_ok)+" "+ExerciseUtils.sExportFile, Toast.LENGTH_SHORT)
+									.show();
+							//Send via mail
+							final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+							emailIntent.setType("plain/text");
+							//emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"laverdone@gmail.com"});
+							emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, mContext.getString(R.string.message_subject));
+							emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, mContext.getString(R.string.message_text));
+							File fileIn = new File(ExerciseUtils.sExportFile);
+							Uri u = Uri.fromFile(fileIn);
+							emailIntent.putExtra(Intent.EXTRA_STREAM, u);
+							mContext.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+						}else{
+							Toast.makeText(mContext, mContext.getString(R.string.exercise_export_ko), Toast.LENGTH_SHORT)
+									.show();
 						}
-					});
-
-					alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,mContext.getString(R.string.no), new android.content.DialogInterface.OnClickListener(){
-
-						@Override
-						public void onClick(DialogInterface arg0, int arg1) {
-
+					}else if (menuItem.getTitle().equals( mContext.getString(R.string.export_gpx))) {
+						if(ExerciseUtils.writeGPX(-1,mContext,oConfigTrainer)){
+							Toast.makeText(mContext, mContext.getString(R.string.exercise_export_ok)+" "+ExerciseUtils.sExportFile, Toast.LENGTH_SHORT)
+									.show();
+							//Send via mail
+							final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+							emailIntent.setType("plain/text");
+							//emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"laverdone@gmail.com"});
+							emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, mContext.getString(R.string.message_subject));
+							emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, mContext.getString(R.string.message_text));
+							File fileIn = new File(ExerciseUtils.sExportFile);
+							Uri u = Uri.fromFile(fileIn);
+							emailIntent.putExtra(Intent.EXTRA_STREAM, u);
+							mContext.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+						}else{
+							Toast.makeText(mContext, mContext.getString(R.string.exercise_export_ko), Toast.LENGTH_SHORT)
+									.show();
 						}
+					}else if (menuItem.getTitle().equals( mContext.getString(R.string.export_tcx))) {
+						if(ExerciseUtils.writeTCX(-1,mContext,oConfigTrainer)){
+							Toast.makeText(mContext, mContext.getString(R.string.exercise_export_ok)+" "+ExerciseUtils.sExportFile, Toast.LENGTH_SHORT)
+									.show();
+							//Send via mail
+							final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+							emailIntent.setType("plain/text");
+							//emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"laverdone@gmail.com"});
+							emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, mContext.getString(R.string.message_subject));
+							emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, mContext.getString(R.string.message_text));
+							File fileIn = new File(ExerciseUtils.sExportFile);
+							Uri u = Uri.fromFile(fileIn);
+							emailIntent.putExtra(Intent.EXTRA_STREAM, u);
+							mContext.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+						}else{
+							Toast.makeText(mContext, mContext.getString(R.string.exercise_export_ko), Toast.LENGTH_SHORT)
+									.show();
+						}
+					}
 
-					});
-					alertDialog.show();
 
 					return true;
 				}
@@ -138,7 +209,7 @@ public class WorkoutAdapter extends BaseAdapter{
 				intent.putExtra("exercise_id", Integer.parseInt(oExercise.getsIDExerise()));
 				
 				mContext.startActivity(intent);
-				
+				mContext.finish();
 			}
 		});
 		if(oExercise.getiTypeExercise()==0){
@@ -152,20 +223,7 @@ public class WorkoutAdapter extends BaseAdapter{
 			imgTypeExercise.setBackgroundResource(R.drawable.walking_dark);
 			
 		}
-		btnDett.setLongClickable(true);
-		btnDett.setOnLongClickListener(new OnLongClickListener() {
-			
-			@Override
-			public boolean onLongClick(View v) {
-				Vibrator mVibration = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
-				// Vibrate for 500 milliseconds
-				mVibration.vibrate(500);
-				btnDett.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.lista_gradient_delete));
-				//deleteExercise(mRow, oExercise.getsIDExerise());
-				mContext.mINWorkoutToDelete+=", "+oExercise.getsIDExerise();
-				return false;
-			}
-		});
+
 		//SimpleDateFormat dnf = new SimpleDateFormat("yyyy-MMM-dd");
 
 

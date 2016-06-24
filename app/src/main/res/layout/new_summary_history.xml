@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 	
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
 	android:layout_height="match_parent" 
 	android:layout_width="match_parent" 
 	android:orientation="vertical"
@@ -9,18 +10,19 @@
 	android:paddingRight="@dimen/activity_horizontal_margin"
 
 	android:background="@drawable/background_grey"
-	android:gravity="right">	
-<RelativeLayout
+	android:gravity="right">
+
+    <RelativeLayout
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    
     android:padding="0dip" >
-    <ScrollView
+
+        <ScrollView
         android:id="@+id/scrollViewSummary"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="0dip"
+        android:layout_marginTop="30dip"
         android:visibility="visible" >
         <LinearLayout
             android:id="@+id/internal"
@@ -36,7 +38,8 @@
                 android:elevation="@dimen/cardview_default_elevation"
                 android:background="@drawable/abc_popup_background_mtrl_mult"
                 app:cardCornerRadius="4dp"
-                android:layout_margin="5dp">
+                android:layout_margin="5dp"
+                android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
@@ -74,13 +77,13 @@
                         android:textStyle="bold" />
                 </RelativeLayout>
                 <RelativeLayout
-                    android:id="@+id/llGraph"
+                    android:id="@+id/totalGraph"
                     android:layout_width="match_parent"
                     android:layout_height="140dip"
                     android:background="@drawable/background_color"
                     android:orientation="vertical" >
                     <ProgressBar
-                        android:id="@+id/progressBar1"
+                        android:id="@+id/TotalprogressBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -115,7 +118,7 @@
                     android:background="@drawable/button_no_corners"
                     android:text="@string/click_dett"
                     android:textColor="@android:color/darker_gray"
-                    android:visibility="visible"/>
+                    android:visibility="gone"/>
                    <!--  <TextView
                         android:id="@+id/txtDate"
                         android:layout_width="wrap_content"
@@ -138,70 +141,145 @@
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/card_toolbar_running"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@android:color/white"
-                    app:titleTextAppearance="@style/Toolbar.TitleText"/>
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/toolbar_gradient"
+                    app:titleTextAppearance="@style/Toolbar.TitleText">
+                    <ImageButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:background="@drawable/running_dark"
+                        android:layout_gravity="start"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="@string/history_run"
+                        android:textColor="@android:color/darker_gray"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="30dp"
+                        android:id="@+id/titleRun"/>
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:drawable/ic_menu_zoom"
+                        android:layout_gravity="end"
+                        android:layout_marginRight="20dp"
+                        android:id="@+id/zoomRun"/>
+                </android.support.v7.widget.Toolbar>
+                    <RelativeLayout
+                        android:id="@+id/runGraph"
+                        android:layout_width="match_parent"
+                        android:layout_height="140dip"
+                        android:background="@drawable/background_color"
+                        android:orientation="vertical" >
+                        <ProgressBar
+                            android:id="@+id/runProgressBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true" />
+                    </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/MiddleBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="20dip"
-                    android:background="@drawable/background_color" >
+                    android:background="@drawable/background_color"
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/imgBurn_dark"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_alignBottom="@+id/txtKal"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginRight="100dp"
+                        android:layout_alignParentBottom="false"
+                        android:layout_marginRight="200dp"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/burn_dark" />
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/burn_dark"/>
                     <ImageView
                         android:id="@+id/imgTypeExercise"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentLeft="true"
-                        android:src="@drawable/running_dark" />
+                        android:src="@drawable/running_dark"
+                        android:visibility="gone"/>
                     <ImageView
                         android:id="@+id/imgMetric_dark"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_alignParentTop="true"
-                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="100dp"
-                        android:src="@drawable/metrics_dark" />
+                        android:src="@drawable/metrics_dark"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="false"
+                        android:layout_alignWithParentIfMissing="false"
+                        android:layout_centerHorizontal="true" />
                     <TextView
                         android:id="@+id/textDistance_run"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginLeft="170dp"
-                        android:layout_marginTop="10dp"
-                        android:editable="false"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="-"
-                        android:textColor="#000000" />
+                        android:textColor="#000000"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="30dp" />
                     <TextView
                         android:id="@+id/textKal_run"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginLeft="170dp"
                         android:gravity="center_vertical|center_horizontal"
-                        android:text="-"
+                        android:text="---"
                         android:textColor="#000000"
-                        android:textSize="12dip" />
+                        android:textSize="12dip"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="90dp" />
                 </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/btnDettRun"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_gravity="end"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="0dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/button_no_corners_1">
+
+                        <TextView
+                            android:id="@+id/textView6a"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dett"
+                            android:textColor="@android:color/darker_gray"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="40dp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/right"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="false"
+                            android:layout_alignParentEnd="false" />
+                    </RelativeLayout>
+                </LinearLayout>
             </LinearLayout>
             </android.support.v7.widget.CardView>
             <!-- RUN -->
             <!-- Separator -->
             <!-- Separator -->
             <!-- WALK -->
+
             <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -218,23 +296,61 @@
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/card_toolbar_walking"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@android:color/white"
-                    app:titleTextAppearance="@style/Toolbar.TitleText"/>
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/toolbar_gradient"
+                    app:titleTextAppearance="@style/Toolbar.TitleText">
+                    <ImageButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:background="@drawable/walking_dark"
+                        android:layout_gravity="start"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="@string/history_walk"
+                        android:textColor="@android:color/darker_gray"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="30dp"
+                        android:id="@+id/titleWalk"/>
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:drawable/ic_menu_zoom"
+                        android:layout_gravity="end"
+                        android:layout_marginRight="20dp"
+                        android:id="@+id/zoomWalk"/>
+                </android.support.v7.widget.Toolbar>
+                    <RelativeLayout
+                        android:id="@+id/walkGraph"
+                        android:layout_width="match_parent"
+                        android:layout_height="140dip"
+                        android:background="@drawable/background_color"
+                        android:orientation="vertical" >
+                        <ProgressBar
+                            android:id="@+id/walkProgressBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true" />
+                    </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/RelativeLayout02"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_color"
-                    android:padding="20dip" >
+                    android:padding="20dip"
+                    android:visibility="gone">
                     <ImageView
                         android:id="@+id/ImageView03"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_alignBottom="@+id/txtKal"
-                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_marginRight="200dp"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="100dp"
+                        android:layout_centerHorizontal="true"
                         android:src="@drawable/burn_dark" />
                     <ImageView
                         android:id="@+id/ImageView02"
@@ -242,39 +358,72 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentLeft="true"
-                        android:src="@drawable/walking_dark" />
+                        android:src="@drawable/walking_dark"
+                        android:visibility="gone"/>
                     <ImageView
                         android:id="@+id/ImageView01"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginRight="100dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="false"
+                        android:layout_alignWithParentIfMissing="false"
+                        android:layout_centerHorizontal="true"
                         android:src="@drawable/metrics_dark" />
                     <TextView
                         android:id="@+id/textDistance_walk"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="170dp"
-                        android:layout_marginTop="10dp"
-                        android:editable="false"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="-"
-                        android:textColor="#000000" />
+                        android:textColor="#000000"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="30dp" />
                     <TextView
                         android:id="@+id/textKal_walk"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginLeft="170dp"
                         android:gravity="center_vertical|center_horizontal"
-                        android:text="-"
+                        android:text="---"
                         android:textColor="#000000"
-                        android:textSize="12dip" />
+                        android:textSize="12dip"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="90dp"/>
                 </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/btnDettWalk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="0dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@drawable/button_no_corners_1">
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dett"
+                            android:textColor="@android:color/darker_gray"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="40dp"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/right"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="false"
+                            android:layout_alignParentEnd="false" />
+                    </RelativeLayout>
+                </LinearLayout>
             </LinearLayout>
             </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -293,23 +442,61 @@
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/card_toolbar_biking"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@android:color/white"
-                    app:titleTextAppearance="@style/Toolbar.TitleText"/>
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/toolbar_gradient"
+                    app:titleTextAppearance="@style/Toolbar.TitleText">
+                    <ImageButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:background="@drawable/biking_dark"
+                        android:layout_gravity="start"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="@string/history_bike"
+                        android:textColor="@android:color/darker_gray"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="30dp"
+                        android:id="@+id/titleBike"/>
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:drawable/ic_menu_zoom"
+                        android:layout_gravity="end"
+                        android:layout_marginRight="20dp"
+                        android:id="@+id/zoomBike"/>
+                </android.support.v7.widget.Toolbar>
+                    <RelativeLayout
+                        android:id="@+id/bikeGraph"
+                        android:layout_width="match_parent"
+                        android:layout_height="140dip"
+                        android:background="@drawable/background_color"
+                        android:orientation="vertical" >
+                        <ProgressBar
+                            android:id="@+id/bikeProgressBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true" />
+                    </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/RelativeLayout04"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_color"
-                    android:padding="20dip" >
+                    android:padding="20dip"
+                    android:visibility="gone">
                     <ImageView
                         android:id="@+id/ImageView06"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_alignBottom="@+id/txtKal"
-                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_marginRight="200dp"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="100dp"
+                        android:layout_centerHorizontal="true"
                         android:src="@drawable/burn_dark" />
                     <ImageView
                         android:id="@+id/ImageView05"
@@ -317,40 +504,74 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentLeft="true"
-                        android:src="@drawable/running_dark" />
+                        android:src="@drawable/biking_dark"
+                        android:visibility="gone"/>
                     <ImageView
                         android:id="@+id/ImageView04"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginRight="100dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="false"
+                        android:layout_alignWithParentIfMissing="false"
+                        android:layout_centerHorizontal="true"
                         android:src="@drawable/metrics_dark" />
                     <TextView
                         android:id="@+id/textDistance_bike"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="170dp"
-                        android:layout_marginTop="10dp"
-                        android:editable="false"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="-"
-                        android:textColor="#000000" />
+                        android:textColor="#000000"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="30dp" />
                     <TextView
                         android:id="@+id/textKal_bike"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginLeft="170dp"
                         android:gravity="center_vertical|center_horizontal"
-                        android:text="-"
+                        android:text="---"
                         android:textColor="#000000"
-                        android:textSize="12dip" />
+                        android:textSize="12dip"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="90dp" />
                 </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/btnDettBike"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="0dp" >
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/button_no_corners_1">
+
+                        <TextView
+                            android:id="@+id/textView6c"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dett"
+                            android:textColor="@android:color/darker_gray"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="40dp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/right"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="false"
+                            android:layout_alignParentEnd="false" />
+                    </RelativeLayout>
+                </LinearLayout>
             </LinearLayout>
+
             </android.support.v7.widget.CardView>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -358,6 +579,14 @@
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id_summary" />
     <ProgressBar
         android:id="@+id/waitForLoad"
         android:layout_width="wrap_content"
@@ -365,5 +594,12 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" 
         style="?android:attr/progressBarStyleLarge"/>
-</RelativeLayout>
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/seekBarYears"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 </LinearLayout>	
