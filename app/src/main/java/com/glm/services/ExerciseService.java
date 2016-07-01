@@ -203,7 +203,6 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	private double mDistanceMotivator = 0;
 
 
-
 	private static int iDelayMotivator = 0;
 	private int iRepeatMotivator = 0;
 
@@ -340,7 +339,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		try {
 			oConfigTrainer = ExerciseUtils.loadConfiguration(mContext);
 			if (ConstApp.IS_DEBUG)
-				Logger.log("INFO - startGPSFix Load configuration getiMotivatorTime is: "+oConfigTrainer.getiMotivatorTime()+" Service for Trainer Services");
+				Logger.log("INFO - startGPSFix Load configuration getiMotivatorTime is: " + oConfigTrainer.getiMotivatorTime() + " Service for Trainer Services");
 		} catch (NullPointerException e) {
 			Log.e(this.getClass().getCanonicalName(), "Error load Config");
 			if (ConstApp.IS_DEBUG)
@@ -401,28 +400,96 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		}
 	}
 
+	/**
+	 * GPS BETTER LOCATION
+	 *
+	 * */
+	protected boolean isBetterLocation(Location location, Location currentBestLocation) {
+		if (currentBestLocation == null) {
+			// A new location is always better than no location
+			return true;
+		}
+
+		// Check whether the new location fix is newer or older
+		long timeDelta = location.getTime() - currentBestLocation.getTime();
+		boolean isSignificantlyNewer = timeDelta > ConstApp.INTERVAL_TWO_MINUTES;
+		boolean isSignificantlyOlder = timeDelta < -ConstApp.INTERVAL_TWO_MINUTES;
+		boolean isNewer = timeDelta > 0;
+
+		// If it's been more than two minutes since the current location, use the new location
+		// because the user has likely moved
+		if (isSignificantlyNewer) {
+			return true;
+			// If the new location is more than two minutes older, it must be worse
+		} else if (isSignificantlyOlder) {
+			return false;
+		}
+
+		// Check whether the new location fix is more or less accurate
+		int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
+		boolean isLessAccurate = accuracyDelta > 0;
+		boolean isMoreAccurate = accuracyDelta < 0;
+		boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+
+		// Check if the old and new location are from the same provider
+		boolean isFromSameProvider = isSameProvider(location.getProvider(),
+				currentBestLocation.getProvider());
+
+		// Determine location quality using a combination of timeliness and accuracy
+		if (isMoreAccurate) {
+			return true;
+		} else if (isNewer && !isLessAccurate) {
+			return true;
+		} else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+			return true;
+		}
+		return false;
+	}
+
+	/** Checks whether two providers are the same */
+	private boolean isSameProvider(String provider1, String provider2) {
+		if (provider1 == null) {
+			return provider2 == null;
+		}
+		return provider1.equals(provider2);
+	}
+
+
+	/**
+	 * GPS BETTER LOCATION
+	 *
+	 * */
+
+
 	@Override
 	public void onLocationChanged(Location location) {
 		isFixPosition = true;
 		String sAlt = "";
+		String sProvider="N/A";
 		float mSpeed = 0.0f;
 		if (bStopListener) return;
 		if (!isRunning) return;
+
+
 		mCurrentLocation = location;
+		if (!isBetterLocation(mCurrentLocation, mLastLocation)) return;
 
 		//Non catturo piu' le coordinate quando sono in pausa
        /*if(location==null) {  	   
     	   startGPSFix();
     	   return;
        }*/
-
+		if(mCurrentLocation.getProvider()!=null){
+			sProvider=mCurrentLocation.getProvider();
+		}
 		if (iTypeExercise == ConstApp.TYPE_RUN) {
 			//Not Save Accuracy greate then 10
 			if (location.getAccuracy() > ConstApp.GPS_MIN_ACCURANCY_RUN) {
 				if (ConstApp.IS_DEBUG)
 					Logger.log("WARN - location not saved onLocationChanged latitude: " + mCurrentLocation.getLatitude() + " longitude: "
 							+ mCurrentLocation.getLongitude() + " altidute: " + mCurrentLocation.getAltitude() + " accurancy: "
-							+ mCurrentLocation.getAccuracy() + " iAutoPauseDelay: " + iAutoPauseDelay + " DistanceMotivator is: " + mDistanceMotivator + " Service for Trainer Services");
+							+ mCurrentLocation.getAccuracy() + " iAutoPauseDelay: " + iAutoPauseDelay + " DistanceMotivator is: " + mDistanceMotivator +
+							" Provider: "+sProvider+" Service for Trainer Services");
 				return;
 			}
 		} else if (iTypeExercise == ConstApp.TYPE_BIKE) {
@@ -430,7 +497,8 @@ public class ExerciseService extends Service implements LocationListener, Accele
 				if (ConstApp.IS_DEBUG)
 					Logger.log("WARN - location not saved onLocationChanged latitude: " + mCurrentLocation.getLatitude() + " longitude: "
 							+ mCurrentLocation.getLongitude() + " altidute: " + mCurrentLocation.getAltitude() + " accurancy: "
-							+ mCurrentLocation.getAccuracy() + " iAutoPauseDelay: " + iAutoPauseDelay + " DistanceMotivator is: " + mDistanceMotivator + " Service for Trainer Services");
+							+ mCurrentLocation.getAccuracy() + " iAutoPauseDelay: " + iAutoPauseDelay + " DistanceMotivator is: " + mDistanceMotivator +
+							" Provider: "+sProvider+" Service for Trainer Services");
 				return;
 			}
 		} else if (iTypeExercise == ConstApp.TYPE_WALK) {
@@ -438,7 +506,8 @@ public class ExerciseService extends Service implements LocationListener, Accele
 				if (ConstApp.IS_DEBUG)
 					Logger.log("WARN - location not saved onLocationChanged latitude: " + mCurrentLocation.getLatitude() + " longitude: "
 							+ mCurrentLocation.getLongitude() + " altidute: " + mCurrentLocation.getAltitude() + " accurancy: "
-							+ mCurrentLocation.getAccuracy() + " iAutoPauseDelay: " + iAutoPauseDelay + " DistanceMotivator is: " + mDistanceMotivator + " Service for Trainer Services");
+							+ mCurrentLocation.getAccuracy() + " iAutoPauseDelay: " + iAutoPauseDelay + " DistanceMotivator is: " + mDistanceMotivator +
+							" Provider: "+sProvider+" Service for Trainer Services");
 				return;
 			}
 		}
@@ -473,7 +542,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		if (mCurrentLocation.getLongitude() != 0.0 && mCurrentLocation.getLatitude() != 0.0) {
 			if (!mCurrentLocation.equals(mLastLocation)) {
 				if (mLastLocation == null) {
-					mLastLocation = location;
+					mLastLocation = mCurrentLocation;
 				}
 				if (iAutoPauseDelay > 0) {
 					//Cancello l'auto pausa e
@@ -539,7 +608,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 					Logger.log("INFO - onLocationChanged latitude: " + mCurrentLocation.getLatitude() + " longitude: "
 							+ mCurrentLocation.getLongitude() + " altidute: " + mCurrentLocation.getAltitude() + " Speed is: " + mSpeed + " accurancy: "
 							+ mCurrentLocation.getAccuracy() + " iAutoPauseDelay: " + iAutoPauseDelay + " DistanceMotivator is: " + mDistanceMotivator + "" +
-							"oConfigTrainer.getiMotivatorTime() is "+oConfigTrainer.getiMotivatorTime()+" Service for Trainer Services");
+							"oConfigTrainer.getiMotivatorTime() is " + oConfigTrainer.getiMotivatorTime() + " Service for Trainer Services");
 
 
 				if (oConfigTrainer.getiMotivatorTime() == 3) {
@@ -563,7 +632,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 				}
 
 				//Motivato is disable refresh distance speed pace
-				if(!oConfigTrainer.isbMotivator()){
+				if (!oConfigTrainer.isbMotivator()) {
 					trainerSay(oConfigTrainer.isbMotivator());
 				}
 
@@ -869,9 +938,19 @@ public class ExerciseService extends Service implements LocationListener, Accele
 				break;
 			case GpsStatus.GPS_EVENT_FIRST_FIX:
 				isFixPosition = true;
-                /*
+				/*
                  * GPS_EVENT_FIRST_FIX Event is called when GPS is locked
                  */
+				if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+					// TODO: Consider calling
+					//    ActivityCompat#requestPermissions
+					// here to request the missing permissions, and then overriding
+					//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+					//                                          int[] grantResults)
+					// to handle the case where the user grants the permission. See the documentation
+					// for ActivityCompat#requestPermissions for more details.
+					return;
+				}
 				Location gpslocation = mLocationManager
 						.getLastKnownLocation(mLocationManager.GPS_PROVIDER);
 

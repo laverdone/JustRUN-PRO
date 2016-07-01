@@ -25,10 +25,10 @@
     <!-- GCM -->
 
     <permission
-        android:name="com.glm.trainerlite.permission.C2D_MESSAGE"
+        android:name="com.glm.trainer.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.glm.trainerlite.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.glm.trainer.permission.C2D_MESSAGE" />
     <!-- App receives GCM messages. -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <!-- GCM requires a Google account. -->

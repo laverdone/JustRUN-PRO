@@ -11,8 +11,11 @@ public class ConstApp {
     public final static String APP_TITLE = "Just Run, walk & bike";
     public final static String APP_PNAME = "com.glm.trainer";
 
-    public final static float GPS_MIN_ACCURANCY_RUN=12;
-    public final static float GPS_MIN_ACCURANCY_WALK=12;
+
+    public final static int INTERVAL_TWO_MINUTES = 1000 * 60 * 2;
+
+    public final static float GPS_MIN_ACCURANCY_RUN=20;
+    public final static float GPS_MIN_ACCURANCY_WALK=20;
     public final static float GPS_MIN_ACCURANCY_BIKE=70;
     public final static double GPSFIX=1;//0.88;
     public final static double MILES_TO_KM=0.621371192;

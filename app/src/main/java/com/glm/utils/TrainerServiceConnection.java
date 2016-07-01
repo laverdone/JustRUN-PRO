@@ -45,7 +45,7 @@ public class TrainerServiceConnection implements ServiceConnection
      * Disconnetto dal servizio
      * */
     public void destroy(){
-		if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - destroy from "+mBinderAct);
+		if(ConstApp.IS_DEBUG) Logger.log("INFO - destroy from "+mBinderAct);
         doUnbindService();
     }
     
@@ -54,11 +54,11 @@ public class TrainerServiceConnection implements ServiceConnection
 	{ 
 		try{
 			mIService= IExerciseService.Stub.asInterface(service);
-			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - TrainerServiceConnection->onServiceConnected service Workout");
+			if(ConstApp.IS_DEBUG) Logger.log("INFO - TrainerServiceConnection->onServiceConnected service Workout");
 
 		}catch (Exception e) {
 			Log.e(this.getClass().getCanonicalName(), "onServiceConnected->Remote Exception"+e.getMessage());
-			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("ERROR - TrainerServiceConnection->onServiceConnected->Remote Exception"+e.getMessage());
+			if(ConstApp.IS_DEBUG) Logger.log("ERROR - TrainerServiceConnection->onServiceConnected->Remote Exception"+e.getMessage());
 
 			e.printStackTrace();
 		}	                
@@ -82,7 +82,7 @@ public class TrainerServiceConnection implements ServiceConnection
 			Intent serviceIntent = new Intent(mContext,ExerciseService.class);
 
 			mIsBound = mContext.bindService(serviceIntent, this, Context.BIND_AUTO_CREATE);
-			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - TrainerServiceConnection->doBindService service Workout");
+			if(ConstApp.IS_DEBUG) Logger.log("INFO - TrainerServiceConnection->doBindService service Workout");
 
 			Log.i(this.getClass().getCanonicalName(), "Binding from Services");
 		}
@@ -92,7 +92,7 @@ public class TrainerServiceConnection implements ServiceConnection
 	void doUnbindService() {
 	    if (mIsBound) {
 	        // If we have received the service, and hence registered with
-			if(oConfigTrainer.getsNick().equals("laverdone")) Logger.log("INFO - TrainerServiceConnection->doUnbindService service Workout");
+			if(ConstApp.IS_DEBUG) Logger.log("INFO - TrainerServiceConnection->doUnbindService service Workout");
 
 			Log.i(this.getClass().getCanonicalName(), "UnBinding from Services");
 

@@ -1,5 +1,6 @@
 package com.glm.app;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -8,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
@@ -15,6 +17,7 @@ import android.os.RemoteException;
 import android.os.StrictMode;
 import android.provider.Settings;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -462,29 +465,31 @@ public class NewMainActivity extends FragmentActivity {
 			       }
 			     //GCM GOOGLE
 			}
-			
-			if(!oConfigTrainer.isbLicence()){
-    			/**Check della licenza*/
-    			oPhone = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-    						
-    			// Construct the LicenseCheckerCallback. The library calls this when done.
-    	        mLicenseCheckerCallback = new TrainerLicenseCheckerCallback();
+			if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+				if(!oConfigTrainer.isbLicence()){
+					/**Check della licenza*/
+					oPhone = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
 
-    	        // Construct the LicenseChecker with a Policy.
-    	        mChecker = new LicenseChecker(
-    	            getApplicationContext(), new ServerManagedPolicy(getApplicationContext(),
-    	                new AESObfuscator(SALT, getPackageName(), oPhone.getDeviceId())),
-    	            BASE64_PUBLIC_KEY  // Your public licensing key.
-    	            );
-    	        try{
-    	        	 mChecker.checkAccess(mLicenseCheckerCallback);
-    	        }catch (Exception e) {
-    				Log.e(this.getClass().getCanonicalName(),"Error Checking Licence");
-    			}	       
-    	        /**Check della licenza*/     
-    		}else{
-    			isLicence=true;
-    		}
+					// Construct the LicenseCheckerCallback. The library calls this when done.
+					mLicenseCheckerCallback = new TrainerLicenseCheckerCallback();
+
+					// Construct the LicenseChecker with a Policy.
+					mChecker = new LicenseChecker(
+							getApplicationContext(), new ServerManagedPolicy(getApplicationContext(),
+							new AESObfuscator(SALT, getPackageName(), oPhone.getDeviceId())),
+							BASE64_PUBLIC_KEY  // Your public licensing key.
+					);
+					try{
+						mChecker.checkAccess(mLicenseCheckerCallback);
+					}catch (Exception e) {
+						Log.e(this.getClass().getCanonicalName(),"Error Checking Licence");
+					}
+					/**Check della licenza*/
+				}else{
+					isLicence=true;
+				}
+			}
+
 			
 			runOnUiThread(new Runnable() {
 				

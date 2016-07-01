@@ -100,33 +100,7 @@ public class WorkoutDetailFragment extends Fragment {
 			mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 				@Override
 				public boolean onMenuItemClick(MenuItem menuItem) {
-					if (menuItem.getTitle().equals( mContext.getString(R.string.erase))) {
-						AlertDialog alertDialog;
-						alertDialog = new AlertDialog.Builder(getActivity()).create();
-						alertDialog.setTitle(mContext.getString(R.string.titledeleteexercise));
-						alertDialog.setMessage(mContext.getString(R.string.messagedeleteexercise));
-						alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,mContext.getString(R.string.yes), new android.content.DialogInterface.OnClickListener(){
-
-							@Override
-							public void onClick(DialogInterface arg0, int arg1) {
-								if(ExerciseUtils.deleteExercise(mContext, String.valueOf(mIDWorkout))){
-									getActivity().onBackPressed();
-								}
-
-							}
-						});
-
-						alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,mContext.getString(R.string.no), new android.content.DialogInterface.OnClickListener(){
-
-							@Override
-							public void onClick(DialogInterface arg0, int arg1) {
-
-							}
-
-						});
-						alertDialog.show();
-
-					}else if (menuItem.getTitle().equals( mContext.getString(R.string.share_long))) {
+					if (menuItem.getTitle().equals( mContext.getString(R.string.share_long))) {
 						manualShare();
 					}else if (menuItem.getTitle().equals( mContext.getString(R.string.export_kml))) {
 						if(ExerciseUtils.writeKML(-1,mContext,oConfigTrainer)){

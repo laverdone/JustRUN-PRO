@@ -22,8 +22,8 @@ android {
         minSdkVersion 11
         targetSdkVersion 23
 
-        versionCode 130
-        versionName "7.0.4"
+        versionCode 131
+        versionName "7.0.5"
         archivesBaseName = "JustRunPRO-$versionName"
     }
     buildTypes {
@@ -37,8 +37,8 @@ android {
             minSdkVersion 11
             applicationId 'com.glm.trainerlite'
             targetSdkVersion 23
-            versionCode 130
-            versionName '7.0.4'
+            versionCode 131
+            versionName '7.0.5'
             archivesBaseName = "JustRunPROADS-$versionName"
             signingConfig signingConfigs.signingConfigsADS
         }
@@ -46,8 +46,8 @@ android {
             applicationId "com.glm.trainer"
             minSdkVersion 11
             targetSdkVersion 23
-            versionCode 130
-            versionName "7.0.4"
+            versionCode 131
+            versionName "7.0.5"
             archivesBaseName = "JustRunPRO-$versionName"
             signingConfig signingConfigs.releasePRO
         }
