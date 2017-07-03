@@ -3,6 +3,7 @@ package com.glm.app;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,151 +21,205 @@ import com.glm.bean.ConfigTrainer;
 import com.glm.bean.User;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
+//import com.google.android.gms.appindexing.Action;
+//import com.google.android.gms.appindexing.AppIndex;
+//import com.google.android.gms.appindexing.Thing;
+//import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.text.NumberFormat;
 
 import static com.glm.trainer.R.animator.*;
 
-public class ManualWorkout extends Activity implements OnClickListener, OnFocusChangeListener{
-	/**pulsante torna alla lista esercizi*/
+public class ManualWorkout extends Activity implements OnClickListener, OnFocusChangeListener {
+	/**
+	 * pulsante torna alla lista esercizi
+	 */
 	private Button oBtn_SaveShare;
-	
-	/**pulsante graph*/
+
+	/**
+	 * pulsante graph
+	 */
 	//private Button oBtn_Graph;
-	
+
 	private TimePicker oTimeManual;
-	
-	private EditText oTxt_Weight; 
-	
+
+	private EditText oTxt_Weight;
+
 	private EditText oTxt_Distance;
-	
+
 	private EditText oTxt_Kalories;
-	
+
 	private EditText oTxt_Speed;
-	
+
 	private EditText oTxt_Note;
-	
+
 	private Button oBtnSAVE;
-	
+
 	private Button oBtnCANCEL;
-	
+
 	private LinearLayout oMainLinearLayout;
-	
+
 	private ConfigTrainer oConfigTrainer;
-	
-	private User mUser=null;
-	
+
+	private User mUser = null;
+
 	private Animation a;
+	/**
+	 * ATTENTION: This was auto-generated to implement the App Indexing API.
+	 * See https://g.co/AppIndexing/AndroidStudio for more information.
+	 */
+	//private GoogleApiClient client;
+
 	public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        setContentView(R.layout.new_manual_workout);
-        
-        a = AnimationUtils.loadAnimation(this, fadein);
-        a.reset();
-        
-        oMainLinearLayout = (LinearLayout) findViewById(R.id.main_layout); 
-        
-        oBtnSAVE 	  	= 	(Button) findViewById(R.id.btnSave);
-        oBtnCANCEL    	= 	(Button) findViewById(R.id.btnCancel);
-        
-        oTimeManual = ((TimePicker) findViewById(R.id.timeManual));       	    				
-        oTimeManual.setIs24HourView(true);
-        oTimeManual.setCurrentHour(0);
-        oTimeManual.setCurrentMinute(0);
-        
-        oTxt_Weight 	=	(EditText) findViewById(R.id.txtWeight);
-        oTxt_Distance	=	(EditText) findViewById(R.id.txtDistance);
-        oTxt_Kalories	=	(EditText) findViewById(R.id.txtKalories);
-        oTxt_Speed		=	(EditText) findViewById(R.id.txtSpeed);
-        oTxt_Note		=	(EditText) findViewById(R.id.txtNote);
-        
-        oBtnSAVE.setOnClickListener(this);
-        oBtnCANCEL.setOnClickListener(this);
-        
-        oTxt_Distance.setOnFocusChangeListener(this);
-        
-        oConfigTrainer = ExerciseUtils.loadConfiguration(this);
-        mUser=ExerciseUtils.loadUserDectails(this);
-        oTxt_Weight.setText(String.valueOf(mUser.iWeight));
-        oMainLinearLayout.clearAnimation();
-        oMainLinearLayout.setAnimation(a);        
+		super.onCreate(savedInstanceState);
+
+		setContentView(R.layout.new_manual_workout);
+
+		a = AnimationUtils.loadAnimation(this, R.anim.fadein);
+		a.reset();
+
+		oMainLinearLayout = (LinearLayout) findViewById(R.id.main_layout);
+
+		oBtnSAVE = (Button) findViewById(R.id.btnSave);
+		oBtnCANCEL = (Button) findViewById(R.id.btnCancel);
+
+		oTimeManual = ((TimePicker) findViewById(R.id.timeManual));
+		oTimeManual.setIs24HourView(true);
+		oTimeManual.setCurrentHour(0);
+		oTimeManual.setCurrentMinute(0);
+
+		oTxt_Weight = (EditText) findViewById(R.id.txtWeight);
+		oTxt_Distance = (EditText) findViewById(R.id.txtDistance);
+		oTxt_Kalories = (EditText) findViewById(R.id.txtKalories);
+		oTxt_Speed = (EditText) findViewById(R.id.txtSpeed);
+		oTxt_Note = (EditText) findViewById(R.id.txtNote);
+
+		oBtnSAVE.setOnClickListener(this);
+		oBtnCANCEL.setOnClickListener(this);
+
+		oTxt_Distance.setOnFocusChangeListener(this);
+
+		oConfigTrainer = ExerciseUtils.loadConfiguration(this);
+		mUser = ExerciseUtils.loadUserDectails(this);
+		oTxt_Weight.setText(String.valueOf(mUser.iWeight));
+		oMainLinearLayout.clearAnimation();
+		oMainLinearLayout.setAnimation(a);
+		// ATTENTION: This was auto-generated to implement the App Indexing API.
+		// See https://g.co/AppIndexing/AndroidStudio for more information.
+		//client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 	}
-	
+
 	@Override
 	public void onClick(View oObj) {
-		int mType=0;
-		if(oObj.getId()==R.id.btnSave){			
+		int mType = 0;
+		if (oObj.getId() == R.id.btnSave) {
 			Bundle extras = getIntent().getExtras();
-			if(extras !=null){
+			if (extras != null) {
 				mType = extras.getInt("type");
 			}
-			
-			int Distance=0;
-			double Kalories=0;
-			try{
-				Distance=Integer.parseInt(oTxt_Distance.getText().toString());
-				Kalories=Double.parseDouble(oTxt_Kalories.getText().toString().replace(",", "."));
-			}catch (NumberFormatException e) {
-				Log.e(this.getClass().getCanonicalName(),"Error NumberFormatException Manual Workout");
+
+			int Distance = 0;
+			double Kalories = 0;
+			try {
+				Distance = Integer.parseInt(oTxt_Distance.getText().toString());
+				Kalories = Double.parseDouble(oTxt_Kalories.getText().toString().replace(",", "."));
+			} catch (NumberFormatException e) {
+				Log.e(this.getClass().getCanonicalName(), "Error NumberFormatException Manual Workout");
 			}
-			if(ExerciseUtils.addManualWorkout(oTimeManual.getCurrentHour().toString(),
+			if (ExerciseUtils.addManualWorkout(oTimeManual.getCurrentHour().toString(),
 					oTimeManual.getCurrentMinute().toString(),
 					oTxt_Weight.getText().toString(),
 					Distance,
-					oTxt_Kalories.getText().toString(),Kalories,
-					oTxt_Speed.getText().toString(),oTxt_Note.getText().toString(),mType, getApplicationContext(),oConfigTrainer)){
+					oTxt_Kalories.getText().toString(), Kalories,
+					oTxt_Speed.getText().toString(), oTxt_Note.getText().toString(), mType, getApplicationContext(), oConfigTrainer)) {
 				Intent intent = new Intent();
 				intent.setClass(getApplicationContext(), NewMainActivity.class);
 				startActivity(intent);
 				finish();
-			}else{
+			} else {
 				Toast.makeText(getBaseContext(), getApplicationContext().getString(R.string.generic_error), Toast.LENGTH_SHORT)
-				.show();
+						.show();
 			}
-				
-		}else if(oObj.getId()==R.id.btnCancel){
+
+		} else if (oObj.getId() == R.id.btnCancel) {
 			Intent intent = new Intent();
 			intent.setClass(getApplicationContext(), NewMainActivity.class);
 			startActivity(intent);
 			finish();
 		}
-	}	
+	}
+
 	@Override
-    public void onBackPressed() {
+	public void onBackPressed() {
 		Intent intent = new Intent();
 		intent.setClass(getApplicationContext(), NewMainActivity.class);
 		startActivity(intent);
 		finish();
-    }
+	}
 
 	@Override
 	public void onFocusChange(View oObj, boolean hasFocus) {
 
-		if(oObj.getId()==R.id.txtDistance){	
+		if (oObj.getId() == R.id.txtDistance) {
 			//
-			if(!hasFocus){
-				try{
+			if (!hasFocus) {
+				try {
 					String sKalories = ExerciseUtils.getKaloriesBurn(oConfigTrainer, Float.valueOf(oTxt_Distance.getText().toString()));
-					double dSpeed=0.0;
-					dSpeed=Double.valueOf(oTxt_Distance.getText().toString())/
-							(Double.valueOf(oTimeManual.getCurrentHour())+(Double.valueOf(oTimeManual.getCurrentMinute())/60));
-					Log.d(this.getClass().getCanonicalName(), "CALCULATE Kalories "+sKalories+ " and Speed");
-					
+					double dSpeed = 0.0;
+					dSpeed = Double.valueOf(oTxt_Distance.getText().toString()) /
+							(Double.valueOf(oTimeManual.getCurrentHour()) + (Double.valueOf(oTimeManual.getCurrentMinute()) / 60));
+					Log.d(this.getClass().getCanonicalName(), "CALCULATE Kalories " + sKalories + " and Speed");
+
 					oTxt_Kalories.setText(sKalories);
 					NumberFormat oNFormat = NumberFormat.getNumberInstance();
 					oNFormat.setMaximumFractionDigits(2);
 					oTxt_Speed.setText(oNFormat.format(dSpeed));
-				}catch (NumberFormatException ex){
-					Log.d(this.getClass().getCanonicalName(), "Error CALCULATE Kalories and Speed "+ex.getMessage());
-					
+				} catch (NumberFormatException ex) {
+					Log.d(this.getClass().getCanonicalName(), "Error CALCULATE Kalories and Speed " + ex.getMessage());
+
 				}
-				
+
 				//ExerciseUtils.getPace(oContext, oConfigTrainer)
 			}
-			
-			
+
+
 		}
-		
+
+	}
+
+	/**
+	 * ATTENTION: This was auto-generated to implement the App Indexing API.
+	 * See https://g.co/AppIndexing/AndroidStudio for more information.
+
+	public Action getIndexApiAction() {
+		Thing object = new Thing.Builder()
+				.setName("ManualWorkout Page") // TODO: Define a title for the content shown.
+				// TODO: Make sure this auto-generated URL is correct.
+				.setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+				.build();
+		return new Action.Builder(Action.TYPE_VIEW)
+				.setObject(object)
+				.setActionStatus(Action.STATUS_TYPE_COMPLETED)
+				.build();
+	}
+	 */
+	@Override
+	public void onStart() {
+		super.onStart();
+
+		// ATTENTION: This was auto-generated to implement the App Indexing API.
+		// See https://g.co/AppIndexing/AndroidStudio for more information.
+		//client.connect();
+		//AppIndex.AppIndexApi.start(client, getIndexApiAction());
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+
+		// ATTENTION: This was auto-generated to implement the App Indexing API.
+		// See https://g.co/AppIndexing/AndroidStudio for more information.
+		//AppIndex.AppIndexApi.end(client, getIndexApiAction());
+		//client.disconnect();
 	}
 }

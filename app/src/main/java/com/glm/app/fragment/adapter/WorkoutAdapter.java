@@ -106,7 +106,7 @@ public class WorkoutAdapter extends BaseAdapter{
 
 							@Override
 							public void onClick(DialogInterface arg0, int arg1) {
-								a = AnimationUtils.loadAnimation(mContext, disappear);
+								a = AnimationUtils.loadAnimation(mContext, R.anim.disappear);
 								a.reset();
 
 								if(ExerciseUtils.deleteExercise(mContext, oExercise.getsIDExerise())){

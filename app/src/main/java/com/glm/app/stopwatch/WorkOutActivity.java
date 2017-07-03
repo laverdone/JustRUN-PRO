@@ -1,6 +1,7 @@
 package com.glm.app.stopwatch;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -10,15 +11,19 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -369,7 +374,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);                
     	mContext=this;
 
-		a = AnimationUtils.loadAnimation(this, fadein);
+		a = AnimationUtils.loadAnimation(this, R.anim.fadein);
 		a.reset();
 
 		try{
@@ -390,77 +395,82 @@ public class WorkOutActivity extends Activity implements OnClickListener{
         //a = AnimationUtils.loadAnimation(this, R.animator.slide_right);
         //a.reset();
         
-        setContentView(R.layout.stopwatch_full);      
-        oMainLayout = (LinearLayout) findViewById(R.id.MainLayout);
-         
-        //setContentView(this.StopwatchView);
-        //Avvio Automatico del timer
-        //lStartTime=System.currentTimeMillis ();        
-        //this.ThreadTrainer = new Thread(new TrainerRunner());
-        //this.ThreadTrainer.start();
-        
+        initFromResume();
+
+    }
+
+	private void initFromResume() {
+		setContentView(R.layout.stopwatch_full);
+		oMainLayout = (LinearLayout) findViewById(R.id.MainLayout);
+
+		//setContentView(this.StopwatchView);
+		//Avvio Automatico del timer
+		//lStartTime=System.currentTimeMillis ();
+		//this.ThreadTrainer = new Thread(new TrainerRunner());
+		//this.ThreadTrainer.start();
+
 //        oTxtStopwatch = (TextView) findViewById(R.id.text_stopwatch);
 //        oTxtStopwatchSS = (TextView) findViewById(R.id.text_stopwatchSS);
-        btnStart 		= (Button) findViewById(R.id.btnStart);
-        btnPause 		= (Button) findViewById(R.id.btnPause);
-        btnMaps			= (Button) findViewById(R.id.btnMaps);
-        btnSkipTrack 	= (ImageButton) findViewById(R.id.btnSkipTrack);
-        
-        //imgMode = (ImageView) findViewById(R.id.imgMode);
-        oFont = Typeface.createFromAsset(this.getAssets(), "fonts/TRANA___.TTF");
-        txtDistance		= (TextView) findViewById(R.id.txtDistance);
-    	txtKalories		= (TextView) findViewById(R.id.txtKalories);
-    	txtTimeHHMM		= (TextView) findViewById(R.id.txtTimeHHMM);
-    	txtTimeSSdd		= (TextView) findViewById(R.id.txtTimeSSdd);
-    	txtInclination	= (TextView) findViewById(R.id.txtInclination);
-    	txtPace			= (TextView) findViewById(R.id.txtPace);
-    	txtALT			= (TextView) findViewById(R.id.txtALT);
-    	lblDistance		= (TextView) findViewById(R.id.lblDistance);
-    	lblKalories		= (TextView) findViewById(R.id.lblKalories);
-    	lblInclination	= (TextView) findViewById(R.id.lblInclination);
-    	lblPace			= (TextView) findViewById(R.id.lblPace);
-    	lblALT			= (TextView) findViewById(R.id.lblALT);
-    	lblHeatRate     = (TextView) findViewById(R.id.lblHeatRate);
-    	
-    	txtDistance.setTypeface(oFont);
-    	txtKalories.setTypeface(oFont);
-    	txtTimeHHMM.setTypeface(oFont);
-    	txtTimeSSdd.setTypeface(oFont);
-    	txtInclination.setTypeface(oFont);
-    	txtPace.setTypeface(oFont);
-    	txtALT.setTypeface(oFont);
-    	lblDistance.setTypeface(oFont);
-    	lblKalories.setTypeface(oFont);
-    	lblInclination.setTypeface(oFont);
-    	lblPace.setTypeface(oFont);
-    	lblALT.setTypeface(oFont);
-    	lblHeatRate.setTypeface(oFont);
-//    	               
+		btnStart 		= (Button) findViewById(R.id.btnStart);
+		btnPause 		= (Button) findViewById(R.id.btnPause);
+		btnMaps			= (Button) findViewById(R.id.btnMaps);
+		btnSkipTrack 	= (ImageButton) findViewById(R.id.btnSkipTrack);
+
+		//imgMode = (ImageView) findViewById(R.id.imgMode);
+		oFont = Typeface.createFromAsset(this.getAssets(), "fonts/TRANA___.TTF");
+		txtDistance		= (TextView) findViewById(R.id.txtDistance);
+		txtKalories		= (TextView) findViewById(R.id.txtKalories);
+		txtTimeHHMM		= (TextView) findViewById(R.id.txtTimeHHMM);
+		txtTimeSSdd		= (TextView) findViewById(R.id.txtTimeSSdd);
+		txtInclination	= (TextView) findViewById(R.id.txtInclination);
+		txtPace			= (TextView) findViewById(R.id.txtPace);
+		txtALT			= (TextView) findViewById(R.id.txtALT);
+		lblDistance		= (TextView) findViewById(R.id.lblDistance);
+		lblKalories		= (TextView) findViewById(R.id.lblKalories);
+		lblInclination	= (TextView) findViewById(R.id.lblInclination);
+		lblPace			= (TextView) findViewById(R.id.lblPace);
+		lblALT			= (TextView) findViewById(R.id.lblALT);
+		lblHeatRate     = (TextView) findViewById(R.id.lblHeatRate);
+
+		txtDistance.setTypeface(oFont);
+		txtKalories.setTypeface(oFont);
+		txtTimeHHMM.setTypeface(oFont);
+		txtTimeSSdd.setTypeface(oFont);
+		txtInclination.setTypeface(oFont);
+		txtPace.setTypeface(oFont);
+		txtALT.setTypeface(oFont);
+		lblDistance.setTypeface(oFont);
+		lblKalories.setTypeface(oFont);
+		lblInclination.setTypeface(oFont);
+		lblPace.setTypeface(oFont);
+		lblALT.setTypeface(oFont);
+		lblHeatRate.setTypeface(oFont);
+//
 //        Typeface font1 = Typeface.createFromAsset(getAssets(), "fonts/7LED.ttf");
 //        oTxtStopwatch.setTypeface(font1);
 //        oTxtStopwatchSS.setTypeface(font1);
-       
-       
-        //btnStart.setBackgroundResource(R.drawable.btn_start);
-       
-//        
-        btnStart.setOnClickListener(this);
-        btnPause.setOnClickListener(this);
-        btnMaps.setOnClickListener(this);
-        btnSkipTrack.setOnClickListener(this);
-        btnPause.setEnabled(false);
-        //imgMode.setOnClickListener(this);
-        //btnStart.setOnTouchListener(this);
-        //btnPause.setOnTouchListener(this);
-        //imgMode.setOnTouchListener(this);
-       
-        //oMainLayout.clearAnimation();
-        //oMainLayout.setAnimation(a);     
-        if(I_TYPE_OF_TRAINER==1){
-        	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }else{
-        	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);	
-        }
+
+
+		//btnStart.setBackgroundResource(R.drawable.btn_start);
+
+//
+		btnStart.setOnClickListener(this);
+		btnPause.setOnClickListener(this);
+		btnMaps.setOnClickListener(this);
+		btnSkipTrack.setOnClickListener(this);
+		btnPause.setEnabled(false);
+		//imgMode.setOnClickListener(this);
+		//btnStart.setOnTouchListener(this);
+		//btnPause.setOnTouchListener(this);
+		//imgMode.setOnTouchListener(this);
+
+		//oMainLayout.clearAnimation();
+		//oMainLayout.setAnimation(a);
+		if(I_TYPE_OF_TRAINER==1){
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		}else{
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		}
 
 		if(ConstApp.IS_DEBUG) Logger.log("INFO - WorkOut->onCreate service Workout");
 
@@ -477,7 +487,73 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 			AdView mAdView = (AdView) findViewById(R.id.adView);
 			mAdView.setVisibility(View.GONE);
 		}
-    }
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (ActivityCompat.checkSelfPermission(mContext,
+					Manifest.permission.ACCESS_FINE_LOCATION)
+					!= PackageManager.PERMISSION_GRANTED) {
+
+				// Should we show an explanation?
+				if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+						Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+					// Show an explanation to the user *asynchronously* -- don't block
+					// this thread waiting for the user's response! After the user
+					// sees the explanation, try again to request the permission.
+
+				} else {
+
+					// No explanation needed, we can request the permission.
+
+					ActivityCompat.requestPermissions(this,
+							new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+							ConstApp.PERMISSION_LOCATION_REQUEST_CODE);
+
+					// MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+					// app-defined int constant. The callback method gets the
+					// result of the request.
+				}
+			}
+
+			if (ActivityCompat.checkSelfPermission(mContext,
+					Manifest.permission.WRITE_EXTERNAL_STORAGE)
+					!= PackageManager.PERMISSION_GRANTED) {
+
+				// Should we show an explanation?
+				if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+						Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+					// Show an explanation to the user *asynchronously* -- don't block
+					// this thread waiting for the user's response! After the user
+					// sees the explanation, try again to request the permission.
+
+				} else {
+
+					// No explanation needed, we can request the permission.
+
+					ActivityCompat.requestPermissions(this,
+							new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+							ConstApp.PERMISSION_WRITE_EXTERNAL_STORAGE_CODE);
+
+					// MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+					// app-defined int constant. The callback method gets the
+					// result of the request.
+				}
+			}
+
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+		if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
+			Log.v(this.getClass().getCanonicalName(),"Permission: "+permissions[0]+ "was "+grantResults[0]);
+			//resume tasks needing this permission
+		}
+	}
+
 	@Override
 	protected void onResume() {
 
@@ -498,6 +574,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		}else if(I_TYPE_OF_TRAINER==100){
 			Toast.makeText(this, this.getString(R.string.walk), Toast.LENGTH_SHORT).show();
 		}
+		initFromResume();
 
 		mConnectionTask=new ConnectToServiceTask();
 
@@ -524,13 +601,13 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		mConnection=null;
 		// animateIn this activity
 		//ActivitySwitcher.animationOut(oMainLayout, getWindowManager());
-		a = AnimationUtils.loadAnimation(this, disappear);
+		a = AnimationUtils.loadAnimation(this, R.anim.disappear);
 		a.reset();
 		oMainLayout.clearAnimation();
 		oMainLayout.setAnimation(a);
-		if(I_TYPE_OF_TRAINER!=1) {
+		/*if(I_TYPE_OF_TRAINER!=1) {
 			finish();
-		}
+		}*/
 		super.onPause();
 	}
 	/**
@@ -797,8 +874,8 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	        Message mToStart = new Message();
 			mToStart.what=WorkOutActivity.STARTEXERCISE;				
 			WorkOutActivity.this.StopwatchViewUpdateHandler.sendMessage(mToStart);
-			if(I_TYPE_OF_TRAINER==ConstApp.TYPE_BIKE && oConfigTrainer.isbPlayMusic())
-				finish();
+			//if(I_TYPE_OF_TRAINER==ConstApp.TYPE_BIKE && oConfigTrainer.isbPlayMusic())
+			//	finish();
 			
 	}
 
@@ -809,37 +886,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		super.onDestroy();		
 		this.setResult(0);			
 	}	
-	
-	boolean mBackPressed = false;
-	
-	//@Override
-	public boolean onKeyDown1(int keyCode, KeyEvent event) {
-	    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-	        switch (keyCode) {
-	        case KeyEvent.KEYCODE_BACK:
-	            mBackPressed = true;
-	            break;
-	        case KeyEvent.KEYCODE_MENU:
-	            if (mBackPressed)
-	                unLock();
-	            break;
-	        default:
-	            mBackPressed = false;
-	            showMessage();
-	            break;
-	        }
-	    }
-	    return true;
-	}
-	private void showMessage() {
-	    Toast.makeText(getBaseContext(), "Back + Menu", Toast.LENGTH_SHORT)
-	            .show();
-	}
-	
-	private void unLock() {
-	    this.setResult(Activity.RESULT_OK);
-	    this.finish();
-	}
+
 	/**Test code UP**/
 	@Override
 	public void onBackPressed() {	
@@ -1090,6 +1137,39 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 				}
 			}
 			if(ConstApp.IS_DEBUG) Logger.log("INFO - ConnectToServiceTask connected to service from Workout");
+
+			try {
+				if(mConnection.mIService.getiTypeExercise()==1){
+                    /** 0=running
+                     * 1=biking
+                     * 100=walking
+                     *
+                     * */
+                    I_TYPE_OF_TRAINER=mConnection.mIService.getiTypeExercise();
+                }
+				if(mConnection.mIService.isServiceAlive() &&
+						mConnection.mIService.isRunning()){
+					if(ConstApp.IS_DEBUG) Logger.log("INFO - ConnectToServiceTask->WorkOutActivity->running  Trainer Services ");
+					sStatus="running";
+				}else if(mConnection.mIService.isServiceAlive() &&
+						!mConnection.mIService.isRunning()) {
+					//Toast.makeText(MainTrainerActivity.this, "Second type: "+mIService.getiTypeExercise(),
+					//        Toast.LENGTH_LONG).show();
+					if (mConnection.mIService.isAutoPause()) {
+
+						if (ConstApp.IS_DEBUG)
+							Logger.log("INFO - ConnectToServiceTask->WorkOutActivity->service_under_autopause  Trainer Services ");
+						sStatus = "service_under_autopause";
+
+					} else if (mConnection.mIService.isPause()) {
+						if (ConstApp.IS_DEBUG)
+							Logger.log("INFO - ConnectToServiceTask->WorkOutActivity->service_under_user_pause  Trainer Services ");
+						sStatus = "service_under_user_pause";
+					}
+				}
+			} catch (RemoteException e) {
+				if(ConstApp.IS_DEBUG) Logger.log("ERROR - ConnectToServiceTask->WorkOutActivity->RemoteException "+e.getMessage()+" Trainer Services ");
+			}
 
 			oConfigTrainer = ExerciseUtils.loadConfiguration(getApplicationContext());
 			mUser=ExerciseUtils.loadUserDectails(getApplicationContext());

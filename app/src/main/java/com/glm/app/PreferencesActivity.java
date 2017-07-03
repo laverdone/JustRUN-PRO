@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentPagerAdapter;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -560,101 +558,6 @@ public class PreferencesActivity extends AppCompatActivity {
 		//getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-/*
-	*//**
-	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-	 * one of the sections/tabs/pages.
-	 *//*
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-		public SectionsPagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
-
-			switch(position) {
-			case 0:
-				if(isFirstLaunch){
-					//USER
-					oUser =new UserFragment();
-					oUser.setContext(PreferencesActivity.this);
-					return oUser;
-				}else{
-					if(iPrefType==1){
-						//Notification PREFERENCES
-						oPreferences =new PreferencesFragment();
-						oPreferences.setContext(PreferencesActivity.this,0);
-						return oPreferences;
-					}else if(iPrefType==2){
-						//General PREFERENCES
-						oPreferences =new PreferencesFragment();
-						oPreferences.setContext(PreferencesActivity.this,1);
-						return oPreferences;
-					}else if(iPrefType==3){
-						//Trainer PREFERENCES
-						oPreferences =new PreferencesFragment();
-						oPreferences.setContext(PreferencesActivity.this,2);
-						return oPreferences;
-					}else if(iPrefType==4){
-						//USER
-						oUser =new UserFragment();
-						oUser.setContext(PreferencesActivity.this);
-						return oUser;
-					}else {
-						//Notification PREFERENCES
-						oPreferences = new PreferencesFragment();
-						oPreferences.setContext(PreferencesActivity.this, 0);
-						return oPreferences;
-					}
-				}
-			case 1:
-				//General PREFERENCES
-				oPreferences =new PreferencesFragment();
-				oPreferences.setContext(PreferencesActivity.this,position);
-				return oPreferences;
-			case 2:
-				//Trainer PREFERENCES
-				oPreferences =new PreferencesFragment();
-				oPreferences.setContext(PreferencesActivity.this,position);
-				return oPreferences;	
-			case 3:
-				//USER
-				oUser =new UserFragment();
-				oUser.setContext(PreferencesActivity.this);
-				return oUser;
-			}
-
-			return null;
-		}
-
-		@Override
-		public int getCount() {
-			if(isFirstLaunch || iPrefType>0) return 1;
-			else return 4;
-		}
-
-		@Override
-		public CharSequence getPageTitle(int position) {
-			Locale l = Locale.getDefault();
-			switch (position) {
-			case 0:
-				if(isFirstLaunch) return getString(R.string.user).toUpperCase(l);
-				else return getString(R.string.pre).toUpperCase(l);
-			case 1:
-				return getString(R.string.general_pref).toUpperCase(l);
-			case 2:
-				return getString(R.string.show_motivator).toUpperCase(l);
-			case 3:
-				return getString(R.string.user).toUpperCase(l);
-			}
-			return null;
-		}
-	}*/
 
 	private boolean saveUser() {
 		if(RBMale.isChecked()){

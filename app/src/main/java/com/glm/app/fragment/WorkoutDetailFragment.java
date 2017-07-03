@@ -1,5 +1,6 @@
 package com.glm.app.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.glm.app.ConstApp;
+import com.glm.app.WorkoutDetail;
 import com.glm.bean.ConfigTrainer;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
@@ -72,6 +75,7 @@ public class WorkoutDetailFragment extends Fragment {
 	
 	public RelativeLayout oAvgBpm;
 
+	private ViewPager mViewPager;
 	/**
 	 * 
 	 * The fragment argument representing the section number for this
@@ -81,6 +85,10 @@ public class WorkoutDetailFragment extends Fragment {
 
 	public WorkoutDetailFragment() {
 
+	}
+
+	public void setPager(ViewPager ViewPager) {
+		mViewPager=ViewPager;
 	}
 
 	@Override
@@ -288,19 +296,25 @@ public class WorkoutDetailFragment extends Fragment {
 	 * Metodo per la condivisione manuale dell'esercizio
 	 * */
 	public void manualShare(){
-		try{			
-			
+		try{
+
+
 			new Thread(new Runnable() {
-		    	String sPathImage = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+ConstApp.FOLDER_PERSONAL_TRAINER;
+
+
+				String sPathImage = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+ConstApp.FOLDER_PERSONAL_TRAINER;
 				   
 				@Override
 				public void run() {
+					((WorkoutDetail)getActivity()).isShare=true;
+
 
 					rootView.post(new Runnable() {
 						@Override
 						public void run() {
 							File dir = new File(sPathImage);
 							File mFile=null;
+							File mFileGraph=null;
 							if(!dir.exists()) {
 								dir.mkdirs();
 							}
@@ -311,19 +325,12 @@ public class WorkoutDetailFragment extends Fragment {
 							try {
 								if(oBmp!=null){
 									mFile = new File(sPathImage+"/dett_"+mIDWorkout+".png");
+
 									FileOutputStream out = new FileOutputStream(mFile);
 
 									oBmp.compress(Bitmap.CompressFormat.PNG, 90, out);
 									out.close();
-									out=null;
-									MimeTypeMap mime = MimeTypeMap.getSingleton();
-									String type = mime.getMimeTypeFromExtension("png");
-									Intent sharingIntent = new Intent("android.intent.action.SEND");
-									sharingIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.glm.trainer");
-									sharingIntent.setType(type);
-									sharingIntent.putExtra("android.intent.extra.STREAM",Uri.fromFile(mFile));
-									sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-									startActivity(Intent.createChooser(sharingIntent,"Share using"));
+									mViewPager.setCurrentItem(1);
 								}else{
 									Log.e(this.getClass().getCanonicalName(),"NULL Page Preview saving image");
 								}

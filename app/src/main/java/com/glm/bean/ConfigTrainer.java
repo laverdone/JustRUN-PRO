@@ -8,25 +8,25 @@ package com.glm.bean;
  * **/
 public class ConfigTrainer{
 	
-	private boolean bDisplayMap=false;
-	private boolean bDisplayNotification=false;
-	private boolean bPlayMusic=false;
-	private boolean bUseExternalPlayer=true;
-	private boolean bMotivator=false;
-	private boolean bAutoPause=false;
-	private boolean bInteractiveExercise=false;
-	private boolean bTrackExercise=false;
-	private boolean bRunGoal=false;
-	private boolean bUseCardio=false;
-	private boolean bCardioPolarBuyed=false;
-	private int iMotivatorTime=0;
-	private int iAutoPauseTime=0;
-	private boolean isSayDistance=false;
-	private boolean isSayTime=false;
-	private boolean isSayKalories=false;
-	private boolean isSayPace=false;
-	private boolean isSayInclination=false;
-	private boolean isVirtualRaceSupport=false;
+	private volatile boolean bDisplayMap=false;
+	private volatile boolean bDisplayNotification=false;
+	private volatile boolean bPlayMusic=false;
+	private volatile boolean bUseExternalPlayer=true;
+	private volatile boolean bMotivator=false;
+	private volatile boolean bAutoPause=false;
+	private volatile boolean bInteractiveExercise=false;
+	private volatile boolean bTrackExercise=false;
+	private volatile boolean bRunGoal=false;
+	private volatile boolean bUseCardio=false;
+	private volatile boolean bCardioPolarBuyed=false;
+	private volatile int iMotivatorTime=0;
+	private volatile int iAutoPauseTime=0;
+	private volatile boolean isSayDistance=false;
+	private volatile boolean isSayTime=false;
+	private volatile boolean isSayKalories=false;
+	private volatile boolean isSayPace=false;
+	private volatile boolean isSayInclination=false;
+	private volatile boolean isVirtualRaceSupport=false;
 	
 	private int iAge=0;
 	private Float iWeight=0f;

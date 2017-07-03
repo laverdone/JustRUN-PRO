@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.util.Log;
 
+import com.glm.app.ConstApp;
 import com.glm.bean.Music;
 
 import java.io.IOException;
@@ -133,6 +134,7 @@ public class MediaTrainer {
 	public boolean play(boolean isResume){
 		if(!isExternalPlayer){
 			try{
+				if(ConstApp.IS_DEBUG) Logger.log("INFO - MediaTrainer->play->isResume "+isResume+" isExternalPlayer "+isExternalPlayer+" Trainer Services ");
 				if(!isResume) oMediaPlayer.prepare();
 				oMediaPlayer.start();
 				mPause=false;
@@ -152,6 +154,7 @@ public class MediaTrainer {
 			Intent i = new Intent("com.android.music.musicservicecommand");
 			i.putExtra(CMDNAME, CMDPLAY);
 			oContext.sendBroadcast(i);
+			if(ConstApp.IS_DEBUG) Logger.log("INFO - MediaTrainer->play->isResume "+isResume+" isExternalPlayer "+isExternalPlayer+" Trainer Services ");
 			return true;
 		}
 	}
@@ -174,6 +177,7 @@ public class MediaTrainer {
 			Intent i = new Intent("com.android.music.musicservicecommand");
 			i.putExtra(CMDNAME, CMDPAUSE);
 			oContext.sendBroadcast(i);
+			if(ConstApp.IS_DEBUG) Logger.log("INFO - MediaTrainer->pause->isExternalPlayer "+isExternalPlayer+" Trainer Services ");
 			return true;
 		}
 	}
@@ -195,11 +199,13 @@ public class MediaTrainer {
 			Intent i = new Intent("com.android.music.musicservicecommand");
 			i.putExtra(CMDNAME, CMDSTOP);
 			oContext.sendBroadcast(i);
+			if(ConstApp.IS_DEBUG) Logger.log("INFO - MediaTrainer->stop->isExternalPlayer "+isExternalPlayer+" Trainer Services ");
 			return true;
 		}
 	}
 	public boolean isPlaying(){
-		 if(oMediaPlayer!=null) return oMediaPlayer.isPlaying(); else return false;
+		if(oMediaPlayer!=null && !isExternalPlayer) return oMediaPlayer.isPlaying();
+		else return isExternalPlayer;
 	}
 	/**
 	 * identifica se il MediaTrainer è in pause

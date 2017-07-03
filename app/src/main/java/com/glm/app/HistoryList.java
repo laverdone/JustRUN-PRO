@@ -25,15 +25,16 @@ import com.glm.app.fragment.adapter.WorkoutAdapter;
 import com.glm.bean.ConfigTrainer;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
+//import com.google.android.gms.appindexing.Action;
+//import com.google.android.gms.appindexing.AppIndex;
+//import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.Locale;
 
 import static com.glm.trainer.R.animator.*;
 
 
+@SuppressWarnings("ALL")
 public class HistoryList extends AppCompatActivity {
 
 	/**
@@ -64,7 +65,7 @@ public class HistoryList extends AppCompatActivity {
 	 * ATTENTION: This was auto-generated to implement the App Indexing API.
 	 * See https://g.co/AppIndexing/AndroidStudio for more information.
 	 */
-	private GoogleApiClient client;
+	//private GoogleApiClient client;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class HistoryList extends AppCompatActivity {
 
 		// ATTENTION: This was auto-generated to implement the App Indexing API.
 		// See https://g.co/AppIndexing/AndroidStudio for more information.
-		client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+		//client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 	}
 
 
@@ -122,8 +123,8 @@ public class HistoryList extends AppCompatActivity {
 
 		// ATTENTION: This was auto-generated to implement the App Indexing API.
 		// See https://g.co/AppIndexing/AndroidStudio for more information.
-		client.connect();
-		Action viewAction = Action.newAction(
+	//	client.connect();
+	/*	Action viewAction = Action.newAction(
 				Action.TYPE_VIEW, // TODO: choose an action type.
 				"HistoryList Page", // TODO: Define a title for the content shown.
 				// TODO: If you have web page content that matches this app activity's content,
@@ -131,9 +132,9 @@ public class HistoryList extends AppCompatActivity {
 				// Otherwise, set the URL to null.
 				Uri.parse("http://host/path"),
 				// TODO: Make sure this auto-generated app deep link URI is correct.
-				Uri.parse("android-app://com.glm.trainer/http/host/path")
-		);
-		AppIndex.AppIndexApi.start(client, viewAction);
+				Uri.parse("android-app://"+ConstApp.APP_PNAME+"/http/host/path")
+		);*/
+	//	AppIndex.AppIndexApi.start(client, viewAction);
 	}
 
 	@Override
@@ -142,7 +143,7 @@ public class HistoryList extends AppCompatActivity {
 
 		// ATTENTION: This was auto-generated to implement the App Indexing API.
 		// See https://g.co/AppIndexing/AndroidStudio for more information.
-		Action viewAction = Action.newAction(
+		/*Action viewAction = Action.newAction(
 				Action.TYPE_VIEW, // TODO: choose an action type.
 				"HistoryList Page", // TODO: Define a title for the content shown.
 				// TODO: If you have web page content that matches this app activity's content,
@@ -150,10 +151,10 @@ public class HistoryList extends AppCompatActivity {
 				// Otherwise, set the URL to null.
 				Uri.parse("http://host/path"),
 				// TODO: Make sure this auto-generated app deep link URI is correct.
-				Uri.parse("android-app://com.glm.trainer/http/host/path")
+				Uri.parse("android-app://"+ConstApp.APP_PNAME+"/http/host/path")
 		);
 		AppIndex.AppIndexApi.end(client, viewAction);
-		client.disconnect();
+		client.disconnect();*/
 	}
 
 
@@ -258,7 +259,7 @@ public class HistoryList extends AppCompatActivity {
 					// Set up the ViewPager with the sections adapter.
 					mViewPager = (ViewPager) findViewById(R.id.pager);
 
-					a = AnimationUtils.loadAnimation(getApplicationContext(), fadein);
+					a = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein);
 					a.reset();
 
 					mViewPager.clearAnimation();

@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.glm.app.fragment.WorkoutDetailFragment;
 import com.glm.app.fragment.WorkoutGraphFragment;
@@ -48,7 +49,7 @@ public class WorkoutDetail extends AppCompatActivity {
 	/**
 	 * The {@link ViewPager} that will host the section contents.
 	 */
-	ViewPager mViewPager;
+	private ViewPager mViewPager;
 	private Animation a;
 	private WorkoutDetailFragment oWorkoutDetail=null;
 	private WorkoutGraphFragment  oWorkoutGraph=null;
@@ -59,6 +60,8 @@ public class WorkoutDetail extends AppCompatActivity {
 	private ArrayList<Music> mMusic;
 	private int mTypeWorkout=0;
 	private ProgressDialog oWaitforLoad=null;
+
+	public boolean isShare=false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,18 +99,20 @@ public class WorkoutDetail extends AppCompatActivity {
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
-		a = AnimationUtils.loadAnimation(getApplicationContext(), fadein);
+		a = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein);
 		a.reset();
 
 		mViewPager.clearAnimation();
 		mViewPager.setAnimation(a);
 
 		mViewPager.setAdapter(mSectionsPagerAdapter);
+
 		mViewPager.setOffscreenPageLimit(4);
 		// When swiping between different sections, select the corresponding
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
 		// a reference to the Tab.
 		mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
 		tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 			@Override
 			public void onTabSelected(TabLayout.Tab tab) {
@@ -115,8 +120,10 @@ public class WorkoutDetail extends AppCompatActivity {
 					tab.setIcon(R.drawable.running_light);
 				}else if(tab.getPosition()==1){
 					tab.setIcon(R.drawable.graph_light);
+					if(isShare) oWorkoutGraph.shareWorkOut();
 				}else if(tab.getPosition()==2){
 					tab.setIcon(R.drawable.map_light);
+					if(isShare) oWorkoutMap.shareWorkOut();
 				}else if(tab.getPosition()==3){
 					tab.setIcon(R.drawable.music_light);
 				}else{
@@ -135,7 +142,9 @@ public class WorkoutDetail extends AppCompatActivity {
 
 			}
 		});
-        
+		oWorkoutDetail.setPager(mViewPager);
+		oWorkoutGraph.setPager(mViewPager);
+		oWorkoutMap.setPager(mViewPager);
 	}
 
 	@Override
@@ -193,7 +202,7 @@ public class WorkoutDetail extends AppCompatActivity {
 				return oWorkoutDetail;
 			case 1:
 				//GRAPH
-				
+
 				oWorkoutGraph.setContext(WorkoutDetail.this,mIDWorkout);
 				return oWorkoutGraph;
 			case 2:
@@ -359,7 +368,7 @@ public class WorkoutDetail extends AppCompatActivity {
 
 	@Override
 	protected void onPause() {
-		a = AnimationUtils.loadAnimation(getApplicationContext(), disappear);
+		a = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.disappear);
 		a.reset();
 
 		mViewPager.clearAnimation();

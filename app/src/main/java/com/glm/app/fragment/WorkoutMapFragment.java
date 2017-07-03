@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.InflateException;
@@ -25,6 +26,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.glm.app.ConstApp;
+import com.glm.app.WorkoutDetail;
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.ExerciseManipulate;
 import com.glm.trainer.R;
@@ -64,6 +66,9 @@ public class WorkoutMapFragment extends Fragment {
 	private View rootView;
 	private int mIDWorkout=0;
 	private Toolbar mToolBar;
+
+	private ViewPager mViewPager;
+
 	/**
 	 * 
 	 * The fragment argument representing the section number for this
@@ -73,6 +78,11 @@ public class WorkoutMapFragment extends Fragment {
 
 	public WorkoutMapFragment() {
 		
+	}
+
+
+	public void setPager(ViewPager ViewPager) {
+		mViewPager=ViewPager;
 	}
 
 	@Override
@@ -116,7 +126,7 @@ public class WorkoutMapFragment extends Fragment {
 			}
 
 			mToolBar 			  = (Toolbar)  rootView.findViewById(R.id.card_toolbar);
-			mToolBar.inflateMenu(R.menu.workout_menu);
+			mToolBar.inflateMenu(R.menu.workout_details_menu);
 			mToolBar.setLogo(R.drawable.map);
 			mToolBar.setTitle(R.string.maps);
 			mToolBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -251,6 +261,79 @@ public class WorkoutMapFragment extends Fragment {
 		//		.show();
 	}
 
+	public void shareWorkOut() {
+		try{
+
+			new Thread(new Runnable() {
+				String sPathImage = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+ ConstApp.FOLDER_PERSONAL_TRAINER;
+
+				@Override
+				public void run() {
+
+					rootView.post(new Runnable() {
+						@Override
+						public void run() {
+
+
+							oMapView.snapshot(new GoogleMap.SnapshotReadyCallback() {
+								@Override
+								public void onSnapshotReady(Bitmap bitmap) {
+									try {
+										File dir = new File(sPathImage);
+										File mFile=null;
+										File mFileGraph=null;
+										File mFileMap=null;
+										if(!dir.exists()) {
+											dir.mkdirs();
+										}
+										if(bitmap!=null){
+											mFile = new File(sPathImage+"/dett_"+mIDWorkout+".png");
+											mFileMap = new File(sPathImage+"/map_"+mIDWorkout+".png");
+											mFileGraph = new File(sPathImage+"/graph_"+mIDWorkout+".png");
+											FileOutputStream out = new FileOutputStream(mFileMap);
+
+											bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+											out.close();
+
+											MimeTypeMap mime = MimeTypeMap.getSingleton();
+											String type = mime.getMimeTypeFromExtension("png");
+											Intent sharingIntent = new Intent();
+											sharingIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+											sharingIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.glm.trainer");
+											sharingIntent.setType(type);
+											ArrayList<Uri> files = new ArrayList<Uri>();
+											files.add(Uri.fromFile(mFile));
+											files.add(Uri.fromFile(mFileGraph));
+											files.add(Uri.fromFile(mFileMap));
+											((WorkoutDetail)getActivity()).isShare=false;
+
+											mViewPager.setCurrentItem(0);
+											sharingIntent.putExtra("android.intent.extra.STREAM",files);
+											//sharingIntent.putExtra("android.intent.extra.STREAM",Uri.fromFile(mFileGraph));
+											sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+											startActivity(Intent.createChooser(sharingIntent,"Share using"));
+										}else{
+											Log.e(this.getClass().getCanonicalName(),"NULL Page Preview saving image");
+										}
+									} catch (IOException e) {
+										Log.e(this.getClass().getCanonicalName(),"Error saving image");
+									}
+								}
+							});
+
+						}
+					});
+
+				}
+			}).start();
+
+		}catch (Exception e) {
+			Log.w(this.getClass().getCanonicalName(), "FB Interactive sharing error:"+e.getMessage());
+			Toast.makeText(mContext, getString(R.string.share_ko), Toast.LENGTH_SHORT)
+					.show();
+		}
+	}
+
 
 	class GraphTask extends AsyncTask<Void, Void, Void> {
 		List<LatLng> aLatLng=null;
@@ -295,12 +378,12 @@ public class WorkoutMapFragment extends Fragment {
 	        .position(ExerciseManipulate.getWatchPoint().get(ExerciseManipulate.getWatchPoint().size()-1).getLatLong())
 	        .title("End "+ExerciseManipulate.getsTotalDistance())); 
 		    
-			CameraPosition newCamPos = new CameraPosition(ExerciseManipulate.getWatchPoint().get(ExerciseManipulate.getWatchPoint().size()/2).getLatLong(), 
-                    12.5f, 
+			CameraPosition newCamPos = new CameraPosition(ExerciseManipulate.getWatchPoint().get(ExerciseManipulate.getWatchPoint().size()/2).getLatLong(),
+                    14f,
                     oMapView.getCameraPosition().tilt, //use old tilt 
                     oMapView.getCameraPosition().bearing); //use old bearing
-			oMapView.animateCamera(CameraUpdateFactory.newCameraPosition(newCamPos), 4000, null);
-			
+			oMapView.animateCamera(CameraUpdateFactory.newCameraPosition(newCamPos), 1000, null);
+
 			//oMapView.addPolyline((new PolylineOptions()).addAll(aLatLng));
 			//oMapView.moveCamera(CameraUpdateFactory.newLatLng(ExerciseManipulate.getWatchPoint().get(0).getLatLong()));
 		}

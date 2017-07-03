@@ -24,6 +24,7 @@ import android.os.Looper;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -316,6 +317,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	 * **/
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.i(this.getClass().getCanonicalName(), "on start Command");
+
 		if (ConstApp.IS_DEBUG)
 			Logger.log("INFO - onStartCommand  Service for Trainer Services");
 		return Service.START_STICKY;
@@ -1845,12 +1847,13 @@ public class ExerciseService extends Service implements LocationListener, Accele
 	 * Riavvia l'audio dopo una chiamata
 	 * */
 	private void resumeMediaDuringCall(){
-		if(!isRunning || !isInCalling) return;
+		if(isRunning && isInCalling){
+			isInCalling=false;
+			if(oConfigTrainer.isbPlayMusic()){
+				oMediaPlayer.play(true);
+			}
+		}
 		//Log.v(this.getClass().getCanonicalName(), "Resume Media CALL END!");
-		isInCalling=false;
-		if(oConfigTrainer.isbPlayMusic()){
-			oMediaPlayer.play(true);
-		}		
 	}
 	/**
 	 * Gestione delle chiamate in Arrivo

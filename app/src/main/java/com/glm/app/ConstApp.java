@@ -37,4 +37,7 @@ public class ConstApp {
     public static final double LONG_KM_MOTIVATOR = 3;
     public static final String DB_BACKUP_NAME = "workouts.db";
     public static final String ADS_APP_PACKAGE_NAME="com.glm.trainerlite";
+    public static final int PERMISSION_LOCATION_REQUEST_CODE = 1;
+
+    public static final int PERMISSION_WRITE_EXTERNAL_STORAGE_CODE = 2;
 }

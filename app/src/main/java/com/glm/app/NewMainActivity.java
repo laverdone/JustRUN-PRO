@@ -11,11 +11,13 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.RemoteException;
 import android.os.StrictMode;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -41,10 +43,7 @@ import com.glm.utils.ExerciseUtils;
 import com.glm.utils.Rate;
 import com.glm.utils.TrainerServiceConnection;
 import com.google.android.gcm.GCMRegistrar;
-import com.google.android.vending.licensing.AESObfuscator;
-import com.google.android.vending.licensing.LicenseChecker;
-import com.google.android.vending.licensing.LicenseCheckerCallback;
-import com.google.android.vending.licensing.ServerManagedPolicy;
+import com.google.android.gms.drive.Permission;
 
 import java.util.Locale;
 
@@ -60,9 +59,6 @@ public class NewMainActivity extends FragmentActivity {
 
 	private TelephonyManager oPhone;
 	private boolean isLicence=false;
-	/**Gestione della licenza*/
-	private LicenseCheckerCallback mLicenseCheckerCallback;
-    private LicenseChecker mChecker;
     private static final String BASE64_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsFrtouMzttS7hakJi3uuswjeGiRvLTKtx37kcg2QIQyamJtFsKtEiLQzhcnR/2p5ng98Jg0BLSvzL0VbZSHyWSoR4/RMuYWYhMsvR6MNjry/ABqFaAlsiFCNNfVGEvKV0Kz8ILNMbZA2XlZBviC0fht9BSSynPWTuvT8uHcl0yJY3GmKgyOzodYuCVtqG9pRew+ZstVEeiYcqYbm8Gd0LJVpXkIN1AB9iPlxsfEQWHYzFhwUNB9UR2VcuTEiKyFKmbCPrYGfHkss+Kbjd/mucZx0sWQITUjKSdK9tmMOql/yDXEjuT+PzgUmr1bmnRJgzYzNkpvWbNiIFrgojYAunwIDAQAB";
     private static final byte[] SALT = new byte[] {
         -46, 65, 30, -128, -103, -57, 74, -64, 51, 88, -95,
@@ -115,6 +111,61 @@ public class NewMainActivity extends FragmentActivity {
         }
 		setContentView(R.layout.activity_new_main);
 
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (ActivityCompat.checkSelfPermission(mContext,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                // Should we show an explanation?
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                    // Show an explanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
+
+                } else {
+
+                    // No explanation needed, we can request the permission.
+
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+							ConstApp.PERMISSION_LOCATION_REQUEST_CODE);
+
+                    // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                    // app-defined int constant. The callback method gets the
+                    // result of the request.
+                }
+            }
+
+			if (ActivityCompat.checkSelfPermission(mContext,
+					Manifest.permission.WRITE_EXTERNAL_STORAGE)
+					!= PackageManager.PERMISSION_GRANTED) {
+
+				// Should we show an explanation?
+				if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+						Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+					// Show an explanation to the user *asynchronously* -- don't block
+					// this thread waiting for the user's response! After the user
+					// sees the explanation, try again to request the permission.
+
+				} else {
+
+					// No explanation needed, we can request the permission.
+
+					ActivityCompat.requestPermissions(this,
+							new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+							ConstApp.PERMISSION_WRITE_EXTERNAL_STORAGE_CODE);
+
+					// MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+					// app-defined int constant. The callback method gets the
+					// result of the request.
+				}
+			}
+
+		}
 		/*Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			setActionBar(toolbar);
@@ -144,6 +195,16 @@ public class NewMainActivity extends FragmentActivity {
 			}
 		}).start();
         super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+		if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
+			Log.v(this.getClass().getCanonicalName(),"Permission: "+permissions[0]+ "was "+grantResults[0]);
+			//resume tasks needing this permission
+		}
 	}
 
 	@Override
@@ -302,7 +363,7 @@ public class NewMainActivity extends FragmentActivity {
 		}    
 		if(mConnection!=null) mConnection.destroy();
 		mConnection=null;
-		a = AnimationUtils.loadAnimation(this, disappear);
+		a = AnimationUtils.loadAnimation(this, R.anim.disappear);
 		a.reset();
 
 		if(mViewPager!=null) {
@@ -319,60 +380,7 @@ public class NewMainActivity extends FragmentActivity {
 		         Log.v(this.getClass().getCanonicalName(),"onReceive");
 		     }
 	};
-	
-	/**Classe per il controllo della licenza*/
-	private class TrainerLicenseCheckerCallback implements LicenseCheckerCallback {
-		
-		@Override    
-		public void allow(int reason) {
-	        if (isFinishing()) {
-	                // Don't update UI if Activity is finishing.	            	
-	            return;
-	        }
-	            Toast.makeText(NewMainActivity.this, getString(R.string.licenceok),
-		                Toast.LENGTH_SHORT).show();
-	            ExerciseUtils.setLicenceOK(getApplicationContext());  
-	            Log.v(this.getClass().getCanonicalName(), "licence Allow code "+reason);
-	            isLicence=true;
-	        // Should allow user access.
-	        //displayResult(getString(R.string.lic_ok));
-	    }
-		
-		@Override
-	    public void dontAllow(int reason) {
-	        if (isFinishing()) {
-	            // Don't update UI if Activity is finishing.
-	        	if(mConnection!=null) mConnection.destroy();
-	            return;
-	        }
-	        //Toast.makeText(MainTrainerActivity.this, getString(R.string.licenceko),
-	        //        Toast.LENGTH_SHORT).show();
-	        ExerciseUtils.setLicenceKO(getApplicationContext());  
-	        //displayResult(getString(R.string.lic_error));	       
-	        // Should not allow access. An app can handle as needed,
-	        // typically by informing the user that the app is not licensed
-	        // and then shutting down the app or limiting the user to a
-	        // restricted set of features.
-	        // In this example, we show a dialog that takes the user to Market.
-	        showDialog(0);
-	        
-	        /**
-	         * DA MODIFICARE A FALSE IN PRODUZIONE
-	         * 
-	         * **/
-	        isLicence=false;
-	        Log.e(this.getClass().getCanonicalName(), "licence not Allow error code "+reason);
-	    }
-		@Override
-		public void applicationError(int errorCode) {
-			//Log.e(this.getClass().getCanonicalName(), "applicationError on check licence error code "+errorCode);
-			/**
-	         * DA MODIFICARE A FALSE IN PRODUZIONE
-	         * 
-	         * **/
-	        isLicence=false;
-		}
-	}
+
 	/**
 	 * Visualizza una alert per il GPS non abilitato
 	 *
@@ -427,7 +435,7 @@ public class NewMainActivity extends FragmentActivity {
 			oSummary.oTable=ExerciseUtils.getDistanceForType(oConfigTrainer, getApplicationContext());
 
 			//oSummary.oChart = new BarChart(getApplicationContext(),0,false);
-			if(oConfigTrainer.getsGCMId().compareToIgnoreCase("")==0){
+			/*if(oConfigTrainer.getsGCMId().compareToIgnoreCase("")==0){
 				//GCM GOOGLE
 				GCMRegistrar.checkDevice(getApplicationContext());
 			    GCMRegistrar.checkManifest(getApplicationContext());
@@ -464,31 +472,7 @@ public class NewMainActivity extends FragmentActivity {
 			    	   }
 			       }
 			     //GCM GOOGLE
-			}
-			if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-				if(!oConfigTrainer.isbLicence()){
-					/**Check della licenza*/
-					oPhone = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-
-					// Construct the LicenseCheckerCallback. The library calls this when done.
-					mLicenseCheckerCallback = new TrainerLicenseCheckerCallback();
-
-					// Construct the LicenseChecker with a Policy.
-					mChecker = new LicenseChecker(
-							getApplicationContext(), new ServerManagedPolicy(getApplicationContext(),
-							new AESObfuscator(SALT, getPackageName(), oPhone.getDeviceId())),
-							BASE64_PUBLIC_KEY  // Your public licensing key.
-					);
-					try{
-						mChecker.checkAccess(mLicenseCheckerCallback);
-					}catch (Exception e) {
-						Log.e(this.getClass().getCanonicalName(),"Error Checking Licence");
-					}
-					/**Check della licenza*/
-				}else{
-					isLicence=true;
-				}
-			}
+			}*/
 
 			
 			runOnUiThread(new Runnable() {
@@ -515,7 +499,7 @@ public class NewMainActivity extends FragmentActivity {
 					// Set up the ViewPager with the sections adapter.
 					mViewPager = (ViewPager) findViewById(R.id.pager);
 
-					a = AnimationUtils.loadAnimation(getApplicationContext(), fadein);
+					a = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein);
 					a.reset();
 
 					mViewPager.clearAnimation();

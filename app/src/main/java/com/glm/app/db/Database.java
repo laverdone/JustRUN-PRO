@@ -422,9 +422,9 @@ public class Database {
 		String myPath = DB_PATH + DB_NAME;
 		//Copy DB to External sdCard
 		File db = new File(myPath);
-		if(db.exists()){
+		//if(db.exists()){
 			copyToInternal(myPath);
-		}
+		//}
 	}
 	private void copyToInternal(final String targetFile){
 		new Thread(new Runnable() {

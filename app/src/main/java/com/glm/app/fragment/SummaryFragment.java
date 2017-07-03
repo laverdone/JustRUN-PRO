@@ -286,6 +286,10 @@ public class SummaryFragment extends Fragment {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 
 					int iYear=Integer.parseInt(sdf.format(new Date()));
+					if(mYears.size()>0){
+						iYear=mYears.get(mYears.size()-1);
+					}
+
 
 					mRunChart.init(mContext, ConstApp.TYPE_RUN,getActivity(),iYear);
 					mWalkChart.init(mContext,ConstApp.TYPE_WALK,getActivity(),iYear);

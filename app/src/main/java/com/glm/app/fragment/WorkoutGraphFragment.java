@@ -1,20 +1,35 @@
 package com.glm.app.fragment;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import com.glm.app.ConstApp;
+import com.glm.app.WorkoutDetail;
 import com.glm.trainer.R;
 import com.glm.bean.ConfigTrainer;
 import com.glm.chart.NewLineChart;
 import com.glm.utils.ExerciseUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 
 
 /**
@@ -35,6 +50,8 @@ public class WorkoutGraphFragment extends Fragment {
 	private ProgressBar oWaitForGraphALT;
 	private ProgressBar oWaitForGraphPACE;
 	private ProgressBar oWaitForGraphHeart;
+
+	private ViewPager mViewPager;
 	/**
 	 * 
 	 * The fragment argument representing the section number for this
@@ -44,6 +61,10 @@ public class WorkoutGraphFragment extends Fragment {
 
 	public WorkoutGraphFragment() {
 		
+	}
+
+	public void setPager(ViewPager ViewPager) {
+		mViewPager=ViewPager;
 	}
 
 	@Override
@@ -73,15 +94,69 @@ public class WorkoutGraphFragment extends Fragment {
 		}
 		GraphTask oTask = new GraphTask();
         oTask.execute();
-        
+
 		return rootView;
 	}
 
-	public void setContext(Context context,int idWorkout) {
+
+	public void setContext(Context context, int idWorkout) {
 		mContext=context;	
 		mIDWorkout=idWorkout;
 	}
-	
+
+	public void shareWorkOut(){
+		Log.v(this.getClass().getCanonicalName(),"Share WorkOut to social");
+		rootView.setDrawingCacheEnabled(true);
+		rootView.buildDrawingCache(true);
+
+			new Thread(new Runnable() {
+				String sPathImage = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+ ConstApp.FOLDER_PERSONAL_TRAINER;
+
+				@Override
+				public void run() {
+
+					rootView.post(new Runnable() {
+						@Override
+						public void run() {
+							File dir = new File(sPathImage);
+							//File mFile=null;
+							File mFileGraph=null;
+							if(!dir.exists()) {
+								dir.mkdirs();
+							}
+
+							Bitmap oBmp = Bitmap.createBitmap( rootView.getWidth(), rootView.getHeight(), Bitmap.Config.ARGB_8888);
+							Canvas c = new Canvas(oBmp);
+							rootView.draw(c);
+							try {
+								if(oBmp!=null){
+									//mFile = new File(sPathImage+"/dett_"+mIDWorkout+".png");
+									mFileGraph = new File(sPathImage+"/graph_"+mIDWorkout+".png");
+									FileOutputStream out = new FileOutputStream(mFileGraph);
+
+									oBmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+									out.close();
+									mViewPager.setCurrentItem(2);
+
+
+								}else{
+									Log.e(this.getClass().getCanonicalName(),"NULL Page Preview saving image");
+									mViewPager.setCurrentItem(2);
+								}
+							} catch (IOException e) {
+								Log.e(this.getClass().getCanonicalName(),"Error saving image");
+								mViewPager.setCurrentItem(2);
+							}
+						}
+					});
+					//Task async per salvare l'immagine.
+					//Bitmap oBmp =  rootView.getDrawingCache();
+				}
+
+
+			}).start();
+	}
+
 	class GraphTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -151,9 +226,9 @@ public class WorkoutGraphFragment extends Fragment {
 			}else{
 				oGraphContainerHeart.setVisibility(View.GONE);
 			}
+
 			//oChartALT.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 			//oGraphContainerPACE.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-
 		}
 	}
 }
