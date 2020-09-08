@@ -45,6 +45,7 @@ public class WorkoutMusicAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		final Music mMusic = (Music) getItem(position);
+		if(mMusic==null || mMusic.getsTITLE()==null) return convertView;
 		//if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

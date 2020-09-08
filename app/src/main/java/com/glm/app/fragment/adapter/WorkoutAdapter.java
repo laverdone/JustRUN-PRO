@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -20,6 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.glm.app.ConstApp;
+import com.glm.app.stopwatch.WorkOutActivity;
+import com.glm.bean.ChallengeExercise;
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.Exercise;
 import com.glm.app.HistoryList;
@@ -29,8 +32,6 @@ import com.glm.utils.ExerciseUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import static com.glm.trainer.R.animator.*;
 
 public class WorkoutAdapter extends BaseAdapter{
 	private ArrayList<Exercise> mWorkouts;
@@ -183,6 +184,22 @@ public class WorkoutAdapter extends BaseAdapter{
 							Toast.makeText(mContext, mContext.getString(R.string.exercise_export_ko), Toast.LENGTH_SHORT)
 									.show();
 						}
+					}else if (menuItem.getTitle().equals( mContext.getString(R.string.use_as_opponent))) {
+						if(oExercise.getiTypeExercise()==ConstApp.TYPE_BIKE ||
+								oExercise.getiTypeExercise()==ConstApp.TYPE_RUN ||
+								oExercise.getiTypeExercise()==ConstApp.TYPE_WALK) {
+							//Devo esportare l'esercizio come opponent
+							ChallengeExercise mChallengeExercise = ExerciseUtils.getChallengeExrcise(mContext, oConfigTrainer, Integer.parseInt(oExercise.getsIDExerise()));
+							Intent intent = new Intent();
+							intent.setClass(mContext, WorkOutActivity.class);
+							intent.putExtra("type", oExercise.getiTypeExercise());
+							intent.putExtra("challengeexercise", mChallengeExercise);
+							mContext.startActivity(intent);
+							mContext.finish();
+						}else{
+							Toast.makeText(mContext, mContext.getString(R.string.unable_to_use_as_opponent), Toast.LENGTH_SHORT)
+									.show();
+						}
 					}
 
 
@@ -203,13 +220,20 @@ public class WorkoutAdapter extends BaseAdapter{
 			
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				intent.setClass(mContext, WorkoutDetail.class);
-				intent.putExtra("exercise_id", Integer.parseInt(oExercise.getsIDExerise()));
-				
-				mContext.startActivity(intent);
-				mContext.finish();
+				if(oExercise.getiTypeExercise()==0
+						|| oExercise.getiTypeExercise()==1
+							|| oExercise.getiTypeExercise()==100) {
+					Intent intent = new Intent();
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					intent.setClass(mContext, WorkoutDetail.class);
+					intent.putExtra("exercise_id", Integer.parseInt(oExercise.getsIDExerise()));
+
+					mContext.startActivity(intent);
+					mContext.finish();
+				}else{
+					Toast.makeText(mContext, mContext.getString(R.string.not_avail_manual), Toast.LENGTH_SHORT)
+							.show();
+				}
 			}
 		});
 		if(oExercise.getiTypeExercise()==0){

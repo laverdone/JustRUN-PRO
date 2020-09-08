@@ -1,24 +1,20 @@
 package com.glm.app.fragment;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,7 +22,10 @@ import android.widget.Toast;
 
 import com.glm.app.ConstApp;
 import com.glm.app.WorkoutDetail;
+import com.glm.app.stopwatch.WorkOutActivity;
+import com.glm.bean.ChallengeExercise;
 import com.glm.bean.ConfigTrainer;
+import com.glm.bean.ExerciseManipulate;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
 
@@ -164,6 +163,15 @@ public class WorkoutDetailFragment extends Fragment {
 							Toast.makeText(mContext, getString(R.string.exercise_export_ko), Toast.LENGTH_SHORT)
 									.show();
 						}
+					}else if (menuItem.getTitle().equals( mContext.getString(R.string.use_as_opponent))) {
+						//Devo esportare l'esercizio come opponent
+						ChallengeExercise mChallengeExercise = ExerciseUtils.getChallengeExrcise();
+						Intent intent = new Intent();
+						intent.setClass(mContext, WorkOutActivity.class);
+						intent.putExtra("type", ExerciseManipulate.getiTypeExercise());
+						intent.putExtra("challengeexercise",mChallengeExercise);
+						startActivity(intent);
+						getActivity().finish();
 					}
 
 					return true;

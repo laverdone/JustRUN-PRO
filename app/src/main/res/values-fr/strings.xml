@@ -182,4 +182,13 @@
 	<string name="export_tcx">Export TCX</string>
 	<string name="backup_desc">Etes-vous sûr de créer une sauvegarde?</string>
 	<string name="restore_desc">Etes-vous sûr de restaurer la sauvegarde?</string>
+    <string name="only_gpx">Seuls les fichiers .GPX sont autorisés!</string>
+    <string name="use_as_opponent">Utiliser comme adversaire</string>
+	<string name="faster_then_opponent">Vous êtes plus rapide que votre adversaire, continuez comme ça</string>
+	<string name="slower_then_opponent">Vous êtes plus lent que votre adversaire, augmentez votre paix</string>
+    <string name="unable_to_use_as_opponent">Incapable d\'utiliser comme adversaire</string>
+    <string name="meters">mètres</string>
+	<string name="feet">pieds</string>
+	<string name="behind">derrière ton adversaire</string>
+	<string name="ahead">devant votre adversaire</string>
 </resources>

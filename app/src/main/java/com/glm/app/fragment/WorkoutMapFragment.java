@@ -5,23 +5,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
@@ -34,6 +32,7 @@ import com.glm.utils.ExerciseUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -53,7 +52,7 @@ import java.util.List;
  * A dummy fragment representing a section of the app, but that simply
  * displays dummy text.
  */
-public class WorkoutMapFragment extends Fragment {
+public class WorkoutMapFragment extends Fragment implements OnMapReadyCallback {
 	private ConfigTrainer oConfigTrainer;
 	private GoogleMap oMapView=null;
 	
@@ -117,12 +116,12 @@ public class WorkoutMapFragment extends Fragment {
 				rootView = inflater.inflate(R.layout.maps_v2,
 						container, false);
 				Log.v(this.getClass().getCanonicalName(), "inflate OK MAP Fragment");
-				oMapView = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.gmapv2)).getMap();
+				((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.gmapv2)).getMapAsync(this);
 			}else{
 				rootView = inflater.inflate(R.layout.maps_v2l,
 						container, false);
 				Log.v(this.getClass().getCanonicalName(), "inflate OK MAP Fragment");
-				oMapView = ((MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.gmapv2)).getMap();
+				((MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.gmapv2)).getMapAsync(this);
 			}
 
 			mToolBar 			  = (Toolbar)  rootView.findViewById(R.id.card_toolbar);
@@ -255,8 +254,8 @@ public class WorkoutMapFragment extends Fragment {
 		mContext=context;	
 		mIDWorkout=idWorkout;
 		//new Thread(new MapThread()).start();
-		GraphTask oTask = new GraphTask();
-		oTask.execute();
+		//GraphTask oTask = new GraphTask();
+		//oTask.execute();
 		//Toast.makeText(mContext, "SET CONTEXT", Toast.LENGTH_LONG)
 		//		.show();
 	}
@@ -334,6 +333,13 @@ public class WorkoutMapFragment extends Fragment {
 		}
 	}
 
+	@Override
+	public void onMapReady(GoogleMap googleMap) {
+		oMapView=googleMap;
+		GraphTask oTask = new GraphTask();
+		oTask.execute();
+	}
+
 
 	class GraphTask extends AsyncTask<Void, Void, Void> {
 		List<LatLng> aLatLng=null;
@@ -365,10 +371,7 @@ public class WorkoutMapFragment extends Fragment {
 		@Override
 		protected void onPostExecute(Void result) {
 
-			Polyline route = oMapView.addPolyline(new PolylineOptions()
-			  .width(5)
-			  .color(Color.BLUE)
-			  .geodesic(true));
+			Polyline route = oMapView.addPolyline(new PolylineOptions().width(5).color(Color.BLUE).geodesic(true));
 			route.setPoints(aLatLng);
 			
 		    oMapView.addMarker(new MarkerOptions()

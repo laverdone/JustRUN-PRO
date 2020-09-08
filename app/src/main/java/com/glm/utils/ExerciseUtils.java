@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.glm.app.ConstApp;
 import com.glm.app.db.Database;
+import com.glm.bean.ChallengeExercise;
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.DistancePerExercise;
 import com.glm.bean.DistancePerMonth;
@@ -28,6 +29,7 @@ import com.glm.bean.NewExercise;
 import com.glm.bean.Summary;
 import com.glm.bean.User;
 import com.glm.bean.WatchPoint;
+import com.glm.bean.WorkoutPerMonth;
 import com.glm.trainer.R;
 
 import java.io.File;
@@ -42,7 +44,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Vector;
+
+import io.ticofab.androidgpxparser.parser.domain.TrackPoint;
 
 /**
  * Contiene tutti i metodi che mi serviranno per calcolare tutte le metriche
@@ -114,7 +119,9 @@ public class ExerciseUtils {
 	}
 
 
-		/**
+
+
+	/**
 		 * Crea nel DB il nuovo Esercizio per poi essere finalizzato dal servizio
 		 *
 		 * @param context
@@ -1612,7 +1619,12 @@ public class ExerciseUtils {
 				editPrefs.putString("nick", txtNick);
 				editPrefs.putFloat("weight", Float.parseFloat(txtWeight));
 				editPrefs.putInt("age", Integer.parseInt(txtAge));
-				editPrefs.putInt("height", Integer.parseInt(txtHeight));
+				try {
+					editPrefs.putInt("height", Integer.parseInt(txtHeight));
+				}catch (java.lang.NumberFormatException e){
+					Log.e(ExerciseUtils.class.getCanonicalName(), e.getMessage()+" - error parse height");
+					editPrefs.putInt("height", 0);
+				}
 				editPrefs.putBoolean("sharefb", FBShare);
 				editPrefs.putBoolean("share_plus", BuzzShare);
 				editPrefs.putBoolean("share_twitter", TwitterShare);
@@ -1635,6 +1647,7 @@ public class ExerciseUtils {
 	public synchronized static boolean isUserExist(Context oContext) {
 		boolean bUserExist=false;
 		ConfigTrainer oConfigTrainer = loadConfiguration(oContext);
+		if (oConfigTrainer==null) return false;
 		User mUser = new User();
 		mUser.iID		=	oConfigTrainer.getiUserID();
 		mUser.iWeight	=	oConfigTrainer.getiWeight();
@@ -1655,6 +1668,7 @@ public class ExerciseUtils {
 	public synchronized static User loadUserDectails(Context oContext){
 		ConfigTrainer oConfigTrainer = loadConfiguration(oContext);
 		User mUser = new User();
+		if(mUser==null) return null;
 		mUser.iID		=	oConfigTrainer.getiUserID();
 		mUser.iWeight	=	oConfigTrainer.getiWeight();
 		mUser.iAge		=	oConfigTrainer.getiAge();
@@ -1839,6 +1853,53 @@ public class ExerciseUtils {
 	}
 
 	/**
+	 * ritorna l'ora di corsa dell'esercizio
+	 *
+	 * @param int TimePassed tempo trascorso
+	 * */
+	public synchronized static int getHours(long TimeTotal){
+		int minutes = (int) (TimeTotal / 60000 % 60);
+		int hours = (int) (TimeTotal / 3600000);
+		if(minutes>=60){
+			minutes=minutes/60;
+		}
+		try{
+			//Log.v(Exercise.class.getCanonicalName(),"TimeTotal: "+TimeTotal+" TimeHH:MM: "+String.format ("%d:%02d", hours, minutes));
+			if(hours>0){
+				//Tempo Formattato String.format ("%d:%02d:%02d.%d", hours, minutes, seconds, decSeconds);
+				return hours;
+			}else{
+				return 0;
+			}
+
+
+			//return String.format ("%d:%02d", hours, minutes);
+		}catch (Exception e) {
+			return 0;
+		}
+
+	}
+
+	/**
+	 * ritorna l'ora di corsa dell'esercizio
+	 *
+	 * @param int TimePassed tempo trascorso
+	 * */
+	public synchronized static int getMinutes(long TimeTotal){
+		int minutes = (int) (TimeTotal / 60000 % 60);
+		if(minutes>=60){
+			minutes=minutes/60;
+		}
+		try{
+			return minutes;
+			//return String.format ("%d:%02d", hours, minutes);
+		}catch (Exception e) {
+			return 0;
+		}
+
+	}
+
+	/**
 	 * Imposta il tempo dell'esercizio
 	 *
 	 * @param int TimePassed tempo trascorso
@@ -1969,6 +2030,172 @@ public class ExerciseUtils {
 		}
 		return true;
 	}
+	/***
+	 * popola e ritorna il ChallwngeExercise
+	 *
+	 *
+	 */
+	public static ChallengeExercise getChallengeExrcise() {
+		ChallengeExercise mChallengeExercise = new ChallengeExercise();
+
+
+		int iHours=0;
+		int iMinute=0;
+		int iSeconds=0;
+		Double dPrevLat=0d;
+		Double dPrevLon=0d;
+		Double dDistance=0d;
+
+		int iMaxSize = ExerciseManipulate.getWatchPoint().size();
+		Date mPrevDateTime=null;
+		Calendar mPrevCalendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+		Calendar mCurrCalendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+		ArrayList<WatchPoint> aWatchPoint = ExerciseManipulate.getWatchPoint();
+		int iWPSize=aWatchPoint.size();
+		for(int i=0;i<iWPSize;i++){
+
+
+			if(mPrevDateTime==null){
+				//Prima iterazione
+				mPrevDateTime=aWatchPoint.get(i).getdDateTime();
+				dPrevLat=aWatchPoint.get(i).getdLat();
+				dPrevLon=aWatchPoint.get(i).getdLong();
+
+			}
+
+			mPrevCalendar.setTime(mPrevDateTime);   // assigns calendar to given date
+			mCurrCalendar.setTime(aWatchPoint.get(i).getdDateTime());   // assigns calendar to given date
+
+
+			mPrevCalendar.get(Calendar.HOUR_OF_DAY); // gets hour in 24h format
+			mPrevCalendar.get(Calendar.MINUTE);        // gets hour in 12h format
+			mPrevCalendar.get(Calendar.SECOND);
+
+			int iCurrentHours=mCurrCalendar.get(Calendar.HOUR_OF_DAY)-mPrevCalendar.get(Calendar.HOUR_OF_DAY);
+			int iCurrentMinute=mCurrCalendar.get(Calendar.MINUTE)-mPrevCalendar.get(Calendar.MINUTE);
+			int iCurrentSeconds=mCurrCalendar.get(Calendar.SECOND)-mPrevCalendar.get(Calendar.SECOND);
+
+			dDistance+=ExerciseUtils.getPartialDistanceUnFormattated(dPrevLon,dPrevLat,aWatchPoint.get(i).getdLong(),aWatchPoint.get(i).getdLat());
+
+
+			WatchPoint mCurrentWatchPoint=new WatchPoint();
+			mCurrentWatchPoint.setAccurancy(0f);
+			mCurrentWatchPoint.setdAlt(aWatchPoint.get(i).getdAlt());
+			mCurrentWatchPoint.setLatLong(aWatchPoint.get(i).getdLong(),aWatchPoint.get(i).getdLat());
+			mCurrentWatchPoint.setdLat(aWatchPoint.get(i).getdLat());
+			mCurrentWatchPoint.setdLong(aWatchPoint.get(i).getdLong());
+			mCurrentWatchPoint.setdDateTime(aWatchPoint.get(i).getdDateTime());
+			mCurrentWatchPoint.setdDistance(dDistance);
+			mCurrentWatchPoint.setiHoursToPrevPoint(iCurrentHours);
+			mCurrentWatchPoint.setiMinuteToPrevPoint(iCurrentMinute);
+			mCurrentWatchPoint.setiSecondsToPrevPoint(iCurrentSeconds);
+			mCurrentWatchPoint.setiHoursTotal(iHours);
+			mCurrentWatchPoint.setiMinuteTotal(iMinute);
+			mCurrentWatchPoint.setiSecondsTotal(iSeconds);
+
+			mChallengeExercise.addWatchPoint(mCurrentWatchPoint);
+
+			mPrevDateTime=aWatchPoint.get(i).getdDateTime();
+			dPrevLat=aWatchPoint.get(i).getdLat();
+			dPrevLon=aWatchPoint.get(i).getdLong();
+
+			if(iCurrentHours==0 && iCurrentMinute==0){
+				//Sommo soli i secondi di norma
+				iSeconds+=iCurrentSeconds;
+				if(iSeconds>59){
+					iSeconds=iSeconds-59;
+					iMinute++;
+					if(iMinute>59){
+						iMinute=0;
+						iHours++;
+					}
+				}
+			}
+		}
+		return mChallengeExercise;
+	}
+
+	public static ChallengeExercise getChallengeExrcise(Context oContext,ConfigTrainer oConfigTrainer,int IDExercise) {
+		ChallengeExercise mChallengeExercise = new ChallengeExercise();
+		ExerciseUtils.populateExerciseDetails(oContext, oConfigTrainer, IDExercise);
+
+		int iHours=0;
+		int iMinute=0;
+		int iSeconds=0;
+		Double dPrevLat=0d;
+		Double dPrevLon=0d;
+		Double dDistance=0d;
+
+		int iMaxSize = ExerciseManipulate.getWatchPoint().size();
+		Date mPrevDateTime=null;
+		Calendar mPrevCalendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+		Calendar mCurrCalendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+		ArrayList<WatchPoint> aWatchPoint = ExerciseManipulate.getWatchPoint();
+		int iWPSize=aWatchPoint.size();
+		for(int i=0;i<iWPSize;i++){
+
+
+			if(mPrevDateTime==null){
+				//Prima iterazione
+				mPrevDateTime=aWatchPoint.get(i).getdDateTime();
+				dPrevLat=aWatchPoint.get(i).getdLat();
+				dPrevLon=aWatchPoint.get(i).getdLong();
+
+			}
+
+			mPrevCalendar.setTime(mPrevDateTime);   // assigns calendar to given date
+			mCurrCalendar.setTime(aWatchPoint.get(i).getdDateTime());   // assigns calendar to given date
+
+
+			mPrevCalendar.get(Calendar.HOUR_OF_DAY); // gets hour in 24h format
+			mPrevCalendar.get(Calendar.MINUTE);        // gets hour in 12h format
+			mPrevCalendar.get(Calendar.SECOND);
+
+			int iCurrentHours=mCurrCalendar.get(Calendar.HOUR_OF_DAY)-mPrevCalendar.get(Calendar.HOUR_OF_DAY);
+			int iCurrentMinute=mCurrCalendar.get(Calendar.MINUTE)-mPrevCalendar.get(Calendar.MINUTE);
+			int iCurrentSeconds=mCurrCalendar.get(Calendar.SECOND)-mPrevCalendar.get(Calendar.SECOND);
+
+			dDistance+=ExerciseUtils.getPartialDistanceUnFormattated(dPrevLon,dPrevLat,aWatchPoint.get(i).getdLong(),aWatchPoint.get(i).getdLat());
+
+
+			WatchPoint mCurrentWatchPoint=new WatchPoint();
+			mCurrentWatchPoint.setAccurancy(0f);
+			mCurrentWatchPoint.setdAlt(aWatchPoint.get(i).getdAlt());
+			mCurrentWatchPoint.setLatLong(aWatchPoint.get(i).getdLong(),aWatchPoint.get(i).getdLat());
+			mCurrentWatchPoint.setdLat(aWatchPoint.get(i).getdLat());
+			mCurrentWatchPoint.setdLong(aWatchPoint.get(i).getdLong());
+			mCurrentWatchPoint.setdDateTime(aWatchPoint.get(i).getdDateTime());
+			mCurrentWatchPoint.setdDistance(dDistance);
+			mCurrentWatchPoint.setiHoursToPrevPoint(iCurrentHours);
+			mCurrentWatchPoint.setiMinuteToPrevPoint(iCurrentMinute);
+			mCurrentWatchPoint.setiSecondsToPrevPoint(iCurrentSeconds);
+			mCurrentWatchPoint.setiHoursTotal(iHours);
+			mCurrentWatchPoint.setiMinuteTotal(iMinute);
+			mCurrentWatchPoint.setiSecondsTotal(iSeconds);
+
+			mChallengeExercise.addWatchPoint(mCurrentWatchPoint);
+
+			mPrevDateTime=aWatchPoint.get(i).getdDateTime();
+			dPrevLat=aWatchPoint.get(i).getdLat();
+			dPrevLon=aWatchPoint.get(i).getdLong();
+
+			if(iCurrentHours==0 && iCurrentMinute==0){
+				//Sommo soli i secondi di norma
+				iSeconds+=iCurrentSeconds;
+				if(iSeconds>59){
+					iSeconds=iSeconds-59;
+					iMinute++;
+					if(iMinute>59){
+						iMinute=0;
+						iHours++;
+					}
+				}
+			}
+		}
+		return mChallengeExercise;
+	}
+
+
 	/**
 	 * scrive un file TCS a partire da da un ExerciseManipulate impostato
 	 *
@@ -2322,6 +2549,7 @@ public class ExerciseUtils {
 		}
 		return table;
 	}
+
 	/***
 	 * Ritorna un Hash con la coppia Tipo Esercizio distanza totale
 	 *
@@ -2331,13 +2559,24 @@ public class ExerciseUtils {
 		Vector<DistancePerMonth> table = new Vector<DistancePerMonth>();
 		String s_SQL_DISTANCE="";
 		//strftime('%Y','now')
+		String sType="0";
+		if(typeWorkOut==0){
+			//RUN
+			sType="0,1001";
+		}else if(typeWorkOut==100){
+			//WALK
+			sType="100,10000";
+		}else{
+			//BIKE
+			sType="1,1000";
+		}
 		if(typeWorkOut==-1){
 			s_SQL_DISTANCE="select  sum(distance) as somma, " +
 					"strftime('%m',watch_point_date) as mese from TRAINER_EXERCISE_DETT where strftime('%Y',watch_point_date)='"+year+"'  group by strftime('%m',watch_point_date)" +
 					" order by 2";
 		}else{
 			s_SQL_DISTANCE="select  sum(distance) as somma, " +
-					"strftime('%m',watch_point_date) as mese from TRAINER_EXERCISE_DETT where strftime('%Y',watch_point_date)='"+year+"' and id_type_exercise="+typeWorkOut+" group by strftime('%m',watch_point_date)" +
+					"strftime('%m',watch_point_date) as mese from TRAINER_EXERCISE_DETT where strftime('%Y',watch_point_date)='"+year+"' and id_type_exercise in ("+sType+") group by strftime('%m',watch_point_date)" +
 					" order by 2";
 		}
 		Log.v(ExerciseUtils.class.getClass().getCanonicalName(),"SQL DISTANCE IS: "+s_SQL_DISTANCE);
@@ -2395,13 +2634,82 @@ public class ExerciseUtils {
 
 		return table;
 	}
+
+	/***
+	 * Ritorna un Hash con la coppia Tipo Esercizio numero di esercizi totale
+	 *
+	 *
+	 * */
+	public static Vector<WorkoutPerMonth> getWorkoutForMonth(int typeWorkOut, ConfigTrainer oConfigTrainer,int year , Context oContext){
+		Vector<WorkoutPerMonth> table = new Vector<WorkoutPerMonth>();
+		String s_SQL_DISTANCE="";
+		//strftime('%Y','now')
+		if(typeWorkOut==-1){
+			s_SQL_DISTANCE="select  count(DISTINCT id_exercise) as somma, " +
+					"strftime('%m',watch_point_date) as mese from TRAINER_EXERCISE_DETT where strftime('%Y',watch_point_date)='"+year+"'  group by strftime('%m',watch_point_date)" +
+					" order by 2";
+		}else{
+			s_SQL_DISTANCE="select  count(DISTINCT id_exercise) as somma, " +
+					"strftime('%m',watch_point_date) as mese from TRAINER_EXERCISE_DETT where strftime('%Y',watch_point_date)='"+year+"' and id_type_exercise="+typeWorkOut+" group by strftime('%m',watch_point_date)" +
+					" order by 2";
+		}
+		Log.v(ExerciseUtils.class.getClass().getCanonicalName(),"SQL WORKOUT IS: "+s_SQL_DISTANCE);
+		Database oDB = new Database(oContext);
+
+		try{
+
+			for(int i=1;i<=12;i++){
+				WorkoutPerMonth oWorkout = new WorkoutPerMonth();
+				oWorkout.setsWorkout("0");
+				oWorkout.setiMonth(i);
+				table.add(oWorkout);
+				////Log.v(Exercise.class.getCanonicalName(),"Add Month:"+i);
+				oWorkout=null;
+			}
+
+			oDB.open();
+			Cursor oCursor = oDB.rawQuery(s_SQL_DISTANCE,null);
+			if(oCursor!=null){
+				int iSomma = oCursor.getColumnIndex("somma");
+				int iMonthExercise = oCursor.getColumnIndex("mese");
+
+				NumberFormat oNFormat = NumberFormat.getNumberInstance();
+				oNFormat.setGroupingUsed(false);
+				oNFormat.setMaximumFractionDigits(0);
+
+				while(oCursor.moveToNext()){
+					int iMonth = Integer.parseInt(oCursor.getString(iMonthExercise));
+					int iWorkout = oCursor.getInt(iSomma);
+
+
+					String sWorkout =oNFormat.format(iWorkout);
+
+					for(int i=0;i<=11;i++){
+						if(table.get(i).getiMonth()==iMonth){
+							table.get(i).setsWorkout(sWorkout);
+							//Log.v(Exercise.class.getCanonicalName(),"Replace Value per Month:"+iMonth+" - "+sDistance);
+						}
+					}
+				}
+				oCursor.close();
+			}
+			oDB.close();
+			oDB=null;
+		}catch (Exception e) {
+			Log.e(Exercise.class.getCanonicalName(),"getDWorkoutForMonth");
+			e.printStackTrace();
+			if(oDB!=null) oDB.close();
+			oDB=null;
+		}
+
+		return table;
+	}
+
 	/***
 	 * Ritorna un Hash con la coppia Tipo Esercizio distanza totale per settimana
 	 *
 	 * */
-	public
-
-	static Vector<DistancePerWeek> getDistanceForWeeks(ConfigTrainer oConfigTrainer, Context oContext){
+	public static Vector<DistancePerWeek> getDistanceForWeeks(ConfigTrainer oConfigTrainer, Context oContext){
 		Vector<DistancePerWeek> table = new Vector<DistancePerWeek>();
 		String s_SQL_DISTANCE="select case when id_type_exercise < 100 then sum(distance)*"+ConstApp.GPSFIX+" else sum(distance) end as somma, " +
 				"strftime('%W',watch_point_date) as week_of_year from TRAINER_EXERCISE_DETT where strftime('%Y',watch_point_date)=strftime('%Y','now') group by strftime('%W',watch_point_date)" +
@@ -2819,7 +3127,7 @@ public class ExerciseUtils {
 		boolean bRestoreWorkout=false;
     	try{
     		oDB.open();
-    		oDB.getOpenedDatabase().execSQL("delete from trainer_exercise_dett where distance=0");
+    		//oDB.getOpenedDatabase().execSQL("delete from trainer_exercise_dett where distance=0");
     		oDB.getOpenedDatabase().execSQL("delete from trainer_exercise where end_date is null");
     		Cursor oCursor = oDB.rawQuery("select distinct id_exercise from trainer_exercise_dett where id_exercise not in (select id_exercise from trainer_exercise)",null);
 			if(oCursor!=null){
@@ -2914,10 +3222,10 @@ public class ExerciseUtils {
 	   	String sTypeIN="";
 	   	if(mWorkOutType==0){
 	   		//RUN
-	   		sTypeIN="0, 1000";
+	   		sTypeIN="0, 1001";
 	   	}else if(mWorkOutType==1){
 	   		//BIKE
-	   		sTypeIN="1, 1001";
+	   		sTypeIN="1, 1000";
 	   	}else if(mWorkOutType==100){
 	   		//WALK
 	   		sTypeIN="100, 10000";

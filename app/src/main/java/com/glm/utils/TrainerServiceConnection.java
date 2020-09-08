@@ -4,10 +4,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
 import com.glm.app.ConstApp;
+import com.glm.bean.ChallengeExercise;
 import com.glm.bean.ConfigTrainer;
 import com.glm.services.ExerciseService;
 import com.glm.services.IExerciseService;
@@ -27,6 +29,7 @@ public class TrainerServiceConnection implements ServiceConnection
 	public boolean mIsBound=false;
 	public Context mContext;
 	private String mBinderAct="";
+	private ChallengeExercise mChallengeExercise=null;
     public TrainerServiceConnection(Context context,String binder){
         mContext=context;
 		mBinderAct=binder;
@@ -40,8 +43,23 @@ public class TrainerServiceConnection implements ServiceConnection
 		if(ConstApp.IS_DEBUG) Logger.log("INFO - bindService from "+mBinderAct);
         doBindService();
     }
-    
-    /**
+
+	public TrainerServiceConnection(Context context,String binder,ChallengeExercise challengeExercise){
+		mContext=context;
+		mBinderAct=binder;
+		mChallengeExercise=challengeExercise;
+		try{
+			oConfigTrainer=ExerciseUtils.loadConfiguration(mContext);
+		}catch (NullPointerException e) {
+			Log.e(this.getClass().getCanonicalName(),"Error load Config");
+			return;
+		}
+
+		if(ConstApp.IS_DEBUG) Logger.log("INFO - bindService from "+mBinderAct);
+		doBindService();
+	}
+
+	/**
      * Disconnetto dal servizio
      * */
     public void destroy(){
@@ -80,7 +98,11 @@ public class TrainerServiceConnection implements ServiceConnection
 		if(mIsBound==false){
 
 			Intent serviceIntent = new Intent(mContext,ExerciseService.class);
-
+			if(mChallengeExercise!=null){
+				Bundle mBundle = new Bundle();
+				mBundle.putParcelable("challengeexercise",mChallengeExercise);
+				serviceIntent.putExtras(mBundle);
+			}
 			mIsBound = mContext.bindService(serviceIntent, this, Context.BIND_AUTO_CREATE);
 			if(ConstApp.IS_DEBUG) Logger.log("INFO - TrainerServiceConnection->doBindService service Workout");
 

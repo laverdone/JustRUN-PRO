@@ -25,7 +25,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:layout_weight="1"
-                    android:background="@color/common_action_bar_splitter"
                     android:ems="10"
                     android:enabled="true"
                     android:gravity="top"

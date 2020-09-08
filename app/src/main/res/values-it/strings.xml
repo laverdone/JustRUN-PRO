@@ -183,4 +183,13 @@
 	<string name="export_gpx">Esporta GPX</string>
 	<string name="backup_desc">Sei sicuro di voler creare un backup?</string>
 	<string name="restore_desc">Sei sicuro di voler ripristinare il backup?</string>
+    <string name="only_gpx">Solo i file .GPX sono consentiti!</string>
+    <string name="faster_then_opponent">Sei più veloce del tuo avversario, continua così</string>
+	<string name="slower_then_opponent">Sei più lento del tuo avversario, aumenta il ritmo.</string>
+    <string name="use_as_opponent">Usa come avversario</string>
+    <string name="unable_to_use_as_opponent">Impossibile usare come avversario</string>
+    <string name="meters">metri</string>
+    <string name="feet">piedi</string>
+	<string name="behind">dietro il tuo avversario</string>
+	<string name="ahead">davanti al tuo avversario</string>
 </resources>

@@ -72,10 +72,10 @@
 								android:layout_width="fill_parent"
 								android:layout_marginLeft="150dip"
 								android:text=""
-								android:numeric="decimal" android:textSize="12sp"
+								android:inputType="numberDecimal" android:textSize="12sp"
 								android:paddingRight="20dip" android:layout_height="35dip"
 								android:gravity="center_horizontal"
-								android:background="@drawable/back_button_shape" android:editable="true"
+								android:background="@drawable/back_button_shape"
 								android:textStyle="bold" android:paddingLeft="20dip" android:id="@+id/txtWeight" android:textColor="#000000"></EditText>
 			            </LinearLayout>	            
 			            <LinearLayout android:layout_marginTop="5dip"
@@ -97,8 +97,8 @@
 								android:textSize="12sp" android:background="@drawable/back_button_shape" 
 								android:text="" android:gravity="center_horizontal" 
 								android:textColor="#003399" android:layout_height="35dip" 
-								android:layout_weight="1" android:layout_width="fill_parent" 
-								android:numeric="decimal" android:editable="true" 
+								android:layout_weight="1" android:layout_width="fill_parent"
+								android:inputType="numberDecimal"
 								android:id="@+id/txtDistance" android:textStyle="bold" 
 								android:paddingLeft="20dip">
 								
@@ -125,7 +125,7 @@
 							<EditText android:paddingRight="20dip" android:textSize="12sp" android:layout_weight="1" 
 								android:layout_height="35dip" android:background="@drawable/back_button_shape" 
 								android:text="" android:layout_width="fill_parent" android:gravity="center_horizontal" 
-								android:textColor="#003399" android:numeric="decimal" android:editable="true" 
+								android:textColor="#003399" android:inputType="numberDecimal"
 								android:id="@+id/txtKalories" android:textStyle="bold" 
 								android:layout_marginLeft="150dip" android:paddingLeft="20dip"></EditText>				
 						</LinearLayout>	
@@ -150,7 +150,7 @@
 							<EditText android:paddingRight="20dip" android:textSize="12sp" android:layout_weight="1" 
 								android:layout_height="35dip" android:background="@drawable/back_button_shape" 
 								android:text="" android:layout_width="fill_parent" android:gravity="center_horizontal" 
-								android:textColor="#003399" android:numeric="decimal" android:editable="true" 
+								android:textColor="#003399" android:inputType="numberDecimal"
 								android:id="@+id/txtSpeed" android:textStyle="bold" android:layout_marginLeft="150dip" 
 								android:paddingLeft="20dip"></EditText>				
 						</LinearLayout>	
@@ -161,8 +161,8 @@
 			            <LinearLayout android:layout_weight="1" android:layout_marginTop="5dip" android:layout_width="match_parent" android:id="@+id/LinearLayout05" android:orientation="vertical" android:layout_height="match_parent">
 			                <TextView android:text="@string/note" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textColor="#FFFFFF" android:layout_marginLeft="0dip" android:id="@+id/TextView02"></TextView>
 			                <EditText
-								android:background="@color/common_action_bar_splitter"  android:textStyle="bold" android:layout_weight="1"
-			                	android:gravity="left" android:editable="true" android:paddingRight="20dip" 
+								android:textStyle="bold" android:layout_weight="1"
+			                	android:gravity="left" android:paddingRight="20dip"
 			                	android:textSize="12sp" android:layout_height="75dip" android:textColor="#003399" 
 			                	android:layout_width="fill_parent" android:id="@+id/txtNote" android:singleLine="false" 
 			                	android:paddingLeft="20dip" android:layout_marginLeft="0dip"></EditText>

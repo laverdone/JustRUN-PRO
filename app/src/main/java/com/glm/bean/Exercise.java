@@ -1,6 +1,8 @@
 package com.glm.bean;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.glm.trainer.R;
@@ -12,7 +14,7 @@ import java.util.Calendar;
  * 
  * @see HistoryActivity
  * **/
-public class Exercise {
+public class Exercise implements Parcelable {
 	/**Id Esercizio*/
 	private String sIDExerise;
 	/**Titolo Esercizio*/
@@ -173,6 +175,62 @@ public class Exercise {
 	public synchronized void setiTypeExercise(int iTypeExercise) {
 		this.iTypeExercise = iTypeExercise;
 	}
-	
-	
+
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(this.sIDExerise);
+		dest.writeString(this.sTitle);
+		dest.writeString(this.sNote);
+		dest.writeString(this.sStart);
+		dest.writeString(this.sEnd);
+		dest.writeInt(this.iBar);
+		dest.writeFloat(this.fDistance);
+		dest.writeString(this.sDistanceFormatted);
+		dest.writeInt(this.iTypeExercise);
+		dest.writeString(this.sTotalTime);
+		dest.writeString(this.sTotalKalories);
+		dest.writeString(this.sAVGSpeed);
+		dest.writeString(this.sDateExercise);
+		dest.writeSerializable(this.dDateExercise);
+		dest.writeDouble(this.dWeight);
+	}
+
+	public Exercise() {
+	}
+
+	protected Exercise(Parcel in) {
+		this.sIDExerise = in.readString();
+		this.sTitle = in.readString();
+		this.sNote = in.readString();
+		this.sStart = in.readString();
+		this.sEnd = in.readString();
+		this.iBar = in.readInt();
+		this.fDistance = in.readFloat();
+		this.sDistanceFormatted = in.readString();
+		this.iTypeExercise = in.readInt();
+		this.sTotalTime = in.readString();
+		this.sTotalKalories = in.readString();
+		this.sAVGSpeed = in.readString();
+		this.sDateExercise = in.readString();
+		this.dDateExercise = (Calendar) in.readSerializable();
+		this.dWeight = in.readDouble();
+	}
+
+	public static final Parcelable.Creator<Exercise> CREATOR = new Parcelable.Creator<Exercise>() {
+		@Override
+		public Exercise createFromParcel(Parcel source) {
+			return new Exercise(source);
+		}
+
+		@Override
+		public Exercise[] newArray(int size) {
+			return new Exercise[size];
+		}
+	};
 }

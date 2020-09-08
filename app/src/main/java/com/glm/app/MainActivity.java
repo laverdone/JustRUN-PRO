@@ -9,22 +9,28 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.os.StrictMode;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 
+import com.daimajia.androidanimations.library.Techniques;
 import com.glm.app.db.Database;
 import com.glm.app.stopwatch.WorkOutActivity;
 import com.glm.bean.ConfigTrainer;
-import com.glm.services.ExerciseService;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.Logger;
 import com.glm.utils.TrainerServiceConnection;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.gson.Gson;
+import com.viksaa.sssplash.lib.activity.AwesomeSplash;
+import com.viksaa.sssplash.lib.cnst.Flags;
+import com.viksaa.sssplash.lib.model.ConfigSplash;
 
 
-public class MainActivity  extends AppCompatActivity{
+public class MainActivity  extends AwesomeSplash {
 	/**Oggetto connessione al servizio*/
 	private TrainerServiceConnection mConnection =null;
 	private ConfigTrainer oConfigTrainer;
@@ -35,13 +41,60 @@ public class MainActivity  extends AppCompatActivity{
  	private String sVersionPackage="";
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+	public void initSplash(ConfigSplash configSplash) {
+		/* you don't have to override every property */
 
-		Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+		MobileAds.initialize(this, new OnInitializationCompleteListener() {
+			@Override
+			public void onInitializationComplete(InitializationStatus initializationStatus) {
+			}
+		});
+
+		//Customize Circular Reveal
+		configSplash.setBackgroundColor(R.color.main_green); //any color you want form colors.xml
+		configSplash.setAnimCircularRevealDuration(2000); //int ms
+		configSplash.setRevealFlagX(Flags.REVEAL_RIGHT);  //or Flags.REVEAL_LEFT
+		configSplash.setRevealFlagY(Flags.REVEAL_BOTTOM); //or Flags.REVEAL_TOP
+
+		//Choose LOGO OR PATH; if you don't provide String value for path it's logo by default
+
+		//Customize Logo
+		configSplash.setLogoSplash(R.drawable.about); //or any other drawable
+		configSplash.setAnimLogoSplashDuration(1000); //int ms
+		configSplash.setAnimLogoSplashTechnique(Techniques.BounceInDown); //choose one form Techniques (ref: https://github.com/daimajia/AndroidViewAnimations)
+
+
+		//Customize Path
+		//configSplash.setPathSplash(Constants.DROID_LOGO); //set path String
+		configSplash.setOriginalHeight(400); //in relation to your svg (path) resource
+		configSplash.setOriginalWidth(400); //in relation to your svg (path) resource
+		configSplash.setAnimPathStrokeDrawingDuration(3000);
+		configSplash.setPathSplashStrokeSize(3); //I advise value be <5
+		configSplash.setPathSplashStrokeColor(R.color.strokeColor); //any color you want form colors.xml
+		configSplash.setAnimPathFillingDuration(3000);
+		configSplash.setPathSplashFillColor(R.color.fillColor); //path object filling color
+
+
+		//Customize Title
+		configSplash.setTitleSplash(getString(R.string.app_name_pro));
+		configSplash.setTitleTextColor(R.color.common_google_signin_btn_text_dark);
+		configSplash.setTitleTextSize(30f); //float value
+		configSplash.setAnimTitleDuration(3000);
+		configSplash.setAnimTitleTechnique(Techniques.FlipInX);
+		configSplash.setTitleFont("fonts/TRANA___.TTF"); //provide string to your font located in assets/fonts/
+
+
+
+
+	}
+
+	@Override
+	public void animationsFinished() {
+		//setContentView(R.layout.main);
+
+		/*Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
 		toolbar.setLogo(R.drawable.icon_pro);
-		toolbar.setTitle(R.string.app_name_pro);
+		toolbar.setTitle(R.string.app_name_pro);*/
 
 		if (ConstApp.IS_DEBUG) {
 			StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
@@ -56,16 +109,16 @@ public class MainActivity  extends AppCompatActivity{
 					.penaltyLog()
 					.penaltyDeath()
 					.build());
+		}else{
+			StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+			StrictMode.setVmPolicy(builder.build());
+			builder.detectFileUriExposure();
 		}
-		Intent serviceIntent = new Intent(this,ExerciseService.class);
-		startService(serviceIntent);
-		//startService(new Intent("com.glm.trainer.STARTSERVICE"));
 
 		DBTask task = new DBTask();
 		task.execute(new Database(this));
-
 	}
-	
+
 	public void onResume(Bundle savedInstanceState) {
 		setContentView(R.layout.main);		
 	}
@@ -81,7 +134,7 @@ public class MainActivity  extends AppCompatActivity{
 			@Override
 			public void run() {
 				try {
-					if(mConnection==null) return;
+					if(mConnection==null && mConnection.mIService==null) return;
 					if(mConnection.mIService.isServiceAlive() && 
 							mConnection.mIService.isRunning()){
 						//Toast.makeText(MainTrainerActivity.this, "First type: "+mIService.getiTypeExercise(),
@@ -234,7 +287,7 @@ public class MainActivity  extends AppCompatActivity{
 				oDB.init();
 			}
 			oConfigTrainer=ExerciseUtils.loadConfiguration(getApplicationContext());
-
+			ExerciseUtils.checkIncompleteWorkout(getApplicationContext(),oConfigTrainer);
 			while(mConnection.mIService==null){
 				try {
 					Thread.sleep(1000);

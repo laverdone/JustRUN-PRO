@@ -4,7 +4,6 @@ package com.glm.app.stopwatch;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +13,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,10 +22,9 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -38,22 +37,25 @@ import android.widget.Toast;
 
 import com.glm.app.ConstApp;
 import com.glm.app.OpenStreetMapActivity;
+import com.glm.bean.ChallengeExercise;
 import com.glm.bean.ConfigTrainer;
 import com.glm.bean.User;
 import com.glm.services.ExerciseService;
 import com.glm.app.NewMainActivity;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
+import com.glm.utils.GPXUtils;
 import com.glm.utils.Logger;
 import com.glm.utils.StopwatchUtils;
 import com.glm.utils.TrainerServiceConnection;
 import com.glm.utils.sensor.BlueToothHelper;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
-import static com.glm.trainer.R.animator.*;
-
-public class WorkOutActivity extends Activity implements OnClickListener{
+public class WorkOutActivity<onActivityResult> extends Activity implements OnClickListener{
 	/**indica se è stato premuto il pulsante avvia*/
 	private boolean bInStarting=false; 
 	private float fWeight=0;	
@@ -72,10 +74,11 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 
 	protected static final int GPSNOTENABLED  = 0x1999;
 	/**Wait for GPS Fix*/
-    private ProgressDialog oWaitForGPSFix;
+    private AlertDialog oWaitForGPSFix;
 	private Button btnStart;
 	private Button btnPause;
 	private Button btnMaps;
+	private Button btnAddGPX;
 	private ImageButton btnSkipTrack;
 	//private ImageView imgMode;
 	private Animation a;
@@ -155,6 +158,9 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	private boolean bShowAlert=true;
 	private String sStatus="";
 	private Context mContext=null;
+
+	/**contiene il GPX*/
+	private ChallengeExercise mChallengeExercise=null;
 	/**
 	 * 
 	 * Handler che si occupa del redraw dello stopwatch
@@ -168,7 +174,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 			switch (msg.what) {
 				case WorkOutActivity.STARTEXERCISE:									               
                     try {
-                    	if(mConnection.mIService!=null){                    		
+                    	if(mConnection!=null && mConnection.mIService!=null){
                     		mConnection.mIService.startExercise(I_TYPE_OF_TRAINER,iGoalDistance,dGoalHH,dGoalMM);
                     		if(mConnection.mIService.isCardioConnected()){
                     			Toast.makeText(getApplicationContext(), "Connect to Cardio OK", Toast.LENGTH_SHORT).show();	
@@ -193,7 +199,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 					//TODO STOP ALL WRITES
 					//getBaseContext().stopService(new Intent(getApplication(),ExerciseService.class));					                   
                     try {
-                    	if(mConnection.mIService!=null) mConnection.mIService.pauseExercise(); 
+                    	if(mConnection!=null && mConnection.mIService!=null) mConnection.mIService.pauseExercise();
                     	
                     } catch (RemoteException e) {
                     	Log.e(this.getClass().getCanonicalName(), "RemoteException PAUSEEXERCISE");
@@ -222,7 +228,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 				case WorkOutActivity.RESUMEEXERCISE:
 					//TODO Tempo effettivo di Corsa						                   
                     try {
-                    	if(mConnection.mIService!=null) mConnection.mIService.resumeExercise(); 
+                    	if(mConnection!=null && mConnection.mIService!=null) mConnection.mIService.resumeExercise();
                     	
                     } catch (RemoteException e) {
                     	Log.e(this.getClass().getCanonicalName(), "RemoteException RESUMEEXERCISE");
@@ -369,7 +375,8 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 			super.handleMessage(msg);
 		}		
 	};
-	
+
+
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);                
     	mContext=this;
@@ -390,6 +397,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		if(extras !=null){
 			I_TYPE_OF_TRAINER = extras.getInt("type");
 			sStatus = extras.getString("Status");
+			mChallengeExercise=extras.getParcelable("challengeexercise");
 		}          
         
         //a = AnimationUtils.loadAnimation(this, R.animator.slide_right);
@@ -403,6 +411,11 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		setContentView(R.layout.stopwatch_full);
 		oMainLayout = (LinearLayout) findViewById(R.id.MainLayout);
 
+		MobileAds.initialize(this, new OnInitializationCompleteListener() {
+			@Override
+			public void onInitializationComplete(InitializationStatus initializationStatus) {
+			}
+		});
 		//setContentView(this.StopwatchView);
 		//Avvio Automatico del timer
 		//lStartTime=System.currentTimeMillis ();
@@ -414,6 +427,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		btnStart 		= (Button) findViewById(R.id.btnStart);
 		btnPause 		= (Button) findViewById(R.id.btnPause);
 		btnMaps			= (Button) findViewById(R.id.btnMaps);
+		btnAddGPX		= (Button) findViewById(R.id.btnAddGPX);
 		btnSkipTrack 	= (ImageButton) findViewById(R.id.btnSkipTrack);
 
 		//imgMode = (ImageView) findViewById(R.id.imgMode);
@@ -457,6 +471,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		btnStart.setOnClickListener(this);
 		btnPause.setOnClickListener(this);
 		btnMaps.setOnClickListener(this);
+		btnAddGPX.setOnClickListener(this);
 		btnSkipTrack.setOnClickListener(this);
 		btnPause.setEnabled(false);
 		//imgMode.setOnClickListener(this);
@@ -493,54 +508,23 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 					Manifest.permission.ACCESS_FINE_LOCATION)
 					!= PackageManager.PERMISSION_GRANTED) {
 
-				// Should we show an explanation?
-				if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-						Manifest.permission.ACCESS_FINE_LOCATION)) {
+				ActivityCompat.requestPermissions(this,
+						new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE},
+						ConstApp.PERMISSION_WRITE_EXTERNAL_STORAGE_CODE);
 
-					// Show an explanation to the user *asynchronously* -- don't block
-					// this thread waiting for the user's response! After the user
-					// sees the explanation, try again to request the permission.
 
-				} else {
-
-					// No explanation needed, we can request the permission.
-
-					ActivityCompat.requestPermissions(this,
-							new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-							ConstApp.PERMISSION_LOCATION_REQUEST_CODE);
-
-					// MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-					// app-defined int constant. The callback method gets the
-					// result of the request.
-				}
 			}
+
 
 			if (ActivityCompat.checkSelfPermission(mContext,
 					Manifest.permission.WRITE_EXTERNAL_STORAGE)
 					!= PackageManager.PERMISSION_GRANTED) {
 
-				// Should we show an explanation?
-				if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-						Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+				ActivityCompat.requestPermissions(this,
+						new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE},
+						ConstApp.PERMISSION_WRITE_EXTERNAL_STORAGE_CODE);
 
-					// Show an explanation to the user *asynchronously* -- don't block
-					// this thread waiting for the user's response! After the user
-					// sees the explanation, try again to request the permission.
-
-				} else {
-
-					// No explanation needed, we can request the permission.
-
-					ActivityCompat.requestPermissions(this,
-							new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-							ConstApp.PERMISSION_WRITE_EXTERNAL_STORAGE_CODE);
-
-					// MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-					// app-defined int constant. The callback method gets the
-					// result of the request.
-				}
 			}
-
 		}
 	}
 
@@ -561,19 +545,27 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		if(extras !=null){
 			I_TYPE_OF_TRAINER = extras.getInt("type");
 			sStatus = extras.getString("Status");
+			mChallengeExercise=extras.getParcelable("challengeexercise");
 		}
 
-		mConnection= new TrainerServiceConnection(getApplicationContext(),this.getClass().getCanonicalName());
+		if(mChallengeExercise==null){
+			//Avvio normale
+			mConnection= new TrainerServiceConnection(getApplicationContext(),this.getClass().getCanonicalName());
+		}else{
+			//Avvio con mChallengeExercise
+			mConnection= new TrainerServiceConnection(getApplicationContext(),this.getClass().getCanonicalName(),mChallengeExercise);
+		}
+
 		if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->onResume->mConnection: "+mConnection+" Trainer Services ");
 		//ActivitySwitcher.animationIn(oMainLayout, getWindowManager());
 		bShowAlert=true;
-		if(I_TYPE_OF_TRAINER==1){
+		/*if(I_TYPE_OF_TRAINER==1){
 			Toast.makeText(this, this.getString(R.string.bike), Toast.LENGTH_SHORT).show();
 		}else if(I_TYPE_OF_TRAINER==0){
 			Toast.makeText(this, this.getString(R.string.run), Toast.LENGTH_SHORT).show();
 		}else if(I_TYPE_OF_TRAINER==100){
 			Toast.makeText(this, this.getString(R.string.walk), Toast.LENGTH_SHORT).show();
-		}
+		}*/
 		initFromResume();
 
 		mConnectionTask=new ConnectToServiceTask();
@@ -590,6 +582,14 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 	@Override
 	protected void onPause() {
 		if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->onPause Trainer Services ");
+		boolean bDoFinish=false;
+		if(mConnection.mIService!=null) {
+			try {
+				bDoFinish=mConnection.mIService.isRunning();
+			}catch (RemoteException ex){
+				bDoFinish=false;
+			}
+		}
 		mConnection.destroy();
 		if(mThreadConnection!=null ){
 			isRun=false;
@@ -608,6 +608,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		/*if(I_TYPE_OF_TRAINER!=1) {
 			finish();
 		}*/
+		if(bDoFinish) finish();
 		super.onPause();
 	}
 	/**
@@ -710,8 +711,12 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 		       return;
 		    } 
 			if(iStartTrainer==0){
-				
-				oWaitForGPSFix = ProgressDialog.show(WorkOutActivity.this,this.getString(R.string.app_name_buy),this.getString(R.string.gpsfix),true,true,null);
+
+				AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+				builder.setCancelable(false); // if you want user to wait for some process to finish,
+				builder.setView(R.layout.layout_loading_dialog);
+				oWaitForGPSFix = builder.create();
+
 				oWaitForGPSFix.setOnCancelListener(new OnCancelListener() {
 					
 					@Override
@@ -729,6 +734,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						}
 					}
 				});
+				oWaitForGPSFix.show();
 				NewExerciseTask task = new NewExerciseTask();
 				task.execute();
 				
@@ -752,8 +758,8 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						iStartTrainer=0;
 						Log.i(this.getClass().getCanonicalName()," esercizio stop");
 						btnStart.setText(WorkOutActivity.this.getString(R.string.btnstart));
-						WorkOutActivity.this.ThreadTrainer.interrupt();	
-						
+						WorkOutActivity.this.ThreadTrainer.interrupt();
+						btnAddGPX.setEnabled(true);
 						iStartTrainer=0;
 						Intent intent = new Intent();
 						intent.setClass(getApplicationContext(), NewMainActivity.class);
@@ -775,7 +781,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						btnStart.setText(WorkOutActivity.this.getString(R.string.btnstart));
 						WorkOutActivity.this.ThreadTrainer.interrupt();
 						iStartTrainer=0;
-
+						btnAddGPX.setEnabled(true);
 						Intent intent = new Intent();
 						intent.setClass(getApplicationContext(), NewMainActivity.class);
 						startActivity(intent);
@@ -796,8 +802,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 				iStartTrainer=0;
 				alertDialog.setCancelable(false);
 		    	alertDialog.show();
-		    	
-				
+
 				
 			}
 		}if(oObj.getId()==R.id.btnPause){
@@ -854,8 +859,54 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 					finish(); 				
 				}
 				return;		
+		}if(oObj.getId()==R.id.btnAddGPX) {
+			//TODO Load GPX File
+			Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+
+			// Filter to only show results that can be "opened", such as a
+			// file (as opposed to a list of contacts or timezones)
+			intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+			// Filter to show only images, using the image MIME data type.
+			// If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
+			// To search for all documents available via installed storage providers,
+			// it would be "*/*".
+			intent.setType("application/octet-stream");
+			startActivityForResult(intent, ConstApp.READ_REQUEST_CODE);
+			return;
 		}
-	}		
+
+	}
+	@Override
+	public void onActivityResult(int requestCode, int resultCode,
+								 Intent resultData) {
+
+		// The ACTION_OPEN_DOCUMENT intent was sent with the request code
+		// READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
+		// response to some other intent, and the code below shouldn't run at all.
+
+		if (requestCode == ConstApp.READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+			// The document selected by the user won't be returned in the intent.
+			// Instead, a URI to that document will be contained in the return intent
+			// provided to this method as a parameter.
+			// Pull that URI using resultData.getData().
+			Uri uri = null;
+			if (resultData != null) {
+				uri = resultData.getData();
+
+				Log.i(this.getClass().getCanonicalName(), "Uri: " + uri.getPath());
+				if(!uri.getPath().endsWith("gpx")){
+					Toast.makeText(this, getString(R.string.only_gpx), Toast.LENGTH_LONG).show();
+				}else {
+					GPXUtils mChallenge = new GPXUtils(mContext,uri);
+					mChallengeExercise = mChallenge.getChallenge(oConfigTrainer);
+
+				}
+
+			}
+		}
+	}
+
 	private void startWorkout(){
 			sStatus="running";
 			//TTS Voice
@@ -946,8 +997,13 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 			 * AVVIO DEL SERVIZIO PER IL NUOVO ESERCIZIO
 			 * 
 			 * */
-			getBaseContext().startService(new Intent(getApplication(),ExerciseService.class));
-			
+			if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+				getBaseContext().startForegroundService(new Intent(getApplication(),ExerciseService.class));
+			}else{
+				getBaseContext().startService(new Intent(getApplication(),ExerciseService.class));
+			}
+
+
 			//Log.i("Avvio Servizio New Exercise", "Stopwatch->TrainerRunner");
 			if(ConstApp.IS_DEBUG) Logger.log("INFO - TrainerRunner id "+Thread.currentThread().getId()+" is started");
 			while(!Thread.currentThread().isInterrupted()){
@@ -1056,6 +1112,7 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 						if(!bInStarting){
 							btnStart.setText(getApplicationContext().getString(R.string.btnstop));
 							btnPause.setEnabled(true);
+							btnAddGPX.setEnabled(false);
 						   	//Non Traccio Il Peso
 						   	startWorkout();
 						    bInStarting=true;
@@ -1076,7 +1133,12 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 			//TODO Check User if(!bCheckUser()) return;
 			final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 			if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->NewExerciseTask->doInBackground Create new exercise for Trainer Services");
-			while(mConnection.mIService==null){
+			if(mConnection==null){
+				mConnectionTask=new ConnectToServiceTask();
+				mThreadConnection = new Thread(mConnectionTask);
+				mThreadConnection.start();
+			}
+			while(mConnection==null){
 				if(ConstApp.IS_DEBUG) Logger.log("INFO - Workout->NewExerciseTask->doInBackground try to reconnect to service wait for service Workout");
 				if(mConnection==null || mConnectionTask==null || !mThreadConnection.isAlive()){
 					mConnectionTask=new ConnectToServiceTask();
@@ -1139,7 +1201,9 @@ public class WorkOutActivity extends Activity implements OnClickListener{
 			if(ConstApp.IS_DEBUG) Logger.log("INFO - ConnectToServiceTask connected to service from Workout");
 
 			try {
-				if(mConnection.mIService.getiTypeExercise()==1){
+				if(mConnection!=null &&
+						mConnection.mIService!=null &&
+							mConnection.mIService.getiTypeExercise()==1){
                     /** 0=running
                      * 1=biking
                      * 100=walking
@@ -1147,12 +1211,16 @@ public class WorkOutActivity extends Activity implements OnClickListener{
                      * */
                     I_TYPE_OF_TRAINER=mConnection.mIService.getiTypeExercise();
                 }
-				if(mConnection.mIService.isServiceAlive() &&
-						mConnection.mIService.isRunning()){
+				if(mConnection!=null &&
+						mConnection.mIService!=null &&
+							mConnection.mIService.isServiceAlive() &&
+								mConnection.mIService.isRunning()){
 					if(ConstApp.IS_DEBUG) Logger.log("INFO - ConnectToServiceTask->WorkOutActivity->running  Trainer Services ");
 					sStatus="running";
-				}else if(mConnection.mIService.isServiceAlive() &&
-						!mConnection.mIService.isRunning()) {
+				}else if(mConnection!=null &&
+							mConnection.mIService!=null &&
+								mConnection.mIService.isServiceAlive() &&
+									!mConnection.mIService.isRunning()) {
 					//Toast.makeText(MainTrainerActivity.this, "Second type: "+mIService.getiTypeExercise(),
 					//        Toast.LENGTH_LONG).show();
 					if (mConnection.mIService.isAutoPause()) {

@@ -13,12 +13,11 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.utils.ValueFormatter;
+
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.glm.bean.ExerciseManipulate;
 import com.glm.bean.WatchPoint;
 
-
-import java.text.AttributedCharacterIterator;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -73,7 +72,7 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
     private void setALTCategory() {
         DecimalFormat mFormat = new DecimalFormat("###.###");
 
-        setDescription("");
+        //setDescription("");
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -97,7 +96,7 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
         xAxis.setTypeface(mTf);
         xAxis.setTextSize(9f);
         xAxis.setDrawGridLines(false);
-        xAxis.setSpaceBetweenLabels(2);
+        //xAxis.setSpaceBetweenLabels(2);
 
         ValueFormatter custom = new GlmValueFormatter(true);
 
@@ -116,7 +115,7 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
         rightAxis.setSpaceTop(15f);
 
         Legend l = getLegend();
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+        //l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
         l.setForm(Legend.LegendForm.SQUARE);
         l.setFormSize(9f);
         l.setTextSize(11f);
@@ -143,23 +142,30 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
             //Log.v(this.getClass().getCanonicalName(),"Add to Series Distance: "+Math.round(aWatchPoint.get(i).getdDistance())+" Alt:"+aWatchPoint.get(i).getdAlt());
             //oSerie.add(Math.round(aWatchPoint.get(i).getdDistance()),aWatchPoint.get(i).getdAlt());
             xVals.add(mFormat.format(aWatchPoint.get(i).getdDistance()));
-            yVals1.add(new Entry((float) aWatchPoint.get(i).getdAlt(),i));
+            yVals1.add(new Entry(i,(float) aWatchPoint.get(i).getdAlt()));
         }
         //oSerie.add(Math.round(aWatchPoint.get(aWatchPoint.size()-1).getdDistance()),
         //        aWatchPoint.get(aWatchPoint.size()-1).getdAlt());
         //dataset.addSeries(oSerie);
-
+        if(iWPSize<=0) return;
         LineDataSet set1 = new LineDataSet(yVals1, "ALT");
 
         set1.enableDashedLine(10f, 5f, 0f);
         set1.setColor(Color.BLACK);
         set1.setCircleColor(Color.BLACK);
-        set1.setLineWidth(1f);
-        set1.setCircleSize(0f);
+        set1.setLineWidth(2f);
+        set1.setCircleRadius(0f);
         set1.setDrawCircleHole(false);
         set1.setValueTextSize(9f);
         set1.setFillAlpha(65);
+
         set1.setFillColor(Color.BLACK);
+        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set1.setCubicIntensity(0.2f);
+        set1.setDrawFilled(true);
+        set1.setDrawCircles(false);
+        set1.setLineWidth(1.8f);
+        set1.setCircleRadius(4f);
 //        set1.setDrawFilled(true);
         // set1.setShader(new LinearGradient(0, 0, 0, mChart.getHeight(),
         // Color.BLACK, Color.WHITE, Shader.TileMode.MIRROR));
@@ -168,11 +174,11 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
         dataSets.add(set1); // add the datasets
 
         // create a data object with the datasets
-        LineData data = new LineData(xVals, dataSets);
-
+		//LineData data = new LineData(xVals, dataSets);
+		LineData data = new LineData(set1);
         setData(data);
 
-        animateX(2500, Easing.EasingOption.EaseInOutQuart);
+        animateX(2500, Easing.EaseInOutQuart);
 //        mChart.invalidate();
 
         // get the legend (only possible after setting data)
@@ -185,7 +191,7 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
 
     private void setPaceCategory() {
         DecimalFormat mFormat = new DecimalFormat("###.###");
-        setDescription("");
+        //setDescription("");
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -207,7 +213,7 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
         xAxis.setTypeface(mTf);
         xAxis.setTextSize(9f);
         xAxis.setDrawGridLines(false);
-        xAxis.setSpaceBetweenLabels(2);
+        //xAxis.setSpaceBetweenLabels(2);
 
         ValueFormatter custom = new GlmValueFormatter(true);
 
@@ -226,7 +232,7 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
         rightAxis.setSpaceTop(15f);
 
         Legend l = getLegend();
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+        //l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
         l.setForm(Legend.LegendForm.SQUARE);
         l.setFormSize(9f);
         l.setTextSize(11f);
@@ -248,23 +254,30 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
             //Log.v(this.getClass().getCanonicalName(),"Add to Series Distance: "+Math.round(aWatchPoint.get(i).getdDistance())+" Pace:"+aWatchPoint.get(i).getdPace());
             //oSerie.add(Math.round(aWatchPoint.get(i).getdDistance()),aWatchPoint.get(i).getdPace());
             xVals.add(mFormat.format(aWatchPoint.get(i).getdDistance()));
-            yVals1.add(new Entry((float) aWatchPoint.get(i).getdPace(),i));
+            yVals1.add(new Entry(i,(float) aWatchPoint.get(i).getdPace()));
         }
         //oSerie.add(Math.round(aWatchPoint.get(aWatchPoint.size()-1).getdDistance()),
         //        aWatchPoint.get(aWatchPoint.size()-1).getdPace());
         //dataset.addSeries(oSerie);
-
+        if(iWPSize<=0) return;
         LineDataSet set1 = new LineDataSet(yVals1, "Pace");
 
         set1.enableDashedLine(10f, 5f, 0f);
         set1.setColor(Color.BLACK);
         set1.setCircleColor(Color.BLACK);
-        set1.setLineWidth(1f);
-        set1.setCircleSize(0f);
+        set1.setLineWidth(2f);
+        set1.setCircleRadius(0f);
         set1.setDrawCircleHole(false);
         set1.setValueTextSize(9f);
         set1.setFillAlpha(65);
+
         set1.setFillColor(Color.BLACK);
+        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set1.setCubicIntensity(0.2f);
+        set1.setDrawFilled(true);
+        set1.setDrawCircles(false);
+        set1.setLineWidth(1.8f);
+        set1.setCircleRadius(4f);
 //        set1.setDrawFilled(true);
         // set1.setShader(new LinearGradient(0, 0, 0, mChart.getHeight(),
         // Color.BLACK, Color.WHITE, Shader.TileMode.MIRROR));
@@ -273,11 +286,12 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
         dataSets.add(set1); // add the datasets
 
         // create a data object with the datasets
-        LineData data = new LineData(xVals, dataSets);
+		//LineData data = new LineData(xVals, dataSets);
+		LineData data = new LineData(set1);
 
         setData(data);
 
-        animateX(2500, Easing.EasingOption.EaseInOutQuart);
+        animateX(2500, Easing.EaseInOutQuart);
 //        mChart.invalidate();
 
         // get the legend (only possible after setting data)
@@ -290,7 +304,7 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
 
     private void setBPMCategory() {
         DecimalFormat mFormat = new DecimalFormat("###.###");
-        setDescription("");
+        //setDescription("");
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -312,7 +326,7 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
         xAxis.setTypeface(mTf);
         xAxis.setTextSize(9f);
         xAxis.setDrawGridLines(false);
-        xAxis.setSpaceBetweenLabels(2);
+        //xAxis.setSpaceBetweenLabels(2);
 
         ValueFormatter custom = new GlmValueFormatter(true);
 
@@ -331,7 +345,7 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
         rightAxis.setSpaceTop(15f);
 
         Legend l = getLegend();
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+        //l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
         l.setForm(Legend.LegendForm.SQUARE);
         l.setFormSize(9f);
         l.setTextSize(11f);
@@ -353,23 +367,28 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
             //Log.v(this.getClass().getCanonicalName(),"Add to Series Distance: "+Math.round(aWatchPoint.get(i).getdDistance())+" Pace:"+aWatchPoint.get(i).getdPace());
             //oSerie.add(Math.round(aWatchPoint.get(i).getdDistance()),aWatchPoint.get(i).getdPace());
             xVals.add(mFormat.format(aWatchPoint.get(i).getdDistance()));
-            yVals1.add(new Entry((float) aWatchPoint.get(i).getBpm(),i));
+            yVals1.add(new Entry(i,(float) aWatchPoint.get(i).getBpm()));
         }
         //oSerie.add(Math.round(aWatchPoint.get(aWatchPoint.size()-1).getdDistance()),
         //        aWatchPoint.get(aWatchPoint.size()-1).getdPace());
         //dataset.addSeries(oSerie);
-
+        if(iWPSize<=0) return;
         LineDataSet set1 = new LineDataSet(yVals1, "Bpm");
 
         set1.enableDashedLine(10f, 5f, 0f);
         set1.setColor(Color.BLACK);
         set1.setCircleColor(Color.BLACK);
-        set1.setLineWidth(1f);
-        set1.setCircleSize(0f);
+        set1.setLineWidth(2f);
+        set1.setCircleRadius(0f);
         set1.setDrawCircleHole(false);
         set1.setValueTextSize(9f);
-        set1.setFillAlpha(65);
         set1.setFillColor(Color.BLACK);
+        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set1.setCubicIntensity(0.2f);
+        set1.setDrawFilled(true);
+        set1.setDrawCircles(false);
+        set1.setLineWidth(1.8f);
+        set1.setCircleRadius(4f);
 //        set1.setDrawFilled(true);
         // set1.setShader(new LinearGradient(0, 0, 0, mChart.getHeight(),
         // Color.BLACK, Color.WHITE, Shader.TileMode.MIRROR));
@@ -378,11 +397,12 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
         dataSets.add(set1); // add the datasets
 
         // create a data object with the datasets
-        LineData data = new LineData(xVals, dataSets);
+		//LineData data = new LineData(xVals, dataSets);
+		LineData data = new LineData(set1);
 
         setData(data);
 
-        animateX(2500, Easing.EasingOption.EaseInOutQuart);
+        animateX(2500, Easing.EaseInOutQuart);
 //        mChart.invalidate();
 
         // get the legend (only possible after setting data)
@@ -395,7 +415,7 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
 
     private void setWeightCategory() {
         DecimalFormat mFormat = new DecimalFormat("###.###");
-        setDescription("");
+        //setDescription("");
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -417,7 +437,7 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
         xAxis.setTypeface(mTf);
         xAxis.setTextSize(9f);
         xAxis.setDrawGridLines(false);
-        xAxis.setSpaceBetweenLabels(2);
+        //xAxis.setSpaceBetweenLabels(2);
 
         //ValueFormatter custom = new MyValueFormatter();
 
@@ -436,7 +456,7 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
         rightAxis.setSpaceTop(15f);
 
         Legend l = getLegend();
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+        //l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
         l.setForm(Legend.LegendForm.SQUARE);
         l.setFormSize(9f);
         l.setTextSize(11f);
@@ -459,23 +479,28 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
             //oSerie.add(Math.round(aWatchPoint.get(i).getdDistance()),aWatchPoint.get(i).getdPace());
 
             xVals.add(mFormat.format(aWatchPoint.get(i).getdDistance()));
-            yVals1.add(new Entry((float) aWatchPoint.get(i).getBpm(),i));
+            yVals1.add(new Entry(i,(float) aWatchPoint.get(i).getBpm()));
         }
         //oSerie.add(Math.round(aWatchPoint.get(aWatchPoint.size()-1).getdDistance()),
         //        aWatchPoint.get(aWatchPoint.size()-1).getdPace());
         //dataset.addSeries(oSerie);
-
+        if(iWPSize<=0) return;
         LineDataSet set1 = new LineDataSet(yVals1, "Weight");
 
         set1.enableDashedLine(10f, 5f, 0f);
         set1.setColor(Color.BLACK);
         set1.setCircleColor(Color.BLACK);
-        set1.setLineWidth(1f);
-        set1.setCircleSize(0f);
+        set1.setLineWidth(2f);
+        set1.setCircleRadius(0f);
         set1.setDrawCircleHole(false);
         set1.setValueTextSize(9f);
-        set1.setFillAlpha(65);
         set1.setFillColor(Color.BLACK);
+        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set1.setCubicIntensity(0.2f);
+        set1.setDrawFilled(true);
+        set1.setDrawCircles(false);
+        set1.setLineWidth(1.8f);
+        set1.setCircleRadius(4f);
 //        set1.setDrawFilled(true);
         // set1.setShader(new LinearGradient(0, 0, 0, mChart.getHeight(),
         // Color.BLACK, Color.WHITE, Shader.TileMode.MIRROR));
@@ -484,11 +509,11 @@ public class NewLineChart extends com.github.mikephil.charting.charts.LineChart{
         dataSets.add(set1); // add the datasets
 
         // create a data object with the datasets
-        LineData data = new LineData(xVals, dataSets);
-
+		//LineData data = new LineData(xVals, dataSets);
+		LineData data = new LineData(set1);
         setData(data);
 
-        animateX(2500, Easing.EasingOption.EaseInOutQuart);
+        animateX(2500, Easing.EaseInOutQuart);
 //        mChart.invalidate();
 
         // get the legend (only possible after setting data)

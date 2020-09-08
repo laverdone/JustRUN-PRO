@@ -6,8 +6,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -145,7 +145,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",MODE_PRIVATE);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 							editPrefs.putBoolean("maps", ((CheckBox) v).isChecked());
 							editPrefs.commit();
@@ -162,7 +162,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",MODE_PRIVATE);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 							editPrefs.putBoolean("notification", ((CheckBox) v).isChecked());
 							editPrefs.commit();
@@ -179,7 +179,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",MODE_PRIVATE);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 							editPrefs.putBoolean("music", ((CheckBox) v).isChecked());
 							editPrefs.commit();
@@ -191,7 +191,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 							@Override
 							public void run() {
-								SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+								SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",MODE_PRIVATE);
 								SharedPreferences.Editor editPrefs = oPrefs.edit();
 								editPrefs.putBoolean("externalPlayer", ((CheckBox) v).isChecked());
 								editPrefs.commit();
@@ -203,7 +203,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 							@Override
 							public void run() {
-								SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+								SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",MODE_PRIVATE);
 								SharedPreferences.Editor editPrefs = oPrefs.edit();
 								editPrefs.putBoolean("externalPlayer", false);
 								editPrefs.commit();
@@ -220,7 +220,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",MODE_PRIVATE);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 							editPrefs.putBoolean("externalPlayer", ((CheckBox) v).isChecked());
 							editPrefs.commit();
@@ -251,7 +251,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 							editPrefs.putInt("autopause_time", iPos);
 							editPrefs.commit();
@@ -284,7 +284,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 							editPrefs.putInt("units", iPos);
 							editPrefs.commit();
@@ -310,7 +310,7 @@ public class PreferencesActivity extends AppCompatActivity {
 					AsyncTask.execute(new Runnable() {
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 							editPrefs.putBoolean("track_exercise", ((CheckBox) v).isChecked());
 							editPrefs.commit();
@@ -327,7 +327,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 							editPrefs.putBoolean("run_goal", ((CheckBox) v).isChecked());
 							editPrefs.commit();
@@ -344,7 +344,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 							editPrefs.putBoolean("use_cardio", ((CheckBox) v).isChecked());
 							editPrefs.commit();
@@ -381,7 +381,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 								@Override
 								public void run() {
-									SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+									SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
 									SharedPreferences.Editor editPrefs = oPrefs.edit();
 									editPrefs.putInt("motivator_time", iPos);
 									editPrefs.commit();
@@ -414,7 +414,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 							editPrefs.putBoolean("motivator", ((CheckBox) v).isChecked());
 							editPrefs.commit();
@@ -432,7 +432,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 							editPrefs.putBoolean("say_distance", ((CheckBox) v).isChecked());
 							editPrefs.commit();
@@ -449,7 +449,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 							editPrefs.putBoolean("say_time", ((CheckBox) v).isChecked());
 							editPrefs.commit();
@@ -466,7 +466,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 							editPrefs.putBoolean("say_kalories", ((CheckBox) v).isChecked());
 							editPrefs.commit();
@@ -482,7 +482,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 							editPrefs.putBoolean("say_pace", ((CheckBox) v).isChecked());
 							editPrefs.commit();
@@ -499,7 +499,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
 						@Override
 						public void run() {
-							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_ENABLE_WRITE_AHEAD_LOGGING);
+							SharedPreferences oPrefs = mContext.getSharedPreferences("aTrainer",Context.MODE_PRIVATE);
 							SharedPreferences.Editor editPrefs = oPrefs.edit();
 							editPrefs.putBoolean("say_inclination", ((CheckBox) v).isChecked());
 							editPrefs.commit();
@@ -632,29 +632,30 @@ public class PreferencesActivity extends AppCompatActivity {
 					olblWeight.setText(olblWeight.getText()+" (Lbs)");
 					olblHeight.setText(olblHeight.getText()+" (in)");
 				}
-			}
+				oTxtWeight.setOnKeyListener(new View.OnKeyListener() {
 
-			oTxtWeight.setOnKeyListener(new View.OnKeyListener() {
+					@Override
+					public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-				@Override
-				public boolean onKey(View v, int keyCode, KeyEvent event) {
+						return false;
+					}
+				});
 
-					return false;
+				oTxtWeight.setText(String.valueOf(oConfigTrainer.getiWeight()));
+				oTxtHeight.setText(String.valueOf(oConfigTrainer.getiHeight()));
+				oTxtAge.setText(String.valueOf(oConfigTrainer.getiAge()));
+
+				oEdtNick.setText(oConfigTrainer.getsNick());
+				oEdtName.setText(oConfigTrainer.getsName());
+
+				if(oConfigTrainer.getsGender().compareToIgnoreCase("M")==0){
+					RBMale.setChecked(true);
+				}else{
+					RBFemale.setChecked(true);
 				}
-			});
-
-			oTxtWeight.setText(String.valueOf(oConfigTrainer.getiWeight()));
-			oTxtHeight.setText(String.valueOf(oConfigTrainer.getiHeight()));
-			oTxtAge.setText(String.valueOf(oConfigTrainer.getiAge()));
-
-			oEdtNick.setText(oConfigTrainer.getsNick());
-			oEdtName.setText(oConfigTrainer.getsName());
-
-			if(oConfigTrainer.getsGender().compareToIgnoreCase("M")==0){
-				RBMale.setChecked(true);
-			}else{
-				RBFemale.setChecked(true);
 			}
+
+
 			/*if(isUserExist){
 				btnSave.setVisibility(View.GONE);
 			}else{

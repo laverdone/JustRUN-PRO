@@ -183,4 +183,13 @@
 	<string name="export_tcx">Export TCX</string>
 	<string name="backup_desc">Seguro de crear una copia de seguridad?</string>
 	<string name="restore_desc">Seguro de restaurar la copia de seguridad?</string>
+    <string name="only_gpx">Sólo se permiten archivos .GPX!</string>
+    <string name="use_as_opponent">Utilizar como oponente</string>
+	<string name="faster_then_opponent">Eres más rápido que tu oponente, sigue así.</string>
+	<string name="slower_then_opponent">Eres más lento que tu oponente, aumenta tu paz.</string>
+    <string name="unable_to_use_as_opponent">No se puede usar como oponente</string>
+    <string name="meters">metros</string>
+	<string name="feet">pies</string>
+	<string name="behind">detrás de tu oponente</string>
+	<string name="ahead">adelante tu oponente</string>
 </resources>

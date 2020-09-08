@@ -7,7 +7,7 @@
     android:id="@+id/main_layout"
     android:background="@drawable/background_color"
     android:gravity="right">
-	<android.support.v7.widget.Toolbar
+	<androidx.appcompat.widget.Toolbar
 		android:id="@+id/my_toolbar"
 		android:layout_width="match_parent"
 		android:layout_height="?attr/actionBarSize"
@@ -27,14 +27,15 @@
 		android:paddingRight="@dimen/activity_horizontal_margin"
 		android:background="@drawable/background_color"
 		android:clickable="true" android:gravity="right">
-		<android.support.v7.widget.CardView
+
+
+		<androidx.cardview.widget.CardView
+			xmlns:android="http://schemas.android.com/apk/res/android"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			xmlns:app="http://schemas.android.com/apk/res-auto"
-			android:elevation="@dimen/cardview_default_elevation"
-			android:background="@drawable/abc_popup_background_mtrl_mult"
+			android:layout_height="match_parent">
+		   <!--android:elevation="@dimen/cardview_default_elevation"
 			app:cardCornerRadius="4dp"
-			android:layout_margin="5dp">
+			android:layout_margin="5dp"-->
 
 	        <ScrollView android:id="@+id/scrollView" 
 	            android:layout_width="match_parent" 
@@ -82,7 +83,7 @@
 								android:layout_height="1dp"
 								android:layout_marginTop="8dp"
 								android:layout_marginBottom="8dp"
-								android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+								android:background="@color/black_overlay" />
 						</LinearLayout>
 
 						<TextView
@@ -112,7 +113,7 @@
 									android:layout_height="1dp"
 									android:layout_marginTop="8dp"
 									android:layout_marginBottom="8dp"
-									android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+									android:background="@color/black_overlay" />
 							</LinearLayout>
 	
 
@@ -148,7 +149,7 @@
 								android:layout_height="1dp"
 								android:layout_marginTop="8dp"
 								android:layout_marginBottom="8dp"
-								android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+								android:background="@color/black_overlay" />
 						</LinearLayout>
 
 									<TextView
@@ -180,7 +181,7 @@
 								android:layout_height="1dp"
 								android:layout_marginTop="8dp"
 								android:layout_marginBottom="8dp"
-								android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+								android:background="@color/black_overlay" />
 						</LinearLayout>
 
 						<TextView
@@ -262,6 +263,6 @@
 					<!-- Dettaglio Fine Step-->
 		        </LinearLayout>
 		  </ScrollView>
-		</android.support.v7.widget.CardView>
+		</androidx.cardview.widget.CardView>
 	</RelativeLayout>
 </LinearLayout>	

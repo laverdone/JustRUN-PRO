@@ -182,4 +182,13 @@
 	<string name="export_tcx">Export TCX</string>
 	<string name="backup_desc">[バックアップを作成しますか？</string>
 	<string name="restore_desc">あなたは、バックアップをリストアしますか？</string>
+    <string name="only_gpx">.GPXファイルのみが許可されています。</string>
+    <string name="use_as_opponent">対戦相手として使用</string>
+	<string name="faster_then_opponent">あなたはあなたの対戦相手より速いです、それを続けてください</string>
+	<string name="slower_then_opponent">あなたはあなたの対戦相手より遅いです、あなたの平和を増やします</string>
+    <string name="unable_to_use_as_opponent">対戦相手として使用できない</string>
+    <string name="meters">メートル</string>
+	<string name="feet">足</string>
+	<string name="behind">相手の後ろに</string>
+	<string name="ahead">相手より先</string>
 </resources>

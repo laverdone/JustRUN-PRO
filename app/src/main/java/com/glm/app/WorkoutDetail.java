@@ -3,18 +3,19 @@ package com.glm.app;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+//import android.support.design.widget.TabLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
 import com.glm.app.fragment.WorkoutDetailFragment;
 import com.glm.app.fragment.WorkoutGraphFragment;
@@ -26,23 +27,25 @@ import com.glm.bean.ExerciseManipulate;
 import com.glm.bean.Music;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.material.tabs.TabLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import static com.glm.trainer.R.animator.*;
-
 public class WorkoutDetail extends AppCompatActivity {
 	private ConfigTrainer oConfigTrainer;
 	
 	/**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide
+	 * The {@link PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a
-	 * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
+	 * {@link FragmentPagerAdapter} derivative, which
 	 * will keep every loaded fragment in memory. If this becomes too memory
 	 * intensive, it may be best to switch to a
-	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+	 * {@link FragmentStatePagerAdapter}.
 	 */
 	SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -72,6 +75,12 @@ public class WorkoutDetail extends AppCompatActivity {
 		}        
 
 		setContentView(R.layout.activity_new_main);
+
+		MobileAds.initialize(this, new OnInitializationCompleteListener() {
+			@Override
+			public void onInitializationComplete(InitializationStatus initializationStatus) {
+			}
+		});
 
 		oWaitforLoad=ProgressDialog.show(this,this.getString(R.string.app_name_buy),this.getString(R.string.please_wait),true,true,null);
 

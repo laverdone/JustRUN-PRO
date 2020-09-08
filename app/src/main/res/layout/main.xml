@@ -5,7 +5,7 @@
 	android:orientation="vertical"
 	android:layout_margin="0dip"
 	android:id="@+id/ChangeLogMainLayout">
-	<android.support.v7.widget.Toolbar
+	<!--<android.support.v7.widget.Toolbar
 		android:id="@+id/my_toolbar"
 		android:layout_width="match_parent"
 		android:layout_height="?attr/actionBarSize"
@@ -14,7 +14,7 @@
 		android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
 		popupTheme="@style/ThemeOverlay.AppCompat.Light"
 		titleTextAppearance="@style/Toolbar.TitleText"
-		android:title="@string/app_name_pro"/>
+		android:title="@string/app_name_pro"/>-->
 	<ImageView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"

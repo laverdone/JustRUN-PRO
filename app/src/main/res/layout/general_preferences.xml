@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/background_color">
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -60,7 +60,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="4dp"
-                android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+                android:background="@color/black_overlay"/>
 
             <RelativeLayout
                 android:id="@+id/RelativeLayout03"
@@ -99,7 +99,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="4dp"
-                android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+                android:background="@color/black_overlay" />
 
             <RelativeLayout
                 android:id="@+id/RelativeLayout04"
@@ -135,7 +135,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="4dp"
-                android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+                android:background="@color/black_overlay" />
 
             <RelativeLayout
                 android:id="@+id/RelativeLayout05"
@@ -171,7 +171,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="4dp"
-                android:background="@color/wallet_dim_foreground_disabled_holo_dark" />
+                android:background="@color/black_overlay" />
 
             <RelativeLayout
                 android:id="@+id/RelativeLayout06"

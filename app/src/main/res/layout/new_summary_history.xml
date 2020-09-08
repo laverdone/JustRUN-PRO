@@ -31,7 +31,7 @@
             android:layout_weight="1"
             android:orientation="vertical" >
             <!-- Dettaglio Graph Inizio -->
-            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="1dp" >
-                <android.support.v7.widget.Toolbar
+                <androidx.appcompat.widget.Toolbar
                     android:id="@+id/card_toolbar_Walking"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -90,12 +90,12 @@
                         android:layout_centerVertical="true" />
                 </RelativeLayout>
             </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
             <!-- Dettaglio Graph Inizio -->
             <!-- Separator -->
             <!-- Separator -->
             <!-- RUN -->
-            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -138,7 +138,7 @@
                         android:background="@drawable/circle"
                         android:src="@android:drawable/ic_menu_info_details" />
                 </RelativeLayout> -->
-                <android.support.v7.widget.Toolbar
+                <androidx.appcompat.widget.Toolbar
                     android:id="@+id/card_toolbar_running"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -168,7 +168,7 @@
                         android:layout_gravity="end"
                         android:layout_marginRight="20dp"
                         android:id="@+id/zoomRun"/>
-                </android.support.v7.widget.Toolbar>
+                </androidx.appcompat.widget.Toolbar>
                     <RelativeLayout
                         android:id="@+id/runGraph"
                         android:layout_width="match_parent"
@@ -274,13 +274,13 @@
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
             <!-- RUN -->
             <!-- Separator -->
             <!-- Separator -->
             <!-- WALK -->
 
-            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -293,7 +293,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
-                <android.support.v7.widget.Toolbar
+                <androidx.appcompat.widget.Toolbar
                     android:id="@+id/card_toolbar_walking"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -322,7 +322,7 @@
                         android:layout_gravity="end"
                         android:layout_marginRight="20dp"
                         android:id="@+id/zoomWalk"/>
-                </android.support.v7.widget.Toolbar>
+                </androidx.appcompat.widget.Toolbar>
                     <RelativeLayout
                         android:id="@+id/walkGraph"
                         android:layout_width="match_parent"
@@ -425,8 +425,8 @@
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
-            </android.support.v7.widget.CardView>
-            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -439,7 +439,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
-                <android.support.v7.widget.Toolbar
+                <androidx.appcompat.widget.Toolbar
                     android:id="@+id/card_toolbar_biking"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -468,7 +468,7 @@
                         android:layout_gravity="end"
                         android:layout_marginRight="20dp"
                         android:id="@+id/zoomBike"/>
-                </android.support.v7.widget.Toolbar>
+                </androidx.appcompat.widget.Toolbar>
                     <RelativeLayout
                         android:id="@+id/bikeGraph"
                         android:layout_width="match_parent"
@@ -572,7 +572,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >

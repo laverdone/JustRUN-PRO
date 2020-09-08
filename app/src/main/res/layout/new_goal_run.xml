@@ -6,7 +6,7 @@
 	android:id="@+id/GoalMainLayout" 	
 	android:background="@drawable/background_color"
 	android:gravity="right">
-	<android.support.v7.widget.CardView
+	<androidx.cardview.widget.CardView
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:elevation="@dimen/cardview_default_elevation"
@@ -150,5 +150,5 @@
 					</LinearLayout>
 				</ScrollView>
 			</RelativeLayout>
-	</android.support.v7.widget.CardView>
+	</androidx.cardview.widget.CardView>
 </LinearLayout>

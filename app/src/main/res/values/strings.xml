@@ -222,4 +222,14 @@
     <string name="banner_ad_unit_id_run" translatable="false">ca-app-pub-7615079230514788/8981648759</string>
     <string name="restore_desc">Are you sure to Retore the backup?</string>
     <string name="backup_desc">Are you sure to create a Backup?</string>
+    <string name="add_gpx_track" translatable="false">GPX</string>
+    <string name="only_gpx">Only .GPX file are permitted!</string>
+    <string name="slower_then_opponent">You are slower than your opponent, increase your pace</string>
+    <string name="faster_then_opponent">You are faster than your opponent,  keep it up</string>
+    <string name="use_as_opponent">Use as opponent</string>
+    <string name="unable_to_use_as_opponent">Unable to use as opponent</string>
+    <string name="meters">meters</string>
+    <string name="feet">feet</string>
+    <string name="behind">behind your opponent</string>
+    <string name="ahead">ahead your opponent</string>
 </resources>

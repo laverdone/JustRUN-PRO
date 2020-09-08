@@ -7,8 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
@@ -17,14 +15,16 @@ import android.os.Looper;
 import android.os.RemoteException;
 import android.os.StrictMode;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.NonNull;
+//import android.support.design.widget.TabLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
@@ -42,12 +42,16 @@ import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
 import com.glm.utils.Rate;
 import com.glm.utils.TrainerServiceConnection;
-import com.google.android.gcm.GCMRegistrar;
-import com.google.android.gms.drive.Permission;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.material.tabs.TabLayout;
+//import com.google.android.gcm.GCMRegistrar;
+//import com.google.android.gms.drive.Permission;
 
 import java.util.Locale;
 
-import static com.glm.trainer.R.animator.*;
+//import static com.glm.trainer.R.animator.*;
 
 public class NewMainActivity extends FragmentActivity {
 	public ConfigTrainer oConfigTrainer=null;
@@ -66,12 +70,12 @@ public class NewMainActivity extends FragmentActivity {
         };
 	
     /**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide
+	 * The {@link PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a
-	 * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
+	 * {@link FragmentPagerAdapter} derivative, which
 	 * will keep every loaded fragment in memory. If this becomes too memory
 	 * intensive, it may be best to switch to a
-	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+	 * {@link FragmentStatePagerAdapter}.
 	 */
 	SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -93,6 +97,12 @@ public class NewMainActivity extends FragmentActivity {
 		Intent intent = getIntent();
 		mSectionFocus=intent.getIntExtra("sectionFocus",0);
 		mContext=this;
+
+		MobileAds.initialize(this, new OnInitializationCompleteListener() {
+			@Override
+			public void onInitializationComplete(InitializationStatus initializationStatus) {
+			}
+		});
 
 		if(mConnection==null) mConnection = new TrainerServiceConnection(this,this.getClass().getCanonicalName());
         if (false) {
@@ -117,54 +127,23 @@ public class NewMainActivity extends FragmentActivity {
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
 
-                // Should we show an explanation?
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION)) {
+				ActivityCompat.requestPermissions(this,
+						new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE},
+						ConstApp.PERMISSION_WRITE_EXTERNAL_STORAGE_CODE);
 
-                    // Show an explanation to the user *asynchronously* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
 
-                } else {
-
-                    // No explanation needed, we can request the permission.
-
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-							ConstApp.PERMISSION_LOCATION_REQUEST_CODE);
-
-                    // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                    // app-defined int constant. The callback method gets the
-                    // result of the request.
                 }
-            }
+
 
 			if (ActivityCompat.checkSelfPermission(mContext,
 					Manifest.permission.WRITE_EXTERNAL_STORAGE)
 					!= PackageManager.PERMISSION_GRANTED) {
 
-				// Should we show an explanation?
-				if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-						Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+				ActivityCompat.requestPermissions(this,
+						new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE},
+						ConstApp.PERMISSION_WRITE_EXTERNAL_STORAGE_CODE);
 
-					// Show an explanation to the user *asynchronously* -- don't block
-					// this thread waiting for the user's response! After the user
-					// sees the explanation, try again to request the permission.
-
-				} else {
-
-					// No explanation needed, we can request the permission.
-
-					ActivityCompat.requestPermissions(this,
-							new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-							ConstApp.PERMISSION_WRITE_EXTERNAL_STORAGE_CODE);
-
-					// MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-					// app-defined int constant. The callback method gets the
-					// result of the request.
-				}
 			}
-
 		}
 		/*Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

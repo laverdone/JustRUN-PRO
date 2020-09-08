@@ -1,7 +1,9 @@
 package com.glm.services;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -11,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,14 +27,16 @@ import android.os.Looper;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.provider.MediaStore;
-import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.glm.app.ConstApp;
-import com.glm.app.stopwatch.WorkOutActivity;
 import com.glm.bean.CardioDevice;
+import com.glm.bean.ChallengeExercise;
 import com.glm.bean.ConfigTrainer;
 import com.glm.app.MainActivity;
 import com.glm.trainer.R;
@@ -263,6 +268,8 @@ public class ExerciseService extends Service implements LocationListener, Accele
 
 	private Timer tCardioTimer;
 
+	/**contiene il GPX*/
+	private ChallengeExercise mChallengeExercise=null;
 	/**
 	 * Gestione delle chiamate in arrivo
 	 * */
@@ -300,6 +307,8 @@ public class ExerciseService extends Service implements LocationListener, Accele
 				Logger.log("Create  oBTHelper Service for Trainer Services");
 		}
 
+		startForeground(Integer.parseInt(sPid), showNotification(R.drawable.icon_pro, getText(R.string.app_name_buy)));
+
 		//super.onCreate();
 		/*oBackupManager.requestRestore(new RestoreObserver() {
             public void restoreFinished(int error) {
@@ -307,8 +316,6 @@ public class ExerciseService extends Service implements LocationListener, Accele
                 //Log.v(this.getClass().getCanonicalName(), "Restore finished, error = " + error);
             }
         });*/
-
-
 	}
 
 	/**
@@ -334,6 +341,9 @@ public class ExerciseService extends Service implements LocationListener, Accele
 
 		SimpleDateFormat sdf = new SimpleDateFormat("ssSSS");
 		sPid = sdf.format(new Date());
+
+		startForeground(Integer.parseInt(sPid), showNotification(R.drawable.icon_pro, getText(R.string.app_name_buy)));
+
 		if (ConstApp.IS_DEBUG)
 			Logger.log("INFO - startGPSFix Service for Trainer Services");
 		//Log.i("Start Service ExerciseSevice", "OK");
@@ -655,7 +665,8 @@ public class ExerciseService extends Service implements LocationListener, Accele
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		//Log.i("GPSLoggerService.onProviderDisabled().","onProviderDisabled");
+		//Log.i("GPSLoggerService.onProviderDisabled().","onProviderDi
+		// sabled");
 		ExerciseService.bStatusGPS = false;
 		//Se disabilitano il GPS fermo il trainer
 		stopExerciseAsService();
@@ -709,11 +720,11 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		final String sDistanceToSpeech = String.valueOf(
 				ExerciseUtils.getTotalDistanceFormattated(ExerciseService.dCurrentDistance, oConfigTrainer, false));
 		if (!isInCalling) {
-			if (oConfigTrainer.isbPlayMusic()) {
+			/*if (oConfigTrainer.isbPlayMusic()) {
 				//Abbasso il volume della musica
 				if (oMediaPlayer != null) oMediaPlayer.pause();
 
-			}
+			}*/
 
 			ExerciseService.sCurrentCalories = ExerciseUtils.getKaloriesBurn(oConfigTrainer, ExerciseService.dCurrentDistance);
 			String sTimeToSpeech = mContext.getString(R.string.time) + ExerciseUtils.getTimeHHMMForSpeech(ExerciseService.lCurrentTime, mContext);
@@ -740,8 +751,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 
 			if (bSpeech) oVoiceSpeechTrainer.sayDistanza(mContext, oConfigTrainer,
 					sDistanceToSpeech, oMediaPlayer, sTimeToSpeech, sKaloriesToSpeech,
-					ExerciseService.sPace + sMinutePerUnit, ExerciseService.iInclication + "%", iHeartRate);
-
+					ExerciseService.sPace + sMinutePerUnit, ExerciseService.iInclication + "%", iHeartRate,mChallengeExercise,ExerciseService.lCurrentTime,ExerciseService.dCurrentDistance);
 
 			if (iTypeExercise == ConstApp.TYPE_RUN) {
 				if (oConfigTrainer.getsGender().toLowerCase().equals("f")) {
@@ -902,17 +912,42 @@ public class ExerciseService extends Service implements LocationListener, Accele
         /*notification = new Notification(iIcon, text,
                 System.currentTimeMillis());*/
 
+		Intent notificationIntent = new Intent(this, MainActivity.class);
+		notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
 		// The PendingIntent to launch our activity if the user selects this notification Controller
 		contentIntent = PendingIntent.getActivity(this, 0,
-				new Intent(this, MainActivity.class), 0);
+				notificationIntent, 0);
 
-		notification = new Notification.Builder(mContext)
-				.setContentTitle(text)
-				.setContentText(charSequence)
-				.setSmallIcon(iIcon).setContentIntent(contentIntent)
-				.build();
+
 
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+			String ChannelID= createChannel(mNotificationManager);
+			notification = new NotificationCompat.Builder(mContext,ChannelID)
+					.setColor
+							(ContextCompat.getColor(this, R.color.black_overlay))
+					.setTicker("Running")
+					.setContentTitle(text)
+					.setContentText(charSequence)
+					.setSmallIcon(iIcon).setContentIntent(contentIntent)
+					.setOngoing(true)
+					.build();
+		}else{
+			notification = new NotificationCompat.Builder(mContext)
+					.setColor
+							(ContextCompat.getColor(this, R.color.black_overlay))
+					.setTicker("Running")
+					.setContentTitle(text)
+					.setContentText(charSequence)
+					.setSmallIcon(iIcon).setContentIntent(contentIntent)
+					.setOngoing(true)
+					.build();
+		}
+
 		mNotificationManager.notify(Integer.parseInt(sPid), notification);
 
 
@@ -925,6 +960,20 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		return notification;
 	}
 
+
+	@TargetApi(26)
+	private String createChannel(NotificationManager notificationManager) {
+		String name = getString(R.string.app_name_pro);
+		String description = getString(R.string.show_notification);
+		int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+		NotificationChannel mChannel = new NotificationChannel(name, name, importance);
+		mChannel.setDescription(description);
+		mChannel.enableLights(true);
+		mChannel.setLightColor(Color.BLUE);
+		notificationManager.createNotificationChannel(mChannel);
+		return mChannel.getId();
+	}
 	@Override
 	public void onGpsStatusChanged(int event) {
 		switch (event) {
@@ -1452,6 +1501,11 @@ public class ExerciseService extends Service implements LocationListener, Accele
     @Override
     public IBinder onBind(Intent intent) {
     	Log.i(this.getClass().getCanonicalName(), "onBind->Services");
+
+		if(intent.getExtras()!=null){
+			mChallengeExercise=(ChallengeExercise) intent.getParcelableExtra("challengeexercise");
+			Log.i(this.getClass().getCanonicalName(), "with opponent");
+		}
 		if(ConstApp.IS_DEBUG) Logger.log("INFO - onBind "+ intent.getPackage()+ " as services");
 		//startGPSFix();
 		return mBinder;

@@ -229,17 +229,18 @@
 		            android:layout_width="match_parent"
 		            android:layout_height="113dp"
 		            android:orientation="horizontal" >
-		            <TextView
-		                android:id="@+id/txtTimeHHMM"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content"
-		                android:text="0:00"
-		                android:textColor="#000000"
-		                android:textSize="110sp"
-		                android:textStyle="bold"
-		                android:typeface="normal" 
-		                android:layout_alignParentBottom="true"
-		                android:layout_marginLeft="25dp"/>
+
+					<TextView
+						android:id="@+id/txtTimeHHMM"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_alignParentBottom="true"
+						android:layout_marginLeft="25dp"
+						android:text="0:00"
+						android:textColor="#000000"
+						android:textSize="100sp"
+						android:textStyle="bold"
+						android:typeface="normal" />
 		            <TextView
 		                android:id="@+id/txtTimeSSdd"
 		                android:layout_width="wrap_content"
@@ -309,12 +310,22 @@
 	              android:layout_width="wrap_content"
 	              android:layout_height="match_parent"
 	              android:layout_marginRight="0dp"
-	              android:layout_weight="0.97"
+
 	              android:background="@drawable/button_no_corners"
 	              android:text="@string/maps"
 	              android:textColor="#FEFEFE"
 	              android:textSize="15sp" />
-	          <ImageButton
+
+			  <Button
+				  android:id="@+id/btnAddGPX"
+				  android:layout_width="wrap_content"
+				  android:layout_height="match_parent"
+				  android:textSize="15sp"
+				  android:textColor="#FEFEFE"
+				  android:text="@string/add_gpx_track"
+				  android:background="@drawable/button_no_corners"/>
+
+			  <ImageButton
 	              android:id="@+id/btnSkipTrack"
 	              android:layout_width="wrap_content"
 	              android:layout_height="wrap_content"

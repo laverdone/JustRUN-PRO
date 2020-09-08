@@ -466,9 +466,9 @@ public class Database {
 						if(oInput.exists())
 							CryptoUtils.encrypt(ConstApp.CRYPTO_KEY,oInput,oOutput);
 
-						/*fis = new FileInputStream(sourceFile);
+					/*	fis = new FileInputStream(sourceFile);
 
-						fos = new FileOutputStream(oRoot.getAbsolutePath()+"/"+ConstApp.FOLDER_PERSONAL_TRAINER+"/database.db");
+						fos = new FileOutputStream(oRoot.getAbsolutePath()+"/"+ConstApp.FOLDER_PERSONAL_TRAINER+"/database_clear.db");
 						byte[] buffer = new byte[1024];
 						int noOfBytes = 0;
 						System.out.println("Copying file using streams");

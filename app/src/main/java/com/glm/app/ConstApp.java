@@ -40,4 +40,5 @@ public class ConstApp {
     public static final int PERMISSION_LOCATION_REQUEST_CODE = 1;
 
     public static final int PERMISSION_WRITE_EXTERNAL_STORAGE_CODE = 2;
+	public static final int READ_REQUEST_CODE = 999;
 }

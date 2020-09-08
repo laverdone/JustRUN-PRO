@@ -1,13 +1,14 @@
 package com.glm.chart;
 
-import com.github.mikephil.charting.utils.ValueFormatter;
+
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.text.DecimalFormat;
 
 /**
  * Created by gianluca on 31/08/15.
  */
-public class GlmValueFormatter implements ValueFormatter{
+public class GlmValueFormatter extends ValueFormatter {
 
 
         private DecimalFormat mFormat;

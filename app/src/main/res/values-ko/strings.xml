@@ -184,4 +184,13 @@
 	<string name="export_tcx">Export TCX</string>
 	<string name="backup_desc">당신은 백업을 생성 하시겠습니까?</string>
 	<string name="restore_desc">당신은 백업을 복원 하시겠습니까?</string>
+    <string name="only_gpx">.GPX 파일 만 허용됩니다!</string>
+    <string name="use_as_opponent">상대방으로 사용</string>
+	<string name="faster_then_opponent">너는 너의 상대보다 빠르다.</string>
+	<string name="slower_then_opponent">너는 너의 상대보다 느리고, 너의 평화를 증가시킨다.</string>
+    <string name="unable_to_use_as_opponent">상대방으로 사용할 수 없습니다.</string>
+    <string name="meters">미터</string>
+	<string name="feet">피트</string>
+	<string name="behind">너의 상대 뒤에</string>
+	<string name="ahead">너의 상대를 앞 세우다.</string>
 </resources>

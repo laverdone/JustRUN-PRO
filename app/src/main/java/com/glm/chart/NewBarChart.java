@@ -5,14 +5,15 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.DefaultValueFormatter;
-import com.github.mikephil.charting.utils.ValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.glm.app.ConstApp;
 import com.glm.bean.DistancePerMonth;
 import com.glm.bean.DistancePerWeek;
@@ -27,7 +28,7 @@ import java.util.Vector;
 /**
  * Created by gianluca on 25/08/15.
  */
-public class NewBarChart extends com.github.mikephil.charting.charts.BarChart{
+public class NewBarChart extends BarChart {
     private static Context oContext;
     private int mType = 0;
     private boolean isInteractive=false;
@@ -66,7 +67,7 @@ public class NewBarChart extends com.github.mikephil.charting.charts.BarChart{
                 Log.i(this.getClass().getCanonicalName(), "Create Graph Running Summary Month");
 
                 setSummaryMonthCategory(ConstApp.TYPE_RUN,iYear);
-
+                //testNewBar(ConstApp.TYPE_RUN,iYear);
                 break;
 
             case ConstApp.TYPE_WALK:
@@ -88,6 +89,118 @@ public class NewBarChart extends com.github.mikephil.charting.charts.BarChart{
         }
     }
 
+
+    private void setSummaryMonthCategory(final int typeWorkout, final int iYear){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                setDrawBarShadow(false);
+                setDrawValueAboveBar(true);
+
+                getDescription().setEnabled(false);
+
+                // if more than 60 entries are displayed in the chart, no values will be
+                // drawn
+                setMaxVisibleValueCount(60);
+
+                // scaling can now only be done on x- and y-axis separately
+                setPinchZoom(false);
+
+                setDrawGridBackground(false);
+                // chart.setDrawYLabels(false);
+
+                ValueFormatter xAxisFormatter = new MonthAxisValueFormatter();
+
+                XAxis xAxis = getXAxis();
+                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                xAxis.setTypeface(mTf);
+                xAxis.setDrawGridLines(false);
+                xAxis.setGranularity(1f); // only intervals of 1 day
+                xAxis.setLabelCount(12);
+                xAxis.setValueFormatter(xAxisFormatter);
+
+                ValueFormatter custom = new GlmValueFormatter();
+
+                YAxis leftAxis = getAxisLeft();
+                leftAxis.setTypeface(mTf);
+                leftAxis.setLabelCount(8, false);
+                leftAxis.setValueFormatter(custom);
+                leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+                leftAxis.setSpaceTop(15f);
+                leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+
+                YAxis rightAxis = getAxisRight();
+                rightAxis.setDrawGridLines(false);
+                rightAxis.setTypeface(mTf);
+                rightAxis.setLabelCount(8, false);
+                rightAxis.setValueFormatter(custom);
+                rightAxis.setSpaceTop(15f);
+                rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+
+                Legend l = getLegend();
+                l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+                l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+                l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+                l.setDrawInside(false);
+                l.setForm(Legend.LegendForm.SQUARE);
+                l.setFormSize(9f);
+                l.setTextSize(11f);
+                l.setXEntrySpace(4f);
+
+                XYMarkerView mv = new XYMarkerView(oContext, xAxisFormatter);
+                mv.setChartView(NewBarChart.this); // For bounds control
+                setMarker(mv); // Set the marker to the chart
+
+
+
+        //        getData().setHighlightEnabled(true);
+
+                ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+
+                Vector<DistancePerMonth> table = ExerciseUtils.getDistanceForMonth(typeWorkout, ExerciseUtils.loadConfiguration(oContext),
+                        iYear ,oContext);
+                Calendar oCal = Calendar.getInstance();
+                oCal.setTime(new Date());
+
+
+
+                for(int i=0;i<12;i++){
+                    DistancePerMonth oDistance = table.get(i);
+                    float nDistance = 0;
+                    try{
+                        nDistance = Float.parseFloat(oDistance.getsDistance());
+                    }catch(NumberFormatException e){
+                        Log.e(this.getClass().getCanonicalName(),"Error Parse Number"+oDistance.getsDistance());
+                    }
+                    //Log.v(this.getClass().getCanonicalName(),"Month: "+oDistance.getiMonth()+" - Distance: "+nDistance);
+
+                    yVals1.add(new BarEntry(i,nDistance));
+                }
+
+
+
+                BarDataSet set1 = new BarDataSet(yVals1, "Distance");
+                ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+                dataSets.add(set1);
+
+                BarData data = new BarData(dataSets);
+                data.setValueTextSize(10f);
+                data.setValueTypeface(mTf);
+                data.setBarWidth(0.9f);
+                setData(data);
+                for (IBarDataSet set : getData().getDataSets())
+                    ((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        invalidate();
+                    }
+                });
+            }
+        }).start();
+    }
+
+
     private void setSummaryWeekCategory() {
         new Thread(new Runnable() {
             @Override
@@ -95,7 +208,7 @@ public class NewBarChart extends com.github.mikephil.charting.charts.BarChart{
                 setDrawBarShadow(false);
                 setDrawValueAboveBar(true);
 
-                setDescription("");
+
 
                 // if more than 60 entries are displayed in the chart, no values will be
                 // drawn
@@ -119,7 +232,7 @@ public class NewBarChart extends com.github.mikephil.charting.charts.BarChart{
                 xAxis.setTypeface(mTf);
                 xAxis.setTextSize(8f);
                 xAxis.setDrawGridLines(false);
-                xAxis.setSpaceBetweenLabels(2);
+                //xAxis.setL .setSpaceBetweenLabels(2);
 
                 ValueFormatter custom = new GlmValueFormatter();
 
@@ -140,7 +253,7 @@ public class NewBarChart extends com.github.mikephil.charting.charts.BarChart{
                 rightAxis.setSpaceTop(15f);
 
                 Legend l = getLegend();
-                l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+                //l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
                 l.setForm(Legend.LegendForm.SQUARE);
                 l.setFormSize(9f);
                 l.setTextSize(9f);
@@ -170,12 +283,14 @@ public class NewBarChart extends com.github.mikephil.charting.charts.BarChart{
                     //Log.v(this.getClass().getCanonicalName(),"Week: "+oDistance.getiWeek()+" - Distance: "+nDistance);
 
                     xVals.add(oDistance.getiWeek() + " " + oCal.get(Calendar.YEAR));
-                    yVals1.add(new BarEntry(nDistance,i));
+                    yVals1.add(new BarEntry(i,nDistance));
                 }
+                if(mSize<=0) return;
                 BarDataSet set1 = new BarDataSet(yVals1, "Distance");
                 ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
                 dataSets.add(set1);
-                BarData data = new BarData(xVals, dataSets);
+                //BarData data = new BarData(xVals, dataSets);
+                BarData data = new BarData(set1);
 
                 setData(data);
                 mActivity.runOnUiThread(new Runnable() {
@@ -190,14 +305,14 @@ public class NewBarChart extends com.github.mikephil.charting.charts.BarChart{
 
     }
 
-    private void setSummaryMonthCategory(final int typeWorkout, final int iYear) {
+    /*private void setSummaryMonthCategory(final int typeWorkout, final int iYear) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 setDrawBarShadow(false);
                 setDrawValueAboveBar(true);
 
-                setDescription("");
+                //setDescription("");
 
                 // if more than 60 entries are displayed in the chart, no values will be
                 // drawn
@@ -219,7 +334,9 @@ public class NewBarChart extends com.github.mikephil.charting.charts.BarChart{
                 xAxis.setTypeface(mTf);
                 xAxis.setTextSize(8f);
                 xAxis.setDrawGridLines(false);
-                xAxis.setSpaceBetweenLabels(2);
+
+
+                //xAxis.setSpaceBetweenLabels(2);
 
                 ValueFormatter custom = new GlmValueFormatter();
 
@@ -230,6 +347,8 @@ public class NewBarChart extends com.github.mikephil.charting.charts.BarChart{
                 leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
                 leftAxis.setSpaceTop(15f);
 
+
+
                 YAxis rightAxis = getAxisRight();
                 rightAxis.setDrawGridLines(false);
                 rightAxis.setTypeface(mTf);
@@ -238,7 +357,9 @@ public class NewBarChart extends com.github.mikephil.charting.charts.BarChart{
                 rightAxis.setSpaceTop(15f);
 
                 Legend l = getLegend();
-                l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+                //l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+                l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+                l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
                 l.setForm(Legend.LegendForm.SQUARE);
                 l.setFormSize(9f);
                 l.setTextSize(9f);
@@ -260,7 +381,7 @@ public class NewBarChart extends com.github.mikephil.charting.charts.BarChart{
 
 
                 for(int i=0;i<12;i++){
-                    DistancePerMonth oDistance = (DistancePerMonth) table.get(i);
+                    DistancePerMonth oDistance = table.get(i);
                     float nDistance = 0;
                     try{
                         nDistance = Float.parseFloat(oDistance.getsDistance());
@@ -270,14 +391,17 @@ public class NewBarChart extends com.github.mikephil.charting.charts.BarChart{
                     //Log.v(this.getClass().getCanonicalName(),"Month: "+oDistance.getiMonth()+" - Distance: "+nDistance);
 
                     xVals.add(mMonth[oDistance.getiMonth()-1]);
-                    yVals1.add(new BarEntry(nDistance,i));
+                    yVals1.add(new BarEntry(i,nDistance));
                 }
 
-                BarDataSet set1 = new BarDataSet(yVals1, "Distance");
-                ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
-                dataSets.add(set1);
-                BarData data = new BarData(xVals, dataSets);
+                BarDataSet set1 = new BarDataSet(yVals1, "distance");
+                set1.setDrawIcons(false);
+                set1.setValues(yVals1);
 
+                ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+                dataSets.add(set1);
+
+                BarData data = new BarData(dataSets);
                 setData(data);
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
@@ -288,5 +412,5 @@ public class NewBarChart extends com.github.mikephil.charting.charts.BarChart{
             }
         }).start();
 
-    }
+    }*/
 }

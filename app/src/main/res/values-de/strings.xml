@@ -183,4 +183,13 @@
 	<string name="export_tcx">Export KML</string>
 	<string name="backup_desc">Sind Sie sicher, dass eine Sicherungskopie zu erstellen?</string>
 	<string name="restore_desc">Sind Sie sicher, dass die Sicherung wiederherstellen?</string>
+    <string name="only_gpx">Nur GPX-Dateien sind erlaubt!</string>
+    <string name="use_as_opponent">Verwenden Sie als Gegner</string>
+	<string name="faster_then_opponent">Du bist schneller als dein Gegner, mach weiter so</string>
+	<string name="slower_then_opponent">Sie sind langsamer als Ihr Gegner, erhöhen Sie Ihren Frieden</string>
+    <string name="unable_to_use_as_opponent">Kann nicht als Gegner verwendet werden</string>
+    <string name="meters">meter</string>
+    <string name="feet">Füße</string>
+	<string name="behind">hinter deinem Gegner</string>
+	<string name="ahead">vor deinem Gegner</string>
 </resources>

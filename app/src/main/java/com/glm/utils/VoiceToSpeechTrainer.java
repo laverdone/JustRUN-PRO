@@ -2,29 +2,48 @@ package com.glm.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
+import com.glm.app.ConstApp;
+import com.glm.app.NewMainActivity;
+import com.glm.bean.ChallengeExercise;
 import com.glm.bean.ConfigTrainer;
+import com.glm.bean.Exercise;
+import com.glm.bean.WatchPoint;
+import com.glm.services.ExerciseService;
 import com.glm.trainer.R;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Random;
 
 public class VoiceToSpeechTrainer implements TextToSpeech.OnInitListener{
 	private Context oContext;
 	private TextToSpeech mTts;
-	
+	private WorkOutTrainer oTask;
+	private ConfigTrainer mConfigTrainer;
+	private MediaTrainer mMediaPlayer;
 	private static final Random RANDOM = new Random();
-    private static final String[] HELLOS = {
+	private AudioManager mAudioManager = null;
+	private int preVolume=0;
+	private int preVolumeTTs=0;
+	private static final String[] HELLOS = {
       "Welcome!"
     };
     public VoiceToSpeechTrainer(Context Context){
     	oContext=Context;
     	 // success, create the TTS instance
         mTts = new TextToSpeech(oContext, this);
+		mAudioManager = (AudioManager) oContext.getSystemService(Context.AUDIO_SERVICE);
     }
 	public boolean isTextToSpeechAvaiable(){
 		Intent checkIntent = new Intent();
@@ -92,7 +111,7 @@ public class VoiceToSpeechTrainer implements TextToSpeech.OnInitListener{
             null);
     }
     /*
-     *Risotna se sta o no parlando
+     *Ritorna se sta o no parlando
      **/
     public boolean isBusy(){
     	return mTts.isSpeaking();
@@ -123,34 +142,52 @@ public class VoiceToSpeechTrainer implements TextToSpeech.OnInitListener{
     }
     
 	public void sayDistanza(Context oContext, ConfigTrainer oConfigTrainer,
-			String sDistanceToSpeech, MediaTrainer oMediaPlayer,
-			String sTimeToSpeech, String sKalories, String sPace, String sPendenza, int iHeartRate) {
-		
-		String sSpeech="";
+							String sDistanceToSpeech, MediaTrainer oMediaPlayer,
+							String sTimeToSpeech, String sKalories, String sPace, String sPendenza, int iHeartRate, ChallengeExercise mChallengeExercise, long lCurrentTime, double dCurrentDistance) {
+		Bundle params = new Bundle();
+		params.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_VOICE_CALL);
 
+		String sSpeech="";
+		SimpleDateFormat sdf = new SimpleDateFormat("ssSSS");
+		String sID = sdf.format(new Date());
+
+		mConfigTrainer=oConfigTrainer;
+		mMediaPlayer =oMediaPlayer;
+
+		preVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+		mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,10,0);
+		preVolumeTTs= mAudioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL);
+		mAudioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL,100,0);
 		//Step 1: Distanza
 		if(oConfigTrainer.isSayDistance()) {
 			sSpeech=oContext.getString(R.string.distance);
 			//Step 2: Parte intera + unità di misura
 			try{
-				sSpeech+=sDistanceToSpeech.substring(0, sDistanceToSpeech.indexOf(","));
+				DecimalFormat oDF = new DecimalFormat();
+				if(sDistanceToSpeech!=null &&
+						sDistanceToSpeech.indexOf(oDF.getDecimalFormatSymbols().getDecimalSeparator())>0) sSpeech+=sDistanceToSpeech.substring(0, sDistanceToSpeech.indexOf(oDF.getDecimalFormatSymbols().getDecimalSeparator()));
+				else sSpeech+=sDistanceToSpeech;
 			}catch(StringIndexOutOfBoundsException e){
+				if(ConstApp.IS_DEBUG) Logger.log("ERROR - VoiceToSpeechTrainer->sayDistanza - Error getting distance to speech StringIndexOutOfBoundsException");
 				Log.w(this.getClass().getCanonicalName(),"Error getting distance to speech");
 			}
 			if(oConfigTrainer.getiUnits()==0){
 				//Km
-				sSpeech+=oContext.getString(R.string.kilometer);
+				sSpeech+=" "+oContext.getString(R.string.kilometer);
 			}else{
 				//Miles
-				sSpeech+=oContext.getString(R.string.miles);
+				sSpeech+=" "+oContext.getString(R.string.miles);
 			}
 			//Step 3: Parte decimale
 			try{
-				DecimalFormat oDF = new DecimalFormat();				
-				sSpeech+=sDistanceToSpeech.substring(sDistanceToSpeech.indexOf(oDF.getDecimalFormatSymbols().getDecimalSeparator())+1);
+				DecimalFormat oDF = new DecimalFormat();
+				if(sDistanceToSpeech!=null &&
+						sDistanceToSpeech.indexOf(oDF.getDecimalFormatSymbols().getDecimalSeparator())>0) sSpeech+=sDistanceToSpeech.substring(sDistanceToSpeech.indexOf(oDF.getDecimalFormatSymbols().getDecimalSeparator())+1);
 			}catch(StringIndexOutOfBoundsException e){
+				if(ConstApp.IS_DEBUG) Logger.log("ERROR - VoiceToSpeechTrainer->sayDistanza - Error getting distance to speech StringIndexOutOfBoundsException");
 				Log.w(this.getClass().getCanonicalName(),"Error getting distance to speech");
 			}catch (NumberFormatException e) {
+				if(ConstApp.IS_DEBUG) Logger.log("ERROR - VoiceToSpeechTrainer->sayDistanza - Error getting distance to speech NumberFormatException");
 				Log.w(this.getClass().getCanonicalName(),"Error getting distance to speech");
 			}
 		}
@@ -175,35 +212,73 @@ public class VoiceToSpeechTrainer implements TextToSpeech.OnInitListener{
 			//Step 6: Calorie Bruciate di percorrenza 
 			sSpeech+="  "+oContext.getString(R.string.heart_rate)+iHeartRate;
 		}
-		
-		
-		Log.i(this.getClass().getCanonicalName(),"Say: "+sSpeech);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			mTts.speak(sSpeech,
-                    TextToSpeech.QUEUE_FLUSH,  // Drop all pending entries in the playback queue.
-                    null,"1234");
-		}else{
-			mTts.speak(sSpeech,
-					TextToSpeech.QUEUE_FLUSH,  // Drop all pending entries in the playback queue.
-					null);
-		}
 
-		while(mTts.isSpeaking()){
-    		try {
+
+		Log.i(this.getClass().getCanonicalName(),"Say: "+sSpeech);
+		boolean asSpeek=false;
+		String sDistanzaOpponent="";
+		DecimalFormat decimalFormat = new DecimalFormat("###.#");
+		//if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			//Check the challengeexercise
+			if(mChallengeExercise!=null){
+				int iMaxSize=mChallengeExercise.getTrackPointExercise().size();
+				for (int i = 0; i < iMaxSize; i++) {
+					WatchPoint currentWatchPoint = mChallengeExercise.getTrackPointExercise().get(i);
+
+					if(ExerciseUtils.getHours(lCurrentTime)==currentWatchPoint.getiHoursTotal() &&
+							(ExerciseUtils.getMinutes(lCurrentTime)<=currentWatchPoint.getiMinuteTotal())){
+						if(currentWatchPoint.getdDistance()<dCurrentDistance){
+							if(oConfigTrainer.getiUnits()==0){
+								//Km to meters 1000
+								sDistanzaOpponent=decimalFormat.format(Math.abs(dCurrentDistance-currentWatchPoint.getdDistance()))+oContext.getString(R.string.meters)+oContext.getString(R.string.ahead);
+							}else{
+								//miles to feet 5280
+								sDistanzaOpponent=decimalFormat.format(Math.abs(dCurrentDistance-currentWatchPoint.getdDistance()))+oContext.getString(R.string.feet)+oContext.getString(R.string.ahead);
+							}
+
+							//Sono attualemnte più veloce
+							mTts.speak(sSpeech+" "+oContext.getString(R.string.faster_then_opponent)+" "+sDistanzaOpponent,TextToSpeech.QUEUE_FLUSH, params,sID);
+							asSpeek=true;
+							break;
+						}else{
+							if(oConfigTrainer.getiUnits()==0){
+								//Km to meters 1000
+								sDistanzaOpponent=decimalFormat.format(Math.abs(dCurrentDistance-currentWatchPoint.getdDistance()))+oContext.getString(R.string.meters)+oContext.getString(R.string.behind);
+							}else{
+								//miles to feet 5280
+								sDistanzaOpponent=decimalFormat.format(Math.abs(dCurrentDistance-currentWatchPoint.getdDistance()))+oContext.getString(R.string.feet)+oContext.getString(R.string.behind);
+							}
+							//Sono attualemnte più lento
+							mTts.speak(sSpeech+" "+oContext.getString(R.string.slower_then_opponent)+" "+sDistanzaOpponent,TextToSpeech.QUEUE_FLUSH, params,sID);
+							asSpeek=true;
+							break;
+						}
+					}
+				}
+				if(!asSpeek){
+					//Sono attualemnte più veloce perchè l'esercizio attuale è più lungo
+					mTts.speak(sSpeech+" "+oContext.getString(R.string.faster_then_opponent)+" "+sDistanzaOpponent,TextToSpeech.QUEUE_FLUSH, params,sID);
+				}
+			}else {
+				mTts.speak(sSpeech,
+						TextToSpeech.QUEUE_FLUSH,  // Drop all pending entries in the playback queue.
+						params, sID);
+			}
+		if(ConstApp.IS_DEBUG) Logger.log("INFO - VoiceToSpeechTrainer->sayDistanza - sSpeech:"+sSpeech);
+
+		oTask = new WorkOutTrainer();
+		oTask.execute();
+
+		/*while(mTts.isSpeaking()){
+			try {
 				Thread.sleep(2000);
-            } catch (InterruptedException e) {              
-            	Log.e(this.getClass().getCanonicalName(),"InterruptedException"+e.getMessage());            	
-            }
-    	}
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-		 	Log.e(this.getClass().getCanonicalName(),"InterruptedException"+e.getMessage());
-		}
-		//Riavvio la musica se necessario
-		if(oConfigTrainer.isbPlayMusic()){
-			if(oMediaPlayer!=null) oMediaPlayer.play(true);
-		}
+			} catch (InterruptedException e) {
+				if(ConstApp.IS_DEBUG) Logger.log("ERROR - VoiceToSpeechTrainer->sayDistanza - Error getting distance to speech InterruptedException");
+				Log.e(this.getClass().getCanonicalName(),"InterruptedException"+e.getMessage());
+			}
+		}*/
+
+
 	}
 	public void sayDistanzaToGoal(Context oContext,
 			ConfigTrainer oConfigTrainer, String sDistanceToSpeech,
@@ -229,7 +304,7 @@ public class VoiceToSpeechTrainer implements TextToSpeech.OnInitListener{
 				sSpeech+=oContext.getString(R.string.distancetogoal);
 				mTts.speak(sSpeech,
 		                TextToSpeech.QUEUE_FLUSH,  // Drop all pending entries in the playback queue.
-		                null);
+		                null,"");
 				while(mTts.isSpeaking()){
 		    		try {
 						Thread.sleep(1000);
@@ -322,5 +397,54 @@ public class VoiceToSpeechTrainer implements TextToSpeech.OnInitListener{
 			if(oMediaPlayer!=null) oMediaPlayer.play(true);		
 		}
 	}
-    
+
+	public void sayOther(ConfigTrainer oConfigTrainer,
+										 String textToSpeech,MediaTrainer oMediaPlayer) {
+		String sSpeech=textToSpeech;
+
+
+		mTts.speak(sSpeech,1,null,"");
+	/*	mTts.speak(sSpeech,
+				TextToSpeech.QUEUE_FLUSH,  // Drop all pending entries in the playback queue.
+				null);*/
+		while(mTts.isSpeaking()){
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				Log.e(this.getClass().getCanonicalName(),"InterruptedException"+e.getMessage());
+			}
+		}
+		//Riavvio la musica se necessario
+		if(oConfigTrainer.isbPlayMusic()){
+			if(oMediaPlayer!=null) oMediaPlayer.play(true);
+		}
+	}
+	class WorkOutTrainer extends AsyncTask{
+		private boolean bTimeout=true;
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+
+
+		}
+
+		@Override
+		protected Object doInBackground(Object... params) {
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(Object result) {
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					//Riavvio la musica se necessario
+					mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,preVolume,0);
+					mAudioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL,preVolumeTTs,0);
+				}
+			}, 8000);
+
+		}
+	}
 }

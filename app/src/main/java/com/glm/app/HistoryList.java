@@ -5,17 +5,16 @@ import android.app.ProgressDialog;
 import android.content.Context;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+//import android.support.design.widget.TabLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -25,6 +24,7 @@ import com.glm.app.fragment.adapter.WorkoutAdapter;
 import com.glm.bean.ConfigTrainer;
 import com.glm.trainer.R;
 import com.glm.utils.ExerciseUtils;
+import com.google.android.material.tabs.TabLayout;
 //import com.google.android.gms.appindexing.Action;
 //import com.google.android.gms.appindexing.AppIndex;
 //import com.google.android.gms.common.api.GoogleApiClient;
@@ -61,11 +61,6 @@ public class HistoryList extends AppCompatActivity {
 	private WorkoutAdapter mWorkoutAdapterBike = null;
 	private Context mContext;
 	private int mTypeWorkout = 0;
-	/**
-	 * ATTENTION: This was auto-generated to implement the App Indexing API.
-	 * See https://g.co/AppIndexing/AndroidStudio for more information.
-	 */
-	//private GoogleApiClient client;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +68,6 @@ public class HistoryList extends AppCompatActivity {
 		mContext = this;
 		setContentView(R.layout.activity_new_main);
 
-
-		// ATTENTION: This was auto-generated to implement the App Indexing API.
-		// See https://g.co/AppIndexing/AndroidStudio for more information.
-		//client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 	}
 
 
@@ -120,41 +111,11 @@ public class HistoryList extends AppCompatActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-
-		// ATTENTION: This was auto-generated to implement the App Indexing API.
-		// See https://g.co/AppIndexing/AndroidStudio for more information.
-	//	client.connect();
-	/*	Action viewAction = Action.newAction(
-				Action.TYPE_VIEW, // TODO: choose an action type.
-				"HistoryList Page", // TODO: Define a title for the content shown.
-				// TODO: If you have web page content that matches this app activity's content,
-				// make sure this auto-generated web page URL is correct.
-				// Otherwise, set the URL to null.
-				Uri.parse("http://host/path"),
-				// TODO: Make sure this auto-generated app deep link URI is correct.
-				Uri.parse("android-app://"+ConstApp.APP_PNAME+"/http/host/path")
-		);*/
-	//	AppIndex.AppIndexApi.start(client, viewAction);
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
-
-		// ATTENTION: This was auto-generated to implement the App Indexing API.
-		// See https://g.co/AppIndexing/AndroidStudio for more information.
-		/*Action viewAction = Action.newAction(
-				Action.TYPE_VIEW, // TODO: choose an action type.
-				"HistoryList Page", // TODO: Define a title for the content shown.
-				// TODO: If you have web page content that matches this app activity's content,
-				// make sure this auto-generated web page URL is correct.
-				// Otherwise, set the URL to null.
-				Uri.parse("http://host/path"),
-				// TODO: Make sure this auto-generated app deep link URI is correct.
-				Uri.parse("android-app://"+ConstApp.APP_PNAME+"/http/host/path")
-		);
-		AppIndex.AppIndexApi.end(client, viewAction);
-		client.disconnect();*/
 	}
 
 

@@ -7,6 +7,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
@@ -17,8 +18,14 @@ import com.glm.utils.ExerciseUtils;
 
 public class AndroidTrainerWidget extends AppWidgetProvider {
     
-    public void onUpdate(Context oContext, AppWidgetManager appWidgetManager, int[] appWidgetIds) {    	
-    	oContext.startService(new Intent(oContext, WidgetService.class));
+    public void onUpdate(Context oContext, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+
+		if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+			oContext.startForegroundService(new Intent(oContext, WidgetService.class));
+		}else{
+			oContext.startService(new Intent(oContext, WidgetService.class));
+		}
+
     	
     	Summary oSummary = ExerciseUtils.getTotalSummary(oContext);
     	RemoteViews updateViews = new RemoteViews(oContext.getPackageName(), R.layout.trainer_widget);;
