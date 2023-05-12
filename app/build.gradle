@@ -1,6 +1,6 @@
 //noinspection GradleCompatible
 apply plugin: 'com.android.application'
-apply plugin: "androidx.navigation.safeargs"
+//apply plugin: "androidx.navigation.safeargs"
 
 
 android {
@@ -19,15 +19,14 @@ android {
             storePassword 'caronte'
         }
     }
-    compileSdkVersion 29
-    buildToolsVersion '29.0.2'
+    compileSdkVersion 32
     defaultConfig {
         applicationId "com.glm.trainer"
         minSdkVersion 23
-        targetSdkVersion 29
+        targetSdkVersion 32
 
-        versionCode 176
-        versionName "8.6.0"
+        versionCode 183
+        versionName "8.6.7"
         archivesBaseName = "JustRunPRO-$versionName"
     }
     buildTypes {
@@ -43,8 +42,9 @@ android {
             minSdkVersion 23
             applicationId 'com.glm.trainerlite'
             targetSdkVersion 29
-            versionCode 176
-            versionName '8.6.0'
+            compileSdkVersion 32
+            versionCode 183
+            versionName '8.6.7'
             archivesBaseName = "JustRunPROADS-$versionName"
             signingConfig signingConfigs.signingConfigsADS
             dimension "tier"
@@ -58,8 +58,8 @@ android {
             applicationId "com.glm.trainer"
             minSdkVersion 23
             targetSdkVersion 29
-            versionCode 176
-            versionName "8.6.0"
+            versionCode 183
+            versionName "8.6.7"
             archivesBaseName = "JustRunPRO-$versionName"
             signingConfig signingConfigs.releasePRO
             dimension "tier"
@@ -69,6 +69,10 @@ android {
                     appIcon: "@drawable/icon_pro"
             ]
         }
+    }
+    namespace 'com.glm.trainer'
+    buildFeatures {
+        aidl true
     }
 }
 
@@ -83,12 +87,12 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.0'
     implementation 'com.github.ViksaaSkool:AwesomeSplash:v1.0.0'
     //noinspection GradleCompatible
-    implementation 'com.android.support:design:29.0.+'
+    implementation 'com.android.support:design:28.0.0'
     //compile project(':com_android_vending_licensing')
     //implementation 'com.google.android.gms:play-services:12.0.1'
     implementation "com.google.android.gms:play-services-base:15.0.1"
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    implementation 'com.google.android.gms:play-services-ads:19.3.0'
+    implementation 'com.google.android.gms:play-services-ads:22.0.0'
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
     implementation 'com.google.android.gms:play-services-gcm:17.0.0'
     //def nav_version = "1.0.0-beta02"
@@ -102,4 +106,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.0.0-rc02'
     implementation 'net.danlew:android.joda:2.10.6.1'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.github.twinone:AndroidWizard:b4546bd712'
 }

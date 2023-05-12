@@ -234,7 +234,6 @@ public class SummaryFragment extends Fragment {
 	public void onResume() {
 		mContext=getActivity().getApplicationContext();
 		new Thread(new GraphTaskAsync()).start();
-
 		super.onResume();
 	}
 	public void changeGUI(){
@@ -301,6 +300,7 @@ public class SummaryFragment extends Fragment {
 						iYear=mYears.get(mYears.size()-1);
 					}
 
+					mTotalChart.init(mContext, -1,getActivity(),-1);
 
 					mRunChart.init(mContext, ConstApp.TYPE_RUN,getActivity(),iYear);
 					mWalkChart.init(mContext,ConstApp.TYPE_WALK,getActivity(),iYear);
@@ -313,8 +313,8 @@ public class SummaryFragment extends Fragment {
 
 							Intent intent = new Intent();
 							intent.setClass(mContext, ChartSummaryActivity.class);
-							intent.putExtra("chartType",mTypeGraph);
-							intent.putExtra("year",mYear);
+							intent.putExtra("chartType",-1);
+							intent.putExtra("year",-1);
 							startActivity(intent);
 							getActivity().finish();
 
@@ -390,6 +390,8 @@ public class SummaryFragment extends Fragment {
 							//TODO
 							if(mYears.size()>0) mYear=mYears.get(progress);
 							Log.v(this.getClass().getCanonicalName(),"Year selected is: "+mYear+" progress selectd is: "+progress);
+							mTotalChart.init(mContext, -1,getActivity(),-1);
+
 							mRunChart.init(mContext, ConstApp.TYPE_RUN,getActivity(),mYear);
 							mWalkChart.init(mContext,ConstApp.TYPE_WALK,getActivity(),mYear);
 							mBikeChart.init(mContext,ConstApp.TYPE_BIKE,getActivity(),mYear);
@@ -398,6 +400,7 @@ public class SummaryFragment extends Fragment {
 							mTitleWalk.setText(mContext.getString(R.string.history_walk)+" - "+mYear);
 							mTitleBike.setText(mContext.getString(R.string.history_bike)+" - "+mYear);
 						}
+
 
 						@Override
 						public void onStartTrackingTouch(SeekBar seekBar) {

@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JustRUN-PRO.iml" filepath="$PROJECT_DIR$/JustRUN-PRO.iml" group="JustRUN-PRO" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="JustRUN-PRO/app" />
+      <module fileurl="file://$PROJECT_DIR$/JustRUN-PRO.iml" filepath="$PROJECT_DIR$/JustRUN-PRO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/JustRUN-PRO.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/JustRUN-PRO.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/JustRUN-PRO.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/JustRUN-PRO.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/JustRUN-PRO.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/JustRUN-PRO.app.unitTest.iml" />
     </modules>
   </component>
 </project>

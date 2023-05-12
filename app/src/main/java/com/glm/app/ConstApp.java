@@ -14,7 +14,7 @@ public class ConstApp {
 
     public final static int INTERVAL_TWO_MINUTES = 1000 * 60 * 2;
 
-    public final static float GPS_MIN_ACCURANCY_RUN=20;
+    public final static float GPS_MIN_ACCURANCY_RUN=10;
     public final static float GPS_MIN_ACCURANCY_WALK=20;
     public final static float GPS_MIN_ACCURANCY_BIKE=70;
     public final static double GPSFIX=1;//0.88;

@@ -44,6 +44,7 @@ public class NewBarChart extends BarChart {
         mTf = Typeface.createFromAsset(oContext.getAssets(), "fonts/OpenSans-Regular.ttf");
     }
 
+
     public void init(Context context, int type, Activity activity, int iYear){
         mActivity=activity;
         oContext =context;

@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Criteria;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
@@ -47,6 +48,7 @@ import com.glm.utils.Logger;
 import com.glm.utils.MediaTrainer;
 import com.glm.utils.VoiceToSpeechTrainer;
 import com.glm.utils.sensor.BlueToothHelper;
+import com.google.android.gms.location.LocationRequest;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -380,7 +382,11 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		try {
 			mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-			if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+					&& ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//					&& ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED
+
+			) {
 				// TODO: Consider calling
 				//    ActivityCompat#requestPermissions
 				// here to request the missing permissions, and then overriding
@@ -390,6 +396,8 @@ public class ExerciseService extends Service implements LocationListener, Accele
 				// for ActivityCompat#requestPermissions for more details.
 				return;
 			}
+			mLocationManager.getBestProvider(new Criteria(), false);
+
 			mLocationManager.requestLocationUpdates(android.location.LocationManager.NETWORK_PROVIDER, PERIOD_TIMER_DELAY, gpsMinDistance, this, Looper.getMainLooper());
 			mLocationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, PERIOD_TIMER_DELAY, gpsMinDistance, this, Looper.getMainLooper());
 			mLocationManager.getLastKnownLocation(android.location.LocationManager.GPS_PROVIDER);
@@ -484,16 +492,25 @@ public class ExerciseService extends Service implements LocationListener, Accele
 
 
 		mCurrentLocation = location;
-		if (!isBetterLocation(mCurrentLocation, mLastLocation)) return;
+		if(mCurrentLocation.getProvider()!=null){
+			sProvider=mCurrentLocation.getProvider();
+		}
+
+		if (!isBetterLocation(mCurrentLocation, mLastLocation)){
+			if (ConstApp.IS_DEBUG)
+				Logger.log("WARN - location isBetterLocation not BETTER latitude: " + mCurrentLocation.getLatitude() + " longitude: "
+						+ mCurrentLocation.getLongitude() + " altidute: " + mCurrentLocation.getAltitude() + " accurancy: "
+						+ mCurrentLocation.getAccuracy() + " iAutoPauseDelay: " + iAutoPauseDelay + " DistanceMotivator is: " + mDistanceMotivator +
+						" Provider: "+sProvider+" Service for Trainer Services");
+			return;
+		}
 
 		//Non catturo piu' le coordinate quando sono in pausa
        /*if(location==null) {  	   
     	   startGPSFix();
     	   return;
        }*/
-		if(mCurrentLocation.getProvider()!=null){
-			sProvider=mCurrentLocation.getProvider();
-		}
+
 		if (iTypeExercise == ConstApp.TYPE_RUN) {
 			//Not Save Accuracy greate then 10
 			if (location.getAccuracy() > ConstApp.GPS_MIN_ACCURANCY_RUN) {
@@ -620,7 +637,7 @@ public class ExerciseService extends Service implements LocationListener, Accele
 					Logger.log("INFO - onLocationChanged latitude: " + mCurrentLocation.getLatitude() + " longitude: "
 							+ mCurrentLocation.getLongitude() + " altidute: " + mCurrentLocation.getAltitude() + " Speed is: " + mSpeed + " accurancy: "
 							+ mCurrentLocation.getAccuracy() + " iAutoPauseDelay: " + iAutoPauseDelay + " DistanceMotivator is: " + mDistanceMotivator + "" +
-							"oConfigTrainer.getiMotivatorTime() is " + oConfigTrainer.getiMotivatorTime() + " Service for Trainer Services");
+							" Provider: "+sProvider+" oConfigTrainer.getiMotivatorTime() is " + oConfigTrainer.getiMotivatorTime() + " Service for Trainer Services");
 
 
 				if (oConfigTrainer.getiMotivatorTime() == 3) {
@@ -992,7 +1009,10 @@ public class ExerciseService extends Service implements LocationListener, Accele
 				/*
                  * GPS_EVENT_FIRST_FIX Event is called when GPS is locked
                  */
-				if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+				if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+						&& ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+		//				&& ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED
+				) {
 					// TODO: Consider calling
 					//    ActivityCompat#requestPermissions
 					// here to request the missing permissions, and then overriding
@@ -1774,7 +1794,10 @@ public class ExerciseService extends Service implements LocationListener, Accele
 		if (oRunningThread != null) oRunningThread.interrupt();
 		if (mLocationManager != null) {
 			if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-					&& ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+					&& ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+	//				&& ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED
+
+			) {
 				// TODO: Consider calling
 				//    ActivityCompat#requestPermissions
 				// here to request the missing permissions, and then overriding

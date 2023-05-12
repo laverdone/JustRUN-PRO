@@ -431,7 +431,7 @@ public class WorkOutActivity<onActivityResult> extends Activity implements OnCli
 		btnSkipTrack 	= (ImageButton) findViewById(R.id.btnSkipTrack);
 
 		//imgMode = (ImageView) findViewById(R.id.imgMode);
-		oFont = Typeface.createFromAsset(this.getAssets(), "fonts/TRANA___.TTF");
+		oFont = Typeface.createFromAsset(this.getAssets(), "fonts/DS-DIGIB.TTF");
 		txtDistance		= (TextView) findViewById(R.id.txtDistance);
 		txtKalories		= (TextView) findViewById(R.id.txtKalories);
 		txtTimeHHMM		= (TextView) findViewById(R.id.txtTimeHHMM);
@@ -460,7 +460,7 @@ public class WorkOutActivity<onActivityResult> extends Activity implements OnCli
 		lblALT.setTypeface(oFont);
 		lblHeatRate.setTypeface(oFont);
 //
-//        Typeface font1 = Typeface.createFromAsset(getAssets(), "fonts/7LED.ttf");
+//        Typeface font1 = Typeface.createFromAsset(getAssets(), "fonts/DS-DIGIBttf");
 //        oTxtStopwatch.setTypeface(font1);
 //        oTxtStopwatchSS.setTypeface(font1);
 
@@ -507,9 +507,9 @@ public class WorkOutActivity<onActivityResult> extends Activity implements OnCli
 			if (ActivityCompat.checkSelfPermission(mContext,
 					Manifest.permission.ACCESS_FINE_LOCATION)
 					!= PackageManager.PERMISSION_GRANTED) {
-
+//Manifest.permission.ACCESS_BACKGROUND_LOCATION
 				ActivityCompat.requestPermissions(this,
-						new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE},
+						new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE},
 						ConstApp.PERMISSION_WRITE_EXTERNAL_STORAGE_CODE);
 
 
@@ -519,9 +519,9 @@ public class WorkOutActivity<onActivityResult> extends Activity implements OnCli
 			if (ActivityCompat.checkSelfPermission(mContext,
 					Manifest.permission.WRITE_EXTERNAL_STORAGE)
 					!= PackageManager.PERMISSION_GRANTED) {
-
+//Manifest.permission.ACCESS_BACKGROUND_LOCATION
 				ActivityCompat.requestPermissions(this,
-						new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE},
+						new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE},
 						ConstApp.PERMISSION_WRITE_EXTERNAL_STORAGE_CODE);
 
 			}

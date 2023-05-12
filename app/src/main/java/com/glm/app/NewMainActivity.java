@@ -126,9 +126,9 @@ public class NewMainActivity extends FragmentActivity {
 			if (ActivityCompat.checkSelfPermission(mContext,
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
-
+//Manifest.permission.ACCESS_BACKGROUND_LOCATION
 				ActivityCompat.requestPermissions(this,
-						new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE},
+						new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE},
 						ConstApp.PERMISSION_WRITE_EXTERNAL_STORAGE_CODE);
 
 
@@ -138,13 +138,15 @@ public class NewMainActivity extends FragmentActivity {
 			if (ActivityCompat.checkSelfPermission(mContext,
 					Manifest.permission.WRITE_EXTERNAL_STORAGE)
 					!= PackageManager.PERMISSION_GRANTED) {
-
+//Manifest.permission.ACCESS_BACKGROUND_LOCATION
 				ActivityCompat.requestPermissions(this,
-						new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE},
+						new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE},
 						ConstApp.PERMISSION_WRITE_EXTERNAL_STORAGE_CODE);
 
 			}
 		}
+
+
 		/*Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			setActionBar(toolbar);

@@ -39,7 +39,7 @@
                 android:background="@drawable/abc_popup_background_mtrl_mult"
                 app:cardCornerRadius="4dp"
                 android:layout_margin="5dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
@@ -52,10 +52,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@android:color/white"
-                    app:titleTextAppearance="@style/Toolbar.TitleText"/>
+                    app:titleTextAppearance="@style/Toolbar.TitleText"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="@string/title_total"
+                        android:textColor="@android:color/darker_gray"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="30dp"
+                        android:id="@+id/titleTot"/>
+                </androidx.appcompat.widget.Toolbar>
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:visibility="gone">
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
                     <ImageButton
                         android:id="@+id/imgBtnMore"
                         android:layout_width="30dp"
@@ -63,7 +76,8 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
                         android:background="@drawable/button_no_corners"
-                        android:src="@android:drawable/ic_menu_more" />
+                        android:src="@android:drawable/ic_menu_more"
+                        android:visibility="gone"/>
                     <TextView
                         android:id="@+id/textDistance_tot"
                         android:layout_width="wrap_content"
@@ -74,7 +88,8 @@
                         android:text="30,9Km"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textSize="18dip"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone"/>
                 </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/totalGraph"

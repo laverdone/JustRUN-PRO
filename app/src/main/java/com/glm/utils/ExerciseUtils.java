@@ -241,10 +241,18 @@ public class ExerciseUtils {
 			oDB.getOpenedDatabase().execSQL(sSQL_INSERT_DETT_EXERCISE);
 			oDB.close();
 			oDB=null;
+			if (ConstApp.IS_DEBUG)
+				Logger.log("WARN - location saved saveLocation latitude: " + currLocation.getLatitude() + " longitude: "
+						+ currLocation.getLongitude() + " altidute: " + currLocation.getAltitude() + " accurancy: "
+						+ currLocation.getAccuracy());
 		}catch (Exception e) {
 			Log.e(ExerciseUtils.class.getCanonicalName(),"Error saving dett");
 			if(oDB!=null) oDB.close();
 			oDB=null;
+			if (ConstApp.IS_DEBUG)
+				Logger.log("ERROR - location NOT saved saveLocation latitude: " + currLocation.getLatitude() + " longitude: "
+						+ currLocation.getLongitude() + " altidute: " + currLocation.getAltitude() + " accurancy: "
+						+ currLocation.getAccuracy());
 		}
 
 	}
@@ -2570,9 +2578,10 @@ public class ExerciseUtils {
 			//BIKE
 			sType="1,1000";
 		}
+		//Grafico Totale
 		if(typeWorkOut==-1){
 			s_SQL_DISTANCE="select  sum(distance) as somma, " +
-					"strftime('%m',watch_point_date) as mese from TRAINER_EXERCISE_DETT where strftime('%Y',watch_point_date)='"+year+"'  group by strftime('%m',watch_point_date)" +
+					"strftime('%m',watch_point_date) as mese from TRAINER_EXERCISE_DETT group by strftime('%m',watch_point_date)" +
 					" order by 2";
 		}else{
 			s_SQL_DISTANCE="select  sum(distance) as somma, " +

@@ -72,8 +72,8 @@ public class StopwatchView extends View {
 	public StopwatchView(Context context) {
 		super(context);		
 		//this.setBackgroundDrawable(getResources().getDrawable(R.drawable.background_stopwatch));
-		Log.d("Impostazione Font", "fonts/7LED.ttf");
-		oFont = Typeface.createFromAsset(context.getAssets(), "fonts/TRANA___.TTF");
+		Log.d("Impostazione Font", "fonts/DS-DIGIB.ttf");
+		oFont = Typeface.createFromAsset(context.getAssets(), "fonts/DS-DIGIB.TTF");
 		
 		
 				

@@ -52,7 +52,7 @@ public class MainActivity  extends AwesomeSplash {
 
 		//Customize Circular Reveal
 		configSplash.setBackgroundColor(R.color.main_green); //any color you want form colors.xml
-		configSplash.setAnimCircularRevealDuration(2000); //int ms
+		configSplash.setAnimCircularRevealDuration(1000); //int ms
 		configSplash.setRevealFlagX(Flags.REVEAL_RIGHT);  //or Flags.REVEAL_LEFT
 		configSplash.setRevealFlagY(Flags.REVEAL_BOTTOM); //or Flags.REVEAL_TOP
 
@@ -60,7 +60,7 @@ public class MainActivity  extends AwesomeSplash {
 
 		//Customize Logo
 		configSplash.setLogoSplash(R.drawable.about); //or any other drawable
-		configSplash.setAnimLogoSplashDuration(1000); //int ms
+		configSplash.setAnimLogoSplashDuration(500); //int ms
 		configSplash.setAnimLogoSplashTechnique(Techniques.BounceInDown); //choose one form Techniques (ref: https://github.com/daimajia/AndroidViewAnimations)
 
 
@@ -68,10 +68,10 @@ public class MainActivity  extends AwesomeSplash {
 		//configSplash.setPathSplash(Constants.DROID_LOGO); //set path String
 		configSplash.setOriginalHeight(400); //in relation to your svg (path) resource
 		configSplash.setOriginalWidth(400); //in relation to your svg (path) resource
-		configSplash.setAnimPathStrokeDrawingDuration(3000);
+		configSplash.setAnimPathStrokeDrawingDuration(1500);
 		configSplash.setPathSplashStrokeSize(3); //I advise value be <5
 		configSplash.setPathSplashStrokeColor(R.color.strokeColor); //any color you want form colors.xml
-		configSplash.setAnimPathFillingDuration(3000);
+		configSplash.setAnimPathFillingDuration(1500);
 		configSplash.setPathSplashFillColor(R.color.fillColor); //path object filling color
 
 
@@ -79,9 +79,9 @@ public class MainActivity  extends AwesomeSplash {
 		configSplash.setTitleSplash(getString(R.string.app_name_pro));
 		configSplash.setTitleTextColor(R.color.common_google_signin_btn_text_dark);
 		configSplash.setTitleTextSize(30f); //float value
-		configSplash.setAnimTitleDuration(3000);
+		configSplash.setAnimTitleDuration(1500);
 		configSplash.setAnimTitleTechnique(Techniques.FlipInX);
-		configSplash.setTitleFont("fonts/TRANA___.TTF"); //provide string to your font located in assets/fonts/
+		configSplash.setTitleFont("fonts/DS-DIGIB.TTF"); //provide string to your font located in assets/fonts/
 
 
 
@@ -217,11 +217,13 @@ public class MainActivity  extends AwesomeSplash {
 							startActivity(intent);
 				    		finish();
 						}else{				
-							if(!ExerciseUtils.isUserExist(getApplicationContext())){	
+							if(!ExerciseUtils.isUserExist(getApplicationContext())){
+								//Richiamo la pagina di info_fine_location
+
 								Intent intent=new Intent();
 								intent.putExtra("first_launch", true);
 								intent.putExtra("pref_type",4);
-								intent.setClass(getApplicationContext(), PreferencesActivity.class);
+								intent.setClass(getApplicationContext(), InfoFineLocationActivity.class);
 								mConnection.destroy();
 								mConnection=null;
 								startActivity(intent);

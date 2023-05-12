@@ -232,4 +232,8 @@
     <string name="feet">feet</string>
     <string name="behind">behind your opponent</string>
     <string name="ahead">ahead your opponent</string>
+    <string name="info_fine_location"><![CDATA[Trainer PRO Run, walk & bike collects location data to enable recording only when you start new workout even when the app is closed, when you stop or save the workout the location not used.]]></string>
+    <string name="access_fine_location_title">Access Location</string>
+    <string name="btnGrant">Grant Permission</string>
+    <string name="title_total">Total</string>
 </resources>

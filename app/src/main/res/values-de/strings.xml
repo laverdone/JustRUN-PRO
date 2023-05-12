@@ -192,4 +192,5 @@
     <string name="feet">Füße</string>
 	<string name="behind">hinter deinem Gegner</string>
 	<string name="ahead">vor deinem Gegner</string>
+	<string name="title_total">Gesamt</string>
 </resources>
